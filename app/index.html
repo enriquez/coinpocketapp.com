@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Bitcoin Wallet</title>
+    <link href="vendor/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <!-- Button trigger modal -->
+          <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            Launch Welcome
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Welcome to Coin Pocket App</h4>
+          </div>
+          <div class="modal-body">
+            <p>Your Bitcoins are encrypted and stored in your browser's local storage.</p>
+            <p>Choose a password that will be used to encrypt your private keys. You will be asked for this password everytime you send Bitcoins.</p>
+            <form role="form">
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password">
+              </div>
+              <div class="form-group">
+                <label for="password-confirmation">Password Confirmation</label>
+                <input type="password" class="form-control" id="password-confirmation">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" disabled="disabled">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="vendor/js/jquery-1.11.0.js"></script>
+    <script src="vendor/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="vendor/sjcl/sjcl.js"></script>
+
+    <script src="js/coinpocketapp.js"></script>
+  </body>
+</html>
