@@ -31,6 +31,8 @@
     },
     entropySeeded: function() {
       self.view.entropySeeded();
+      self.entropy.unbind('entropy.progress');
+      self.entropy.unbind('entropy.seeded');
     }
   };
 
