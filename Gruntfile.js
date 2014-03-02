@@ -18,6 +18,7 @@ module.exports = function(grunt) {
         'app/js/bitcoin.js',
         'app/js/coinpocketapp.js',
         'app/js/entropy.js',
+        'app/js/key_pair.js',
         'app/js/welcome_modal_view.js',
         'app/js/welcome_modal_controller.js'
       ];

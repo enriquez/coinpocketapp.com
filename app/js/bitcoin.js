@@ -45,7 +45,8 @@ Bitcoin.Address.validate = function(address) {
 };
 
 Bitcoin.Address.generate = function(hollaback) {
-  var keys = sjcl.ecc.ecdsa.generateKeys(sjcl.ecc.curves.k256, Bitcoin.Entropy.paranoia);
+  var curve = sjcl.ecc.curves.k256;
+  var keys  = sjcl.ecc.ecdsa.generateKeys(curve, Bitcoin.Entropy.paranoia);
 
   var publicKey = sjcl.bitArray.concat(sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x04"), keys.pub.get().x), keys.pub.get().y);
 
@@ -56,5 +57,11 @@ Bitcoin.Address.generate = function(hollaback) {
 
   var bitcoinAddress = sjcl.codec.base58.fromBits(sjcl.bitArray.concat(hashed, checkSum));
 
-  hollaback(bitcoinAddress);
+  hollaback({
+    curve: curve,
+    privateKeyExponent: keys.sec.get(),
+    publicKeyX: keys.pub.get().x,
+    publicKeyY: keys.pub.get().y,
+    bitcoinAddress: bitcoinAddress
+  });
 };

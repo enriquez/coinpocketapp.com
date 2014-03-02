@@ -67,17 +67,30 @@ describe("Bitcoin", function() {
 
     describe(".generate", function() {
 
-      beforeEach(function(done) {
-        setTimeout(function() {
-          done();
-        }, 1);
-      });
+      var keyPair;
 
-      it("generates a valid address", function(done) {
-        Bitcoin.Address.generate(function(address) {
-          expect(Bitcoin.Address.validate(address)).toBe(true);
+      beforeEach(function(done) {
+        Bitcoin.Address.generate(function(obj) {
+          keyPair = obj;
           done();
         });
+      });
+
+      it("generates a valid Bitcoin address", function() {
+        expect(Bitcoin.Address.validate(keyPair.bitcoinAddress)).toBe(true);
+      });
+
+      it("uses the secp256k1 curve", function() {
+        expect(keyPair.curve === sjcl.ecc.curves.k256).toBe(true);
+      });
+
+      it("generates a private key exponent", function() {
+        expect(keyPair.privateKeyExponent).toBeDefined;
+      });
+
+      it("generates a public key", function() {
+        expect(keyPair.publicKeyX).toBeDefined;
+        expect(keyPair.publicKeyY).toBeDefined;
       });
 
     });
