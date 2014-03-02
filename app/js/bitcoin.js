@@ -1,24 +1,28 @@
 var Bitcoin = function() { };
 
-Bitcoin.collectEntropy = function() {
-  sjcl.random = new sjcl.prng(10);
+Bitcoin.Entropy = function() { };
+
+Bitcoin.Entropy.paranoia = 10;
+
+Bitcoin.Entropy.collectEntropy = function() {
+  sjcl.random = new sjcl.prng(Bitcoin.Entropy.paranoia);
   sjcl.random.startCollectors();
 };
 
-Bitcoin.onEntropyProgress = function(hollaback) {
+Bitcoin.Entropy.onEntropyProgress = function(hollaback) {
   sjcl.random.addEventListener('progress', hollaback);
 };
 
-Bitcoin.onEntropySeeded = function(hollaback) {
+Bitcoin.Entropy.onEntropySeeded = function(hollaback) {
   sjcl.random.addEventListener('seeded', hollaback);
 };
 
-Bitcoin.entropyIsReady = function() {
+Bitcoin.Entropy.entropyIsReady = function() {
   return sjcl.random.isReady();
 };
 
-Bitcoin.entropyProgress = function() {
-  return sjcl.random.getProgress(10);
+Bitcoin.Entropy.entropyProgress = function() {
+  return sjcl.random.getProgress(Bitcoin.Entropy.paranoia);
 };
 
 Bitcoin.Address = function () { };
@@ -40,7 +44,7 @@ Bitcoin.Address.validate = function(address) {
 };
 
 Bitcoin.Address.generate = function(hollaback) {
-  var keys = sjcl.ecc.ecdsa.generateKeys(sjcl.ecc.curves.k256, 10);
+  var keys = sjcl.ecc.ecdsa.generateKeys(sjcl.ecc.curves.k256, Bitcoin.Entropy.paranoia);
 
   var publicKey = sjcl.bitArray.concat(sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x04"), keys.pub.get().x), keys.pub.get().y);
 

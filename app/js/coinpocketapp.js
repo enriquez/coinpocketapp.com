@@ -3,7 +3,7 @@ var CoinPocketApp = (function($, Bitcoin, self) {
   self.Views = {};
   self.Controllers = {};
 
-  Bitcoin.collectEntropy();
+  Bitcoin.Entropy.collectEntropy();
 
   $(document).off('.data-api'); // disable bootstrap data api
 
