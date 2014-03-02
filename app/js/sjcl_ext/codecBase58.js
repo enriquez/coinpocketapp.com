@@ -11,9 +11,9 @@ sjcl.codec.base58 = {
 
       while (x.greaterEquals(1)) {
         var result = this._divmod58(x),
-            x = result.q,
             charIndex = result.n.getLimb(0);
 
+        x = result.q;
         out = c[charIndex] + out;
       }
 
@@ -47,10 +47,10 @@ sjcl.codec.base58 = {
 
     if (str.length > 0) {
       var trimmedValue = value.trim(),
-          hexValue = trimmedValue == 0 ? '' : trimmedValue.toString().substr(2),
-          zeros    = str.match(/^1*/)[0].length,
-          bitCount = hexValue.length * 4 + zeros * 8;
+          hexValue = trimmedValue.equals(0) ? '' : trimmedValue.toString().substr(2),
+          zeros    = str.match(/^1*/)[0].length;
 
+      bitCount = hexValue.length * 4 + zeros * 8;
       return trimmedValue.toBits(bitCount);
     } else {
       return '';
@@ -61,7 +61,7 @@ sjcl.codec.base58 = {
     var result = {
       q: new sjcl.bn(0),
       n: new sjcl.bn(n)
-    }
+    };
     var d = new sjcl.bn(58);
     var powerOf58 = new sjcl.bn(1), powersOf58table = [powerOf58];
 
@@ -107,4 +107,4 @@ sjcl.codec.base58 = {
     return out;
   }
 
-}
+};
