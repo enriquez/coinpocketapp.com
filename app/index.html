@@ -11,10 +11,6 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
-          <!-- Button trigger modal -->
-          <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-            Launch Welcome
-          </button>
         </div>
       </div>
     </div>
@@ -30,19 +26,28 @@
           <div class="modal-body">
             <p>Your Bitcoins are encrypted and stored in your browser's local storage.</p>
             <p>Choose a password that will be used to encrypt your private keys. You will be asked for this password everytime you send Bitcoins.</p>
-            <form role="form">
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password">
+            <form id="welcome-modal-form" role="form">
+              <div id="welcome-modal-password-group" class="form-group">
+                <label class="control-label" for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password">
+              </div>
+              <div id="welcome-modal-password-confirmation-group" class="form-group">
+                <label class="control-label" for="password-confirmation">Password Confirmation</label>
+                <input type="password" class="form-control" id="password-confirmation" name="password-confirmation">
               </div>
               <div class="form-group">
-                <label for="password-confirmation">Password Confirmation</label>
-                <input type="password" class="form-control" id="password-confirmation">
+                <label class="control-label" for="entropy">Entropy Level (Randomness)</label>
+                <div class="progress progress-striped active">
+                  <div id="welcome-modal-entropy" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1">
+                    <span></span>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" disabled="disabled">Continue</button>
+            <span id="welcome-modal-validation-message" class="text-danger"></span>&nbsp;
+            <button id="welcome-modal-continue" type="button" class="btn btn-primary">Continue</button>
           </div>
         </div>
       </div>
@@ -50,8 +55,13 @@
 
     <script src="vendor/js/jquery-1.11.0.js"></script>
     <script src="vendor/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+    <script src="vendor/js/microevent.js"></script>
     <script src="vendor/sjcl/sjcl.js"></script>
 
+    <script src="js/bitcoin.js"></script>
     <script src="js/coinpocketapp.js"></script>
+    <script src="js/entropy.js"></script>
+    <script src="js/welcome_modal_view.js"></script>
+    <script src="js/welcome_modal_controller.js"></script>
   </body>
 </html>

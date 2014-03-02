@@ -1,5 +1,26 @@
 var Bitcoin = function() { };
 
+Bitcoin.collectEntropy = function() {
+  sjcl.random = new sjcl.prng(10);
+  sjcl.random.startCollectors();
+};
+
+Bitcoin.onEntropyProgress = function(hollaback) {
+  sjcl.random.addEventListener('progress', hollaback);
+};
+
+Bitcoin.onEntropySeeded = function(hollaback) {
+  sjcl.random.addEventListener('seeded', hollaback);
+};
+
+Bitcoin.entropyIsReady = function() {
+  return sjcl.random.isReady();
+};
+
+Bitcoin.entropyProgress = function() {
+  return sjcl.random.getProgress(10);
+};
+
 Bitcoin.Address = function () { };
 
 Bitcoin.Address.validate = function(address) {

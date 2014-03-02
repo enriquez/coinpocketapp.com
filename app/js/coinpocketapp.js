@@ -1,5 +1,11 @@
-var CoinPocketApp = (function(self) {
+var CoinPocketApp = (function($, Bitcoin, self) {
+  self.Models = {};
+  self.Views = {};
+  self.Controllers = {};
 
-  self.Models = self.Controllers = self.Views = {};
+  Bitcoin.collectEntropy();
 
-})({});
+  $(document).off('.data-api'); // disable bootstrap data api
+
+  return self;
+})(jQuery, Bitcoin, {});
