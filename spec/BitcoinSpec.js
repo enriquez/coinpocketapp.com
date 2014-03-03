@@ -1,7 +1,7 @@
 describe("Bitcoin", function() {
 
   beforeEach(function() {
-    Bitcoin.Entropy.paranoia = 0;
+    Bitcoin.paranoia = 0;
   });
 
   describe("Address", function() {
