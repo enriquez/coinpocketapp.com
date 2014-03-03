@@ -19,7 +19,8 @@ module.exports = function(grunt) {
         'app/js/entropy.js',
         'app/js/key_pair.js',
         'app/js/welcome_modal_view.js',
-        'app/js/welcome_modal_controller.js'
+        'app/js/welcome_modal_controller.js',
+        'app/vendor/bitcoin/src/**/*.js'
       ];
     },
     worker: function() {
@@ -27,9 +28,9 @@ module.exports = function(grunt) {
         'app/vendor/sjcl/sjcl.js',
         'app/vendor/sjcl/core/bn.js',
         'app/vendor/sjcl/core/ecc.js',
-        'app/vendor/bitcoin/sjcl_ext/codecBase58.js',
-        'app/vendor/bitcoin/sjcl_ext/ripemd160.js',
-        'app/vendor/bitcoin/bitcoin.js',
+        'app/vendor/bitcoin/src/sjcl_ext/codecBase58.js',
+        'app/vendor/bitcoin/src/sjcl_ext/ripemd160.js',
+        'app/vendor/bitcoin/src/bitcoin.js',
         'app/js/workers/bitcoin_worker.js'
       ]
     }
@@ -41,11 +42,20 @@ module.exports = function(grunt) {
         src: Files.worker(),
         options: {
           specs: [
-            'spec/sjcl_ext/CodecBase58Spec.js',
-            'spec/BitcoinSpec.js',
             'spec/BitcoinWorkerSpec.js'
           ],
           helpers: 'spec/helpers/WorkerHelper.js'
+        }
+      },
+      bitcoin: {
+        src: 'app/vendor/bitcoin/src/**/*.js',
+        options: {
+          specs: 'app/vendor/bitcoin/spec/**/*Spec.js',
+          vendor: [
+            'app/vendor/sjcl/sjcl.js',
+            'app/vendor/sjcl/core/bn.js',
+            'app/vendor/sjcl/core/ecc.js'
+          ]
         }
       }
     },
