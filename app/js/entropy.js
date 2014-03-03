@@ -1,24 +1,34 @@
-(function(Bitcoin, Models) {
+(function(sjcl, Models) {
   var self = Models.Entropy = function() {
     var self = this;
 
-    Bitcoin.Entropy.onEntropyProgress(function(progress) {
+    sjcl.random = new sjcl.prng(Models.Entropy.paranoiaLevel);
+    sjcl.random.startCollectors();
+
+    sjcl.random.addEventListener('progress', function(progress) {
       self.trigger('entropy.progress', progress);
     });
 
-    Bitcoin.Entropy.onEntropySeeded(function() {
+    sjcl.random.addEventListener('seeded', function(bits) {
       self.trigger('entropy.seeded');
     });
   };
 
   MicroEvent.mixin(Models.Entropy);
 
+  self.paranoiaLevel = self.paranoiaLevel || 10;
+  self.entropy = new Models.Entropy();
+
   self.prototype.progress = function() {
-    return Bitcoin.Entropy.entropyProgress();
+    return sjcl.random.getProgress(self.paranoiaLevel);
   };
 
   self.prototype.isReady = function() {
-    return Bitcoin.Entropy.entropyIsReady();
+    return sjcl.random.isReady();
   };
 
-})(Bitcoin, CoinPocketApp.Models);
+  self.prototype.randomWords = function(words) {
+    return sjcl.random.randomWords(words);
+  };
+
+})(sjcl, CoinPocketApp.Models);

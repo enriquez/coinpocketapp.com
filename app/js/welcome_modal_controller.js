@@ -4,7 +4,7 @@
 
     var self = CoinPocketApp.Controllers.WelcomeModalController = {
       view: new CoinPocketApp.Views.WelcomeModalView(),
-      entropy: new CoinPocketApp.Models.Entropy(),
+      entropy: CoinPocketApp.Models.Entropy.entropy,
       passwordInputValue: '',
       passwordConfirmationValue: '',
       passwordInputChanged: function($passwordInput) {

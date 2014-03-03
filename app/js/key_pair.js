@@ -1,22 +1,45 @@
-(function(Bitcoin, sjcl, Models) {
+(function(Models) {
 
   var self = Models.KeyPair = function() { };
 
-  self.generate = function(password, hollaback) {
-    Bitcoin.Address.generate(function(obj) {
-      var keyPair = new Models.KeyPair();
-      keyPair.encryptedPrivateKeyExponent = sjcl.json.encrypt(password, sjcl.codec.hex.fromBits(obj.privateKeyExponent));
-      keyPair.publicKeyX = obj.publicKeyX;
-      keyPair.publicKeyY = obj.publicKeyY;
-      keyPair.curve = obj.curve;
-      keyPair.bitcoinAddress = obj.bitcoinAddress;
+  self.bitcoin_worker = new Worker('/js/workers/bitcoin_worker.js');
+  self.bitcoin_worker.postMessage();
+  self.bitcoin_worker.currentMessageId = 0;
+  self.bitcoin_worker.callbacks = {};
+  self.bitcoin_worker.onmessage = function(e) {
+    var message = e.data;
+    self.bitcoin_worker.callbacks[message.id].apply(null, [message.result]);
+    delete self.bitcoin_worker.callbacks[message.id];
+  };
 
+  self.bitcoin_worker.async = function(functionName, params, hollaback) {
+    var message = {
+      id: self.bitcoin_worker.currentMessageId,
+      functionName: functionName,
+      params: params,
+    };
+
+    self.bitcoin_worker.callbacks[message.id] = hollaback;
+    self.bitcoin_worker.postMessage(message);
+
+    self.bitcoin_worker.currentMessageId++;
+  }
+
+  self.generate = function(password, hollaback) {
+
+    var params = [
+      Models.Entropy.entropy.randomWords(32),
+      password
+    ];
+
+    self.bitcoin_worker.async("seedGenerateAndEncryptKeys", params, function(keyPair) {
       self.keyPair = keyPair;
-      if (typeof hollaback !== undefined) {
+      if (typeof hollaback === "function") {
         hollaback(keyPair);
       }
       CoinPocketApp.events.trigger('KeyPair.generate', keyPair);
     });
+
   };
 
   MicroEvent.mixin(Models.KeyPair);
@@ -25,4 +48,4 @@
     return typeof self.keyPair !== "undefined";
   };
 
-})(Bitcoin, sjcl, CoinPocketApp.Models);
+})(CoinPocketApp.Models);

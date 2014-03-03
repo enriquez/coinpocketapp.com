@@ -1,9 +1,7 @@
-var CoinPocketApp = (function($, Bitcoin, self) {
+var CoinPocketApp = (function($, self) {
   self.Models = {};
   self.Views = {};
   self.Controllers = {};
-
-  Bitcoin.Entropy.collectEntropy();
 
   $(document).off('.data-api'); // disable bootstrap data api
 
@@ -12,4 +10,4 @@ var CoinPocketApp = (function($, Bitcoin, self) {
   MicroEvent.mixin(self.events);
 
   return self;
-})(jQuery, Bitcoin, {});
+})(jQuery, {});
