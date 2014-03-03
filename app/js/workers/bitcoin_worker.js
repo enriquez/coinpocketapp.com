@@ -1,9 +1,9 @@
 importScripts("/vendor/sjcl/sjcl.js",
               "/vendor/sjcl/core/bn.js",
               "/vendor/sjcl/core/ecc.js",
-              "/vendor/bitcoin/sjcl_ext/codecBase58.js",
-              "/vendor/bitcoin/sjcl_ext/ripemd160.js",
-              "/vendor/bitcoin/bitcoin.js");
+              "/vendor/bitcoin/src/sjcl_ext/codecBase58.js",
+              "/vendor/bitcoin/src/sjcl_ext/ripemd160.js",
+              "/vendor/bitcoin/src/bitcoin.js");
 
 var seedGenerateAndEncryptKeys = function(seed, password, hollaback) {
   if (seed.length < 32) throw "Seed must be 32 words";

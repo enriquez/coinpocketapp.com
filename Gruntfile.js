@@ -16,10 +16,10 @@ module.exports = function(grunt) {
     source: function() {
       return [
         'app/js/coinpocketapp.js',
-        'app/js/entropy.js',
-        'app/js/key_pair.js',
-        'app/js/welcome_modal_view.js',
-        'app/js/welcome_modal_controller.js',
+        'app/js/models/entropy.js',
+        'app/js/models/key_pair.js',
+        'app/js/views/welcome_modal_view.js',
+        'app/js/controllers/welcome_modal_controller.js',
         'app/vendor/bitcoin/src/**/*.js'
       ];
     },
