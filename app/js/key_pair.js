@@ -23,7 +23,7 @@
     self.bitcoin_worker.postMessage(message);
 
     self.bitcoin_worker.currentMessageId++;
-  }
+  };
 
   self.generate = function(password, hollaback) {
 

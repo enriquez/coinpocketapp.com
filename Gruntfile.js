@@ -6,16 +6,15 @@ module.exports = function(grunt) {
         'app/vendor/js/jquery-1.11.0.js',
         'app/vendor/bootstrap-3.1.1-dist/js/bootstrap.min.js',
         'app/vendor/js/microevent.js',
-        'app/vendor/sjcl/sjcl.js',
-        'app/vendor/sjcl/core/bn.js',
-        'app/vendor/sjcl/core/ecc.js'
+        'app/vendor/sjcl/core/sjcl.js',
+        'app/vendor/sjcl/core/bitArray.js',
+        'app/vendor/sjcl/core/aes.js',
+        'app/vendor/sjcl/core/sha256.js',
+        'app/vendor/sjcl/core/random.js',
       ]
     },
     source: function() {
       return [
-        'app/js/sjcl_ext/codecBase58.js',
-        'app/js/sjcl_ext/ripemd160.js',
-        'app/js/bitcoin.js',
         'app/js/coinpocketapp.js',
         'app/js/entropy.js',
         'app/js/key_pair.js',
@@ -23,16 +22,29 @@ module.exports = function(grunt) {
         'app/js/welcome_modal_controller.js'
       ];
     },
-    all: function () { this.vendor().join(this.source()); }
+    worker: function() {
+      return [
+        'app/vendor/sjcl/sjcl.js',
+        'app/vendor/sjcl/core/bn.js',
+        'app/vendor/sjcl/core/ecc.js',
+        'app/vendor/bitcoin/sjcl_ext/codecBase58.js',
+        'app/vendor/bitcoin/sjcl_ext/ripemd160.js',
+        'app/vendor/bitcoin/bitcoin.js',
+        'app/js/workers/bitcoin_worker.js'
+      ]
+    }
   };
 
   grunt.initConfig({
     jasmine: {
-      spec: {
-        src: Files.source(),
+      worker: {
+        src: Files.worker(),
         options: {
-          specs: 'spec/**/*Spec.js',
-          vendor: Files.vendor()
+          specs: [
+            'spec/sjcl_ext/CodecBase58Spec.js',
+            'spec/BitcoinSpec.js'
+          ],
+          helpers: 'spec/helpers/WorkerHelper.js'
         }
       }
     },
@@ -41,7 +53,7 @@ module.exports = function(grunt) {
         options: {
           base: 'app',
           keepalive: true,
-          debug: true
+          debug: true,
         }
       }
     },
