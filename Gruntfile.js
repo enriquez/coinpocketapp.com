@@ -42,7 +42,8 @@ module.exports = function(grunt) {
         options: {
           specs: [
             'spec/sjcl_ext/CodecBase58Spec.js',
-            'spec/BitcoinSpec.js'
+            'spec/BitcoinSpec.js',
+            'spec/BitcoinWorkerSpec.js'
           ],
           helpers: 'spec/helpers/WorkerHelper.js'
         }

@@ -21,7 +21,7 @@ var seedGenerateAndEncryptKeys = function(seed, password, hollaback) {
   });
 }
 
-self.addEventListener('message', function(e) {
+var messageListener = function(e) {
   if (e.data) {
     var id = e.data.id,
         functionName = e.data.functionName,
@@ -42,4 +42,6 @@ self.addEventListener('message', function(e) {
       fn.apply(null, params);
     }
   }
-});
+}
+
+self.addEventListener('message', messageListener);
