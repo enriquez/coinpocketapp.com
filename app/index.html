@@ -5,17 +5,157 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Bitcoin Wallet</title>
+
     <link href="vendor/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
   </head>
   <body>
+
     <div class="container">
       <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div id="main" class="col-sm-6 col-sm-offset-3">
+
+          <div id="balance-container" class="row">
+            <div class="col-sm-12">
+              <h2 id="balance" class="text-center">$0.00</h2>
+            </div>
+          </div>
+
+          <div id="button-container" class="row">
+            <div id="send-button" class="col-xs-6">
+              <a href="#/send">Send</a>
+            </div>
+            <div id="receive-button" class="col-xs-6">
+              <a href="#/receive" class="pull-right">Receive</a>
+            </div>
+          </div>
+
+          <div id="send" class="content row">
+
+            <div class="col-xs-12">
+              <button type="button" class="btn btn-default btn-block">Scan Code</button>
+            </div>
+
+            <hr>
+
+            <div class="col-xs-12">
+              <form role="form">
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="address">Address</label>
+                      <input type="text" class="form-control" id="address" name="address">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-6">
+                    <div class="form-group">
+                      <label for="btc-amount">Amount (BTC)</label>
+                      <div class="input-group">
+                        <span class="input-group-addon">BTC</span>
+                        <input type="text" class="form-control" id="btc-amount" name="btc-amount">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="form-group">
+                      <label for="fiat-amount">Amount (USD)</label>
+                      <div class="input-group">
+                        <span class="input-group-addon">USD</span>
+                        <input type="text" class="form-control" id="fiat-amount" name="fiat-amount">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="transaction-fee">Transaction Fee</label>
+                      <div class="input-group">
+                        <span class="input-group-addon">BTC</span>
+                        <input type="text" class="form-control" id="transaction-fee" name="transaction-fee">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-xs-6">
+                    <div class="form-group">
+                      <button type="button" class="btn btn-default btn-block">Cancel</button>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="form-group">
+                      <button type="button" class="btn btn-primary btn-block">Send</button>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+          <div id="receive" class="content row">
+
+            <div class="col-xs-12">
+              <p class="text-center">1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH</p>
+            </div>
+
+            <div class="col-xs-12">
+              <p class="text-center">QR Code HERE</p>
+            </div>
+
+            <div class="col-xs-12">
+              <button type="button" class="btn btn-primary btn-block">Copy Address</button>
+              <button type="button" class="btn btn-primary btn-block">Email Address</button>
+              <button type="button" class="btn btn-primary btn-block">SMS Address</button>
+              <button type="button" class="btn btn-default btn-block">Done</button>
+            </div>
+          </div>
+
+          <div id="empty-state" class="content row">
+            <div class="col-xs-12">
+              <div class="page-header"><h1>Coin Pocket App <small>Bitcoin Wallet</small></h1></div>
+              <p>Thanks for trying Coin Pocket App!</p>
+              <p>Get started by funding this wallet. Hit the "Receive" button above to get this wallet's address.</p>
+            </div>
+          </div>
+
+          <div class="transactions">
+            <div class="content transaction row">
+              <div class="col-xs-6">
+                <p>Mar 2</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="pull-right">$100.00</p>
+              </div>
+            </div>
+
+            <div class="content transaction row">
+              <div class="col-xs-6">
+                <p>Mar 2</p>
+              </div>
+              <div class="col-xs-6">
+                <p class="pull-right">$100.00</p>
+              </div>
+            </div>
+          </div>
+
+          <footer class="text-center">
+            <p>&copy; 2014 <a href="http://enriquez.me">Enriquez Software LLC.</a></p>
+          </footer>
+
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -46,7 +186,7 @@
           </div>
           <div class="modal-footer">
             <span id="welcome-modal-validation-message" class="text-danger"></span>&nbsp;
-            <button id="welcome-modal-continue" type="button" class="btn btn-primary">Continue</button>
+            <button id="welcome-modal-continue" type="button" class="btn btn-primary" data-loading-text="Loading...">Continue</button>
           </div>
         </div>
       </div>

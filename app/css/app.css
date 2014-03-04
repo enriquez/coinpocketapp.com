@@ -1,0 +1,47 @@
+body {
+  background-color: black;
+}
+
+#settings-container,
+#balance-container,
+#button-container {
+  background-color: #2ecc71;
+  color: white;
+}
+
+#balance-container h2 {
+  font-weight: lighter;
+}
+
+#button-container {
+  font-weight: lighter;
+  font-size: 1.2em;
+}
+
+#button-container a {
+  color: #c7ffde;
+}
+
+#button-container a:hover {
+  color: white;
+}
+
+.content {
+  margin-top: 5px;
+  background-color: white;
+  padding: 5px;
+}
+
+.transaction {
+  background-color: white;
+}
+
+footer {
+  margin-top: 10px;
+}
+
+footer,
+footer a,
+footer a:hover {
+  color: #555;
+}

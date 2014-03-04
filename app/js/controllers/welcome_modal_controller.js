@@ -1,6 +1,6 @@
 (function(CoinPocketApp) {
 
-  if (!CoinPocketApp.Models.KeyPair.hasKeyPair()) {
+  if (!!CoinPocketApp.Models.KeyPair.hasKeyPair()) {
 
     var self = CoinPocketApp.Controllers.WelcomeModalController = {
       view: new CoinPocketApp.Views.WelcomeModalView(),
@@ -25,8 +25,13 @@
         } else if (self.entropy.progress() < 1.0) {
           self.view.validationMessage("Need more Entropy");
         } else {
-          self.view.hide();
-          CoinPocketApp.Models.KeyPair.generate(self.passwordInputValue);
+          self.view.loading();
+          CoinPocketApp.Models.KeyPair.generate(self.passwordInputValue, function() {
+            self.view.hide();
+            self.view.clearFields();
+            self.passwordInputValue = null;
+            self.passwordConfirmationValue = null;
+          });
         }
       },
       updateEntropyLevel: function(progress) {

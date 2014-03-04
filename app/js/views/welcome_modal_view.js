@@ -71,4 +71,15 @@
     $entropyProgress.children("span").text("DONE!");
   };
 
+  self.prototype.loading = function() {
+    $passwordInput.prop('disabled', true);
+    $passwordConfirmationInput.prop('disabled', true);
+    $submitButton.button('loading');
+  };
+
+  self.prototype.clearFields = function() {
+    $passwordInput.val('');
+    $passwordConfirmationInput.val('');
+  };
+
 })(jQuery, CoinPocketApp.Views);
