@@ -1,5 +1,14 @@
 body {
-  background-color: black;
+  background-color: #5b6366;
+}
+
+input[type="text"],
+input[type="password"] {
+  -webkit-appearance:none;
+}
+
+#address {
+  font-size: 0.9em;
 }
 
 #settings-container,
@@ -20,10 +29,20 @@ body {
 
 #button-container a {
   color: #c7ffde;
+  padding: 0 5px;
 }
 
 #button-container a:hover {
   color: white;
+}
+
+#send, #receive {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#send hr {
+  margin: 10px auto;
 }
 
 .content {
@@ -36,6 +55,48 @@ body {
   background-color: white;
 }
 
+.transaction .date {
+  font-size: 1.3em;
+}
+
+.transaction span.value {
+  font-size: 1.5em;
+  line-height: 2.4;
+}
+
+.transaction-credit span.value {
+  color: #2ecc71;
+}
+
+.transaction-credit span.value:before {
+  content: "+ ";
+}
+
+.transaction-debit span.value:before {
+  content: "- ";
+}
+
+.transaction .confirmations {
+  display: none;
+}
+
+.transaction-unconfirmed span.value,
+.transaction-unconfirmed .confirmations {
+  color: rgb(240, 173, 78);
+}
+
+.transaction-unconfirmed .confirmations {
+  display: block;
+  font-size: 0.7em;
+  position: absolute;
+  top: 34px;
+  right: 6px;
+}
+
+.page-header {
+  margin-top: 0;
+}
+
 footer {
   margin-top: 10px;
 }
@@ -43,5 +104,5 @@ footer {
 footer,
 footer a,
 footer a:hover {
-  color: #555;
+  color: #333;
 }

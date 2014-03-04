@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Bitcoin Wallet</title>
 
     <link href="vendor/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,7 +19,7 @@
 
           <div id="balance-container" class="row">
             <div class="col-sm-12">
-              <h2 id="balance" class="text-center">$0.00</h2>
+              <h2 id="balance" class="text-center"><span data-attr-btc="0.18">$100.00</span></h2>
             </div>
           </div>
 
@@ -36,9 +38,8 @@
               <button type="button" class="btn btn-default btn-block">Scan Code</button>
             </div>
 
-            <hr>
-
             <div class="col-xs-12">
+              <hr/>
               <form role="form">
 
                 <div class="row">
@@ -51,21 +52,18 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-xs-6">
+                  <div class="col-xs-12">
                     <div class="form-group">
-                      <label for="btc-amount">Amount (BTC)</label>
+                      <label for="amount">Amount</label>
                       <div class="input-group">
-                        <span class="input-group-addon">BTC</span>
-                        <input type="text" class="form-control" id="btc-amount" name="btc-amount">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xs-6">
-                    <div class="form-group">
-                      <label for="fiat-amount">Amount (USD)</label>
-                      <div class="input-group">
-                        <span class="input-group-addon">USD</span>
-                        <input type="text" class="form-control" id="fiat-amount" name="fiat-amount">
+                        <input type="text" class="form-control text-right" id="amount" name="amount">
+                        <div class="input-group-btn">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">BTC <span class="caret"></span></button>
+                          <ul class="dropdown-menu pull-right">
+                            <li><a href="#">BTC</a></li>
+                            <li><a href="#">USD</a></li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -76,25 +74,21 @@
                     <div class="form-group">
                       <label for="transaction-fee">Transaction Fee</label>
                       <div class="input-group">
-                        <span class="input-group-addon">BTC</span>
-                        <input type="text" class="form-control" id="transaction-fee" name="transaction-fee">
+                        <input type="text" class="form-control text-right" id="transaction-fee" name="transaction-fee" placeholder="Calculate Automatically">
+                        <span class="input-group-addon">&nbsp;BTC &nbsp;</span>
                       </div>
                     </div>
+                    <hr/>
                   </div>
                 </div>
 
-                <hr>
 
                 <div class="row">
                   <div class="col-xs-6">
-                    <div class="form-group">
-                      <button type="button" class="btn btn-default btn-block">Cancel</button>
-                    </div>
+                    <button type="button" class="btn btn-default btn-block">Cancel</button>
                   </div>
                   <div class="col-xs-6">
-                    <div class="form-group">
-                      <button type="button" class="btn btn-primary btn-block">Send</button>
-                    </div>
+                    <button type="button" class="btn btn-primary btn-block">Send</button>
                   </div>
                 </div>
 
@@ -129,23 +123,40 @@
           </div>
 
           <div class="transactions">
-            <div class="content transaction row">
+
+            <div class="content transaction transaction-debit transaction-unconfirmed row">
               <div class="col-xs-6">
-                <p>Mar 2</p>
+                <span class="date">MAR 4</span><br>
+                <span class="time">9:30 AM</span>
               </div>
-              <div class="col-xs-6">
-                <p class="pull-right">$100.00</p>
+              <div class="col-xs-6 text-right">
+                <span class="value" data-attr-btc="0.21">$15.00</span>
+                <span class="confirmations">unconfirmed</span>
               </div>
             </div>
 
-            <div class="content transaction row">
+            <div class="content transaction transaction-debit row">
               <div class="col-xs-6">
-                <p>Mar 2</p>
+                <span class="date">MAR 2</span><br>
+                <span class="time">11:32 PM</span>
               </div>
-              <div class="col-xs-6">
-                <p class="pull-right">$100.00</p>
+              <div class="col-xs-6 text-right">
+                <span class="value" data-attr-btc="0.21">$5.00</span>
+                <span class="confirmations">unconfirmed</span>
               </div>
             </div>
+
+            <div class="content transaction transaction-credit row">
+              <div class="col-xs-6">
+                <span class="date">MAR 2</span><br>
+                <span class="time">10:10 PM</span>
+              </div>
+              <div class="col-xs-6 text-right">
+                <span class="value" data-attr-btc="0.21">$120.00</span>
+                <span class="confirmations">unconfirmed</span>
+              </div>
+            </div>
+
           </div>
 
           <footer class="text-center">

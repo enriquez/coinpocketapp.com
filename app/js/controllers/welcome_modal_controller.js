@@ -1,6 +1,6 @@
 (function(CoinPocketApp) {
 
-  if (!!CoinPocketApp.Models.KeyPair.hasKeyPair()) {
+  if (!CoinPocketApp.Models.KeyPair.hasKeyPair()) {
 
     var self = CoinPocketApp.Controllers.WelcomeModalController = {
       view: new CoinPocketApp.Views.WelcomeModalView(),
