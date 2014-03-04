@@ -18,9 +18,11 @@ module.exports = function(grunt) {
         'app/js/coinpocketapp.js',
         'app/js/models/entropy.js',
         'app/js/models/key_pair.js',
+        'app/js/models/page_hash.js',
         'app/js/views/welcome_modal_view.js',
+        'app/js/views/main_view.js',
         'app/js/controllers/welcome_modal_controller.js',
-        'app/vendor/bitcoin/src/**/*.js'
+        'app/js/controllers/main_controller.js',
       ];
     },
     worker: function() {
@@ -38,11 +40,18 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     jasmine: {
+      app: {
+        src: Files.source(),
+        options: {
+          specs: [ 'spec/models/**/*Spec.js' ],
+          vendor: Files.vendor()
+        }
+      },
       worker: {
         src: Files.worker(),
         options: {
           specs: [
-            'spec/BitcoinWorkerSpec.js'
+            'spec/workers/BitcoinWorkerSpec.js'
           ],
           helpers: 'spec/helpers/WorkerHelper.js'
         }

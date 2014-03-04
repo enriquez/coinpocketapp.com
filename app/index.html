@@ -19,7 +19,7 @@
 
           <div id="balance-container" class="row">
             <div class="col-sm-12">
-              <h2 id="balance" class="text-center"><span data-attr-btc="0.18">$100.00</span></h2>
+              <h2 id="balance" class="text-center"><span data-attr-btc="0">$0.00</span></h2>
             </div>
           </div>
 
@@ -85,7 +85,7 @@
 
                 <div class="row">
                   <div class="col-xs-6">
-                    <button type="button" class="btn btn-default btn-block">Cancel</button>
+                    <a href="#/" class="btn btn-default btn-block">Cancel</a>
                   </div>
                   <div class="col-xs-6">
                     <button type="button" class="btn btn-primary btn-block">Send</button>
@@ -110,54 +110,54 @@
               <button type="button" class="btn btn-primary btn-block">Copy Address</button>
               <button type="button" class="btn btn-primary btn-block">Email Address</button>
               <button type="button" class="btn btn-primary btn-block">SMS Address</button>
-              <button type="button" class="btn btn-default btn-block">Done</button>
+              <a href="#/" class="btn btn-default btn-block">Done</a>
             </div>
           </div>
 
           <div id="empty-state" class="content row">
             <div class="col-xs-12">
-              <div class="page-header"><h1>Coin Pocket App <small>Bitcoin Wallet</small></h1></div>
+              <div class="page-header"><h2>Coin Pocket App <small>Bitcoin Wallet</small></h2></div>
               <p>Thanks for trying Coin Pocket App!</p>
               <p>Get started by funding this wallet. Hit the "Receive" button above to get this wallet's address.</p>
             </div>
           </div>
 
-          <div class="transactions">
+          <!-- <div class="transactions"> -->
 
-            <div class="content transaction transaction-debit transaction-unconfirmed row">
-              <div class="col-xs-6">
-                <span class="date">MAR 4</span><br>
-                <span class="time">9:30 AM</span>
-              </div>
-              <div class="col-xs-6 text-right">
-                <span class="value" data-attr-btc="0.21">$15.00</span>
-                <span class="confirmations">unconfirmed</span>
-              </div>
-            </div>
+          <!--   <div class="content transaction transaction&#45;debit transaction&#45;unconfirmed row"> -->
+          <!--     <div class="col&#45;xs&#45;6"> -->
+          <!--       <span class="date">MAR 4</span><br> -->
+          <!--       <span class="time">9:30 AM</span> -->
+          <!--     </div> -->
+          <!--     <div class="col&#45;xs&#45;6 text&#45;right"> -->
+          <!--       <span class="value" data&#45;attr&#45;btc="0.21">$15.00</span> -->
+          <!--       <span class="confirmations">unconfirmed</span> -->
+          <!--     </div> -->
+          <!--   </div> -->
 
-            <div class="content transaction transaction-debit row">
-              <div class="col-xs-6">
-                <span class="date">MAR 2</span><br>
-                <span class="time">11:32 PM</span>
-              </div>
-              <div class="col-xs-6 text-right">
-                <span class="value" data-attr-btc="0.21">$5.00</span>
-                <span class="confirmations">unconfirmed</span>
-              </div>
-            </div>
+          <!--   <div class="content transaction transaction&#45;debit row"> -->
+          <!--     <div class="col&#45;xs&#45;6"> -->
+          <!--       <span class="date">MAR 2</span><br> -->
+          <!--       <span class="time">11:32 PM</span> -->
+          <!--     </div> -->
+          <!--     <div class="col&#45;xs&#45;6 text&#45;right"> -->
+          <!--       <span class="value" data&#45;attr&#45;btc="0.21">$5.00</span> -->
+          <!--       <span class="confirmations">unconfirmed</span> -->
+          <!--     </div> -->
+          <!--   </div> -->
 
-            <div class="content transaction transaction-credit row">
-              <div class="col-xs-6">
-                <span class="date">MAR 2</span><br>
-                <span class="time">10:10 PM</span>
-              </div>
-              <div class="col-xs-6 text-right">
-                <span class="value" data-attr-btc="0.21">$120.00</span>
-                <span class="confirmations">unconfirmed</span>
-              </div>
-            </div>
+          <!--   <div class="content transaction transaction&#45;credit row"> -->
+          <!--     <div class="col&#45;xs&#45;6"> -->
+          <!--       <span class="date">MAR 2</span><br> -->
+          <!--       <span class="time">10:10 PM</span> -->
+          <!--     </div> -->
+          <!--     <div class="col&#45;xs&#45;6 text&#45;right"> -->
+          <!--       <span class="value" data&#45;attr&#45;btc="0.21">$120.00</span> -->
+          <!--       <span class="confirmations">unconfirmed</span> -->
+          <!--     </div> -->
+          <!--   </div> -->
 
-          </div>
+          <!-- </div> -->
 
           <footer class="text-center">
             <p>&copy; 2014 <a href="http://enriquez.me">Enriquez Software LLC.</a></p>
@@ -215,7 +215,13 @@
     <script src="/js/coinpocketapp.js"></script>
     <script src="/js/models/entropy.js"></script>
     <script src="/js/models/key_pair.js"></script>
+    <script src="/js/models/page_hash.js"></script>
     <script src="/js/views/welcome_modal_view.js"></script>
+    <script src="/js/views/main_view.js"></script>
+    <script src="/js/views/send_view.js"></script>
+    <script src="/js/views/receive_view.js"></script>
     <script src="/js/controllers/welcome_modal_controller.js"></script>
+    <script src="/js/controllers/page_hash_controller.js"></script>
+    <script src="/js/controllers/main_controller.js"></script>
   </body>
 </html>
