@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         'app/js/views/send_view.js',
         'app/js/views/receive_view.js',
         'app/js/controllers/welcome_modal_controller.js',
-        'app/js/controllers/page_hash_controller.js',
+        'app/js/controllers/send_controller.js',
         'app/js/controllers/receive_controller.js',
         'app/js/controllers/main_controller.js'
       ];

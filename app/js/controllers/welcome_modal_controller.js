@@ -1,62 +1,66 @@
-(function(CoinPocketApp) {
+(function(entropy, keyPair, welcomeModalView, Controllers) {
 
-  if (!CoinPocketApp.Models.keyPair.isGenerated) {
+  function WelcomeModalController() {
+    var self = this;
 
-    var self = CoinPocketApp.Controllers.WelcomeModalController = {
-      view: CoinPocketApp.Views.welcomeModalView,
-      entropy: CoinPocketApp.Models.entropy,
-      passwordInputValue: '',
-      passwordConfirmationValue: '',
-      passwordInputChanged: function($passwordInput) {
-        self.passwordInputValue = $passwordInput.val();
-      },
-      passwordConfirmationInputChanged: function($passwordConfirmationInput) {
-        self.passwordConfirmationValue = $passwordConfirmationInput.val();
-      },
-      submitButtonClicked: function($form) {
-        self.view.clearValidations();
+    self.passwordInputValue = '';
+    self.passwordConfirmationValue = '';
 
-        if (!self.passwordInputValue) {
-          self.view.validationMessage("Password can't be blank");
-          self.view.invalidPasswordInput();
-        } else if (self.passwordInputValue !== self.passwordConfirmationValue) {
-          self.view.validationMessage("Passwords don't match");
-          self.view.invalidPasswordConfirmationInput();
-        } else if (self.entropy.progress() < 1.0) {
-          self.view.validationMessage("Need more Entropy");
-        } else {
-          self.view.loading();
-          CoinPocketApp.Models.keyPair.generate(self.passwordInputValue, function() {
-            self.view.hide();
-            self.view.clearFields();
-            self.passwordInputValue = null;
-            self.passwordConfirmationValue = null;
-          });
-        }
-      },
-      updateEntropyLevel: function(progress) {
-        self.view.updateEntropyProgress(progress);
-      },
-      entropySeeded: function() {
-        self.view.entropySeeded();
-        self.entropy.unbind('entropy.progress');
-        self.entropy.unbind('entropy.seeded');
-      }
-    };
+    if (!keyPair.isGenerated) {
+      welcomeModalView.show();
 
-    self.view.show();
+      welcomeModalView.bind("passwordInput.change", self.passwordInputChanged);
+      welcomeModalView.bind("passwordConfirmationInput.change", self.passwordConfirmationInputChanged);
+      welcomeModalView.bind("submitButton.click", self.submitButtonClicked);
 
-    self.view.bind("passwordInput.change",
-                      self.passwordInputChanged);
-    self.view.bind("passwordConfirmationInput.change",
-                      self.passwordConfirmationInputChanged);
-    self.view.bind("submitButton.click",
-                      self.submitButtonClicked);
-
-    self.updateEntropyLevel(self.entropy.progress);
-    self.entropy.bind('entropy.progress', self.updateEntropyLevel);
-    self.entropy.bind('entropy.seeded', self.entropySeeded);
-
+      self.updateEntropyLevel(entropy.progress);
+      entropy.bind('entropy.progress', self.updateEntropyLevel);
+      entropy.bind('entropy.seeded', self.entropySeeded);
+    }
   }
 
-})(CoinPocketApp);
+  WelcomeModalController.prototype.passwordInputChanged = function($passwordInput) {
+    this.passwordInputValue = $passwordInput.val();
+  };
+
+  WelcomeModalController.prototype.passwordConfirmationInputChanged = function($passwordConfirmationInput) {
+    this.passwordConfirmationValue = $passwordConfirmationInput.val();
+  };
+
+  WelcomeModalController.prototype.submitButtonClicked = function($form) {
+    var self = this;
+
+    welcomeModalView.clearValidations();
+
+    if (!self.passwordInputValue) {
+      welcomeModalView.validationMessage("Password can't be blank");
+      welcomeModalView.invalidPasswordInput();
+    } else if (self.passwordInputValue !== self.passwordConfirmationValue) {
+      welcomeModalView.validationMessage("Passwords don't match");
+      welcomeModalView.invalidPasswordConfirmationInput();
+    } else if (entropy.progress() < 1.0) {
+      welcomeModalView.validationMessage("Need more Entropy");
+    } else {
+      welcomeModalView.loading();
+      keyPair.generate(self.passwordInputValue, function() {
+        welcomeModalView.hide();
+        welcomeModalView.clearFields();
+        self.passwordInputValue = '';
+        self.passwordConfirmationValue = '';
+      });
+    }
+  };
+
+  WelcomeModalController.prototype.updateEntropyLevel = function(progress) {
+    welcomeModalView.updateEntropyProgress(progress);
+  };
+
+  WelcomeModalController.prototype.entropySeeded = function() {
+    welcomeModalView.entropySeeded();
+    entropy.unbind('entropy.progress');
+    entropy.unbind('entropy.seeded');
+  };
+
+  Controllers.welcomeModalController = new WelcomeModalController();
+
+})(CoinPocketApp.Models.entropy, CoinPocketApp.Models.keyPair, CoinPocketApp.Views.welcomeModalView, CoinPocketApp.Controllers);
