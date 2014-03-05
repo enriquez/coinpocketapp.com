@@ -4,10 +4,10 @@
     view: CoinPocketApp.Views.receiveView
   };
 
-  if (CoinPocketApp.Models.KeyPair.hasKeyPair()) {
+  if (CoinPocketApp.Models.keyPair.isGenerated) {
     self.view.setAddress(CoinPocketApp.Models.KeyPair.keyPair.bitcoinAddress);
   } else {
-    CoinPocketApp.events.bind("KeyPair.generate", function(keyPair) {
+    CoinPocketApp.Models.keyPair.bind("keyPair.generate", function(keyPair) {
       self.view.setAddress(keyPair.bitcoinAddress);
     });
   }

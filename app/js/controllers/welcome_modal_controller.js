@@ -1,10 +1,10 @@
 (function(CoinPocketApp) {
 
-  if (!CoinPocketApp.Models.KeyPair.hasKeyPair()) {
+  if (!CoinPocketApp.Models.keyPair.isGenerated) {
 
     var self = CoinPocketApp.Controllers.WelcomeModalController = {
       view: CoinPocketApp.Views.welcomeModalView,
-      entropy: CoinPocketApp.Models.Entropy.entropy,
+      entropy: CoinPocketApp.Models.entropy,
       passwordInputValue: '',
       passwordConfirmationValue: '',
       passwordInputChanged: function($passwordInput) {
@@ -26,7 +26,7 @@
           self.view.validationMessage("Need more Entropy");
         } else {
           self.view.loading();
-          CoinPocketApp.Models.KeyPair.generate(self.passwordInputValue, function() {
+          CoinPocketApp.Models.keyPair.generate(self.passwordInputValue, function() {
             self.view.hide();
             self.view.clearFields();
             self.passwordInputValue = null;

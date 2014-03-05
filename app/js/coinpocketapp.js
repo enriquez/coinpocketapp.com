@@ -5,9 +5,5 @@ var CoinPocketApp = (function($, self) {
 
   $(document).off('.data-api'); // disable bootstrap data api
 
-  var Events = function() { };
-  self.events = new Events();
-  MicroEvent.mixin(self.events);
-
   return self;
 })(jQuery, {});

@@ -1,19 +1,29 @@
-(function(Models) {
+(function(window, Models) {
 
-  var self = Models.PageHash = function() {
-    window.onhashchange = Models.PageHash.updatePage;
-  };
+  function PageHash() {
+    var self = this;
 
-  MicroEvent.mixin(Models.PageHash);
+    self.currentPage = PageHash.pageParamsForHash(window.location.hash);
 
-  self.pages = [
+    window.onhashchange = function() {
+      var hash = window.location.hash,
+          currentPage = PageHash.pageParamsForHash(hash);
+
+      self.currentPage = currentPage;
+      self.trigger("pageHash.pageChanged", currentPage);
+    };
+  }
+
+  MicroEvent.mixin(PageHash);
+
+  PageHash.pages = [
     "#/",
     "#/send",
     "#/receive"
   ];
 
   // Warning: params are not sanitized.
-  self.pageParamsForHash = function(hash) {
+  PageHash.pageParamsForHash = function(hash) {
     var pageAndParams,
           params = {};
 
@@ -48,16 +58,7 @@
     return pageAndParams;
   };
 
-  self.updatePage = function() {
-    var hash = window.location.hash,
-        instance = Models.PageHash.pageHash,
-        currentPage = self.pageParamsForHash(hash);
+  Models.PageHash = PageHash;
+  Models.pageHash = new PageHash();
 
-    instance.currentPage = currentPage;
-    instance.trigger("pageHash.pageChanged", currentPage);
-  };
-
-  Models.PageHash.pageHash = new Models.PageHash();
-  Models.PageHash.pageHash.currentPage = Models.PageHash.pageParamsForHash(window.location.hash);
-
-})(CoinPocketApp.Models);
+})(window, CoinPocketApp.Models);

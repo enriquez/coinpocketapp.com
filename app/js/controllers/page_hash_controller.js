@@ -20,8 +20,8 @@
     }
   };
 
-  CoinPocketApp.Models.PageHash.pageHash.bind("pageHash.pageChanged", self.showOrHideViews);
+  CoinPocketApp.Models.pageHash.bind("pageHash.pageChanged", self.showOrHideViews);
 
-  self.showOrHideViews(CoinPocketApp.Models.PageHash.pageHash.currentPage);
+  self.showOrHideViews(CoinPocketApp.Models.pageHash.currentPage);
 
 })(CoinPocketApp);

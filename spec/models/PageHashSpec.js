@@ -6,7 +6,7 @@ describe("PageHash", function() {
     PageHash = CoinPocketApp.Models.PageHash;
   });
 
-  describe("#pageParamsForHash", function() {
+  describe(".pageParamsForHash", function() {
 
     it("returns #/", function() {
       var actual = PageHash.pageParamsForHash("#/");

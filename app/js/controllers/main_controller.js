@@ -1,6 +1,6 @@
 (function(CoinPocketApp) {
 
-  if (!CoinPocketApp.Models.KeyPair.hasKeyPair()) {
+  if (!CoinPocketApp.Models.keyPair.isGenerated) {
 
     var self = CoinPocketApp.Controllers.MainController = {
       view: CoinPocketApp.Views.mainView
@@ -8,7 +8,7 @@
 
     self.view.hide();
 
-    CoinPocketApp.events.bind('KeyPair.generate', function() {
+    CoinPocketApp.Models.keyPair.bind('keyPair.generate', function() {
       self.view.show();
     });
 
