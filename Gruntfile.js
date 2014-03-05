@@ -12,11 +12,13 @@ module.exports = function(grunt) {
         'app/vendor/sjcl/core/sha256.js',
         'app/vendor/sjcl/core/random.js',
         'app/vendor/js/qrcode.js',
+        'app/vendor/js/scancode.js',
       ]
     },
     source: function() {
       return [
         'app/js/coinpocketapp.js',
+        'app/js/models/bitcoin_worker.js',
         'app/js/models/entropy.js',
         'app/js/models/key_pair.js',
         'app/js/models/page_hash.js',

@@ -35,7 +35,7 @@
           <div id="send" class="content row">
 
             <div class="col-xs-12">
-              <button type="button" class="btn btn-default btn-block">Scan Code</button>
+              <a id="scancode-button" href="scancode://scan" data-scancode-callback-path="/#/send" class="btn btn-default btn-block">Scan Code</a>
             </div>
 
             <div class="col-xs-12">
@@ -210,8 +210,10 @@
     <script src="/vendor/sjcl/core/sha256.js"></script>
     <script src="/vendor/sjcl/core/random.js"></script>
     <script src="/vendor/js/qrcode.js"></script>
+    <script src="/vendor/js/scancode.js"></script>
 
     <script src="/js/coinpocketapp.js"></script>
+    <script src="/js/models/bitcoin_worker.js"></script>
     <script src="/js/models/entropy.js"></script>
     <script src="/js/models/key_pair.js"></script>
     <script src="/js/models/page_hash.js"></script>

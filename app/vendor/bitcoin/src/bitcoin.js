@@ -5,7 +5,7 @@ Bitcoin.paranoia = 10;
 Bitcoin.Address = function () { };
 
 Bitcoin.Address.validate = function(address) {
-  var isValidFormat = /^1[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{27,33}/.test(address);
+  var isValidFormat = /^1[1-9A-HJ-NP-Za-km-z]{27,33}/.test(address);
 
   if (isValidFormat) {
     var bits         = sjcl.codec.base58.toBits(address),
@@ -42,3 +42,37 @@ Bitcoin.Address.generate = function(hollaback) {
     bitcoinAddress: bitcoinAddress
   });
 };
+
+Bitcoin.parseCode = function(code) {
+  if (Bitcoin.Address.validate(code)) {
+    return { address: code };
+  }
+
+  var matches = /^(?:bitcoin:)(1[1-9A-HJ-NP-Za-km-z]{27,33})\??(.*)/.exec(code),
+      out = {};
+
+  if (matches && matches.length === 3) {
+    var address = matches[1],
+        params  = matches[2];
+
+    var pairs = params.split("&");
+    for(var i=0; i < pairs.length; i++) {
+      var split = pairs[i].split("=");
+
+      if (split[0] && split[1]) {
+        var key   = decodeURIComponent(split[0]);
+        var value = decodeURIComponent(split[1]);
+
+        out[key] = value;
+      }
+    }
+
+    if (out.amount) {
+      out.amount = parseFloat(out.amount);
+    }
+
+    out.address = address;
+  }
+
+  return out;
+}

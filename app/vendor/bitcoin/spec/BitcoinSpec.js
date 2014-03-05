@@ -97,4 +97,79 @@ describe("Bitcoin", function() {
 
   });
 
+  describe(".parseCode", function() {
+
+    it("parses a bitcoin address", function() {
+      var actual = Bitcoin.parseCode('1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T');
+
+      expect(actual).toEqual({
+        address : '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T'
+      });
+    });
+
+    it("parses a bitcoin address with the bitcoin: prefix", function() {
+      var actual = Bitcoin.parseCode('bitcoin:1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T');
+
+      expect(actual).toEqual({
+        address : '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T'
+      });
+    });
+
+    it("parses an address and amount", function() {
+      var actual = Bitcoin.parseCode('bitcoin:1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T?amount=0.0001');
+
+      expect(actual).toEqual({
+        address : '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T',
+        amount : 0.0001
+      });
+    });
+
+    it("parses an address and label", function() {
+      var actual = Bitcoin.parseCode('bitcoin:1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T?label=Mike');
+
+      expect(actual).toEqual({
+        address : '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T',
+        label : 'Mike'
+      });
+    });
+
+    it("parses an address, amount, and label", function() {
+      var actual = Bitcoin.parseCode('bitcoin:1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T?amount=10.23&label=Mike');
+
+      expect(actual).toEqual({
+        address : '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T',
+        amount : 10.23,
+        label : 'Mike'
+      });
+    });
+
+    it("parses params while url decoding", function() {
+      var actual = Bitcoin.parseCode('bitcoin:175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W?amount=50&label=Luke-Jr&message=Donation%20for%20project%20xyz');
+
+      expect(actual).toEqual({
+        address : '175tWpb8K1S7NmH4Zx6rewF9WQrcZv245W',
+        amount : 50,
+        label : 'Luke-Jr',
+        message : 'Donation for project xyz'
+      });
+    });
+
+    it("parses a bitpay qrcode", function() {
+      var actual = Bitcoin.parseCode('bitcoin:1ADei3yngtnFhqJRuKEp2YdNqritUi8icD?amount=0.0736&r=https%3A%2F%2Fbitpay.com%2Fi%2F8S37XGmf5MeXUbuvuHcQUk');
+
+      expect(actual).toEqual({
+        address : '1ADei3yngtnFhqJRuKEp2YdNqritUi8icD',
+        amount : 0.0736,
+        r : 'https://bitpay.com/i/8S37XGmf5MeXUbuvuHcQUk'
+      });
+    });
+
+    it("does not parse a testnet address", function() {
+      var actual = Bitcoin.parseCode('bitcoin%3AmrkkTkkuCWzLzNSn4BpRMCfMPRbfWTvYnJ%3Famount%3D0.0004');
+
+      expect(actual).toBeNull;
+    });
+
+  });
+
 });

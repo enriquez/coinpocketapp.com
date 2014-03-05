@@ -21,6 +21,11 @@ var seedGenerateAndEncryptKeys = function(seed, password, hollaback) {
   });
 }
 
+var parseCode = function(code, hollaback) {
+  var result = Bitcoin.parseCode(code);
+  hollaback(result);
+}
+
 var messageListener = function(e) {
   if (e.data) {
     var id = e.data.id,
