@@ -9,19 +9,23 @@
     if (pageParams.page === '#/send') {
       sendView.show();
 
-      console.log(pageParams);
       bitcoinWorker.async("parseCode", [pageParams.params.code], function(result) {
-        console.log(result);
         if (result.address) {
           sendView.setAddress(result.address);
+        } else {
+          sendView.setAddress('');
         }
 
         if (result.amount) {
           sendView.setAmount(result.amount);
+        } else {
+          sendView.setAmount('');
         }
       });
     } else {
       sendView.hide();
+      sendView.setAddress('');
+      sendView.setAmount('');
     }
   };
 
