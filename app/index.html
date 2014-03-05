@@ -99,17 +99,15 @@
           <div id="receive" class="content row">
 
             <div class="col-xs-12">
-              <p class="text-center">1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH</p>
+              <p id="receive-address" class="text-center"></p>
             </div>
 
             <div class="col-xs-12">
-              <p class="text-center">QR Code HERE</p>
+              <div id="qrcode"></div><br>
             </div>
 
             <div class="col-xs-12">
-              <button type="button" class="btn btn-primary btn-block">Copy Address</button>
-              <button type="button" class="btn btn-primary btn-block">Email Address</button>
-              <button type="button" class="btn btn-primary btn-block">SMS Address</button>
+              <a id="email-button" href="" class="btn btn-primary btn-block">Email Address</a>
               <a href="#/" class="btn btn-default btn-block">Done</a>
             </div>
           </div>
@@ -211,6 +209,7 @@
     <script src="/vendor/sjcl/core/aes.js"></script>
     <script src="/vendor/sjcl/core/sha256.js"></script>
     <script src="/vendor/sjcl/core/random.js"></script>
+    <script src="/vendor/js/qrcode.js"></script>
 
     <script src="/js/coinpocketapp.js"></script>
     <script src="/js/models/entropy.js"></script>
@@ -222,6 +221,7 @@
     <script src="/js/views/receive_view.js"></script>
     <script src="/js/controllers/welcome_modal_controller.js"></script>
     <script src="/js/controllers/page_hash_controller.js"></script>
+    <script src="/js/controllers/receive_controller.js"></script>
     <script src="/js/controllers/main_controller.js"></script>
   </body>
 </html>

@@ -45,6 +45,10 @@ input[type="password"] {
   margin: 10px auto;
 }
 
+#qrcode img {
+  margin: 0 auto;
+}
+
 .content {
   margin-top: 5px;
   background-color: white;

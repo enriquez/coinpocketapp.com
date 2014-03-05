@@ -11,6 +11,7 @@ module.exports = function(grunt) {
         'app/vendor/sjcl/core/aes.js',
         'app/vendor/sjcl/core/sha256.js',
         'app/vendor/sjcl/core/random.js',
+        'app/vendor/js/qrcode.js',
       ]
     },
     source: function() {
@@ -21,8 +22,12 @@ module.exports = function(grunt) {
         'app/js/models/page_hash.js',
         'app/js/views/welcome_modal_view.js',
         'app/js/views/main_view.js',
+        'app/js/views/send_view.js',
+        'app/js/views/receive_view.js',
         'app/js/controllers/welcome_modal_controller.js',
-        'app/js/controllers/main_controller.js',
+        'app/js/controllers/page_hash_controller.js',
+        'app/js/controllers/receive_controller.js',
+        'app/js/controllers/main_controller.js'
       ];
     },
     worker: function() {
