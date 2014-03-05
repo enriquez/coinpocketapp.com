@@ -1,85 +1,87 @@
 (function($, Views) {
-  var $container = $("#myModal"),
-      $passwordInput = $("#password"),
-      $passwordConfirmationInput = $("#password-confirmation"),
-      $submitButton = $("#welcome-modal-continue"),
-      $form = $("#welcome-modal-form"),
-      $passwordGroup = $("#welcome-modal-password-group"),
-      $passwordConfirmationGroup = $("#welcome-modal-password-confirmation-group"),
-      $validationMessage = $("#welcome-modal-validation-message"),
-      $entropyProgress = $("#welcome-modal-entropy");
 
-  var self = Views.WelcomeModalView = function() {
+  function WelcomeModalView() {
     var self = this;
 
-    $passwordInput.change(function() {
-      self.trigger('passwordInput.change', $passwordInput);
+    self.$container = $("#myModal");
+    self.$passwordInput = $("#password");
+    self.$passwordConfirmationInput = $("#password-confirmation");
+    self.$submitButton = $("#welcome-modal-continue");
+    self.$form = $("#welcome-modal-form");
+    self.$passwordGroup = $("#welcome-modal-password-group");
+    self.$passwordConfirmationGroup = $("#welcome-modal-password-confirmation-group");
+    self.$validationMessage = $("#welcome-modal-validation-message");
+    self.$entropyProgress = $("#welcome-modal-entropy");
+
+    self.$passwordInput.change(function() {
+      self.trigger('passwordInput.change', self.$passwordInput);
     });
 
-    $passwordConfirmationInput.change(function() {
-      self.trigger('passwordConfirmationInput.change', $passwordConfirmationInput);
+    self.$passwordConfirmationInput.change(function() {
+      self.trigger('passwordConfirmationInput.change', self.$passwordConfirmationInput);
     });
 
-    $submitButton.click(function() {
-      self.trigger('submitButton.click', $form);
+    self.$submitButton.click(function() {
+      self.trigger('submitButton.click', self.$form);
     });
+  }
 
-  };
 
-  MicroEvent.mixin(Views.WelcomeModalView);
-
-  self.prototype.show = function() {
-    $container.modal({
+  WelcomeModalView.prototype.show = function() {
+    this.$container.modal({
       backdrop: 'static',
       keyboard: false
     });
   };
 
-  self.prototype.hide = function() {
-    $container.modal('hide');
+  WelcomeModalView.prototype.hide = function() {
+    this.$container.modal('hide');
   };
 
-  self.prototype.validationMessage = function(message) {
-    $validationMessage.text(message);
+  WelcomeModalView.prototype.validationMessage = function(message) {
+    this.$validationMessage.text(message);
   };
 
-  self.prototype.clearValidations = function() {
-    $validationMessage.text("");
-    $passwordGroup.removeClass("has-error");
-    $passwordConfirmationGroup.removeClass("has-error");
+  WelcomeModalView.prototype.clearValidations = function() {
+    this.$validationMessage.text("");
+    this.$passwordGroup.removeClass("has-error");
+    this.$passwordConfirmationGroup.removeClass("has-error");
   };
 
-  self.prototype.invalidPasswordInput = function() {
-    $passwordGroup.addClass("has-error");
+  WelcomeModalView.prototype.invalidPasswordInput = function() {
+    this.$passwordGroup.addClass("has-error");
   };
 
-  self.prototype.invalidPasswordConfirmationInput = function() {
-    $passwordConfirmationGroup.addClass("has-error");
+  WelcomeModalView.prototype.invalidPasswordConfirmationInput = function() {
+    this.$passwordConfirmationGroup.addClass("has-error");
   };
 
-  self.prototype.updateEntropyProgress = function(progress) {
+  WelcomeModalView.prototype.updateEntropyProgress = function(progress) {
     var percent = Math.ceil(progress * 100).toString() + "%";
-    $entropyProgress.width(percent);
+    this.$entropyProgress.width(percent);
   };
 
-  self.prototype.entropySeeded = function() {
-    $entropyProgress.width("100%");
-    $entropyProgress.parent(".progress").removeClass("progress-striped");
-    $entropyProgress.parent(".progress").removeClass("active");
-    $entropyProgress.removeClass("progress-bar-info");
-    $entropyProgress.addClass("progress-bar-success");
-    $entropyProgress.children("span").text("DONE!");
+  WelcomeModalView.prototype.entropySeeded = function() {
+    this.$entropyProgress.width("100%");
+    this.$entropyProgress.parent(".progress").removeClass("progress-striped");
+    this.$entropyProgress.parent(".progress").removeClass("active");
+    this.$entropyProgress.removeClass("progress-bar-info");
+    this.$entropyProgress.addClass("progress-bar-success");
+    this.$entropyProgress.children("span").text("DONE!");
   };
 
-  self.prototype.loading = function() {
-    $passwordInput.prop('disabled', true);
-    $passwordConfirmationInput.prop('disabled', true);
-    $submitButton.button('loading');
+  WelcomeModalView.prototype.loading = function() {
+    this.$passwordInput.prop('disabled', true);
+    this.$passwordConfirmationInput.prop('disabled', true);
+    this.$submitButton.button('loading');
   };
 
-  self.prototype.clearFields = function() {
-    $passwordInput.val('');
-    $passwordConfirmationInput.val('');
+  WelcomeModalView.prototype.clearFields = function() {
+    this.$passwordInput.val('');
+    this.$passwordConfirmationInput.val('');
   };
+
+  MicroEvent.mixin(WelcomeModalView);
+  Views.welcomeModalView = new WelcomeModalView();
 
 })(jQuery, CoinPocketApp.Views);

@@ -1,8 +1,8 @@
 (function(CoinPocketApp) {
 
   var self = CoinPocketApp.Controllers.PageHashController = {
-    sendView: new CoinPocketApp.Views.SendView(),
-    receiveView: new CoinPocketApp.Views.ReceiveView(),
+    sendView: CoinPocketApp.Views.sendView,
+    receiveView: CoinPocketApp.Views.receiveView,
     showOrHideViews: function(pageParams) {
       switch(pageParams.page) {
         case "#/send":

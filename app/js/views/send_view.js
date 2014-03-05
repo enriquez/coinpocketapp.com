@@ -1,15 +1,16 @@
 (function($, Views) {
 
-  var $container = $("#send");
+  function SendView() {
+    this.$container = $("#send");
+  }
 
-  var self = Views.SendView = function() { };
-
-  self.prototype.show = function() {
-    $container.fadeIn();
+  SendView.prototype.show = function() {
+    this.$container.fadeIn();
   };
 
-  self.prototype.hide = function() {
-    $container.hide();
+  SendView.prototype.hide = function() {
+    this.$container.hide();
   };
 
+  Views.sendView = new SendView();
 })(jQuery, CoinPocketApp.Views);

@@ -3,7 +3,7 @@
   if (!CoinPocketApp.Models.KeyPair.hasKeyPair()) {
 
     var self = CoinPocketApp.Controllers.WelcomeModalController = {
-      view: new CoinPocketApp.Views.WelcomeModalView(),
+      view: CoinPocketApp.Views.welcomeModalView,
       entropy: CoinPocketApp.Models.Entropy.entropy,
       passwordInputValue: '',
       passwordConfirmationValue: '',

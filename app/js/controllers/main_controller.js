@@ -3,7 +3,7 @@
   if (!CoinPocketApp.Models.KeyPair.hasKeyPair()) {
 
     var self = CoinPocketApp.Controllers.MainController = {
-      view: new CoinPocketApp.Views.MainView()
+      view: CoinPocketApp.Views.mainView
     };
 
     self.view.hide();

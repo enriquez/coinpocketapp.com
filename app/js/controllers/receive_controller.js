@@ -1,7 +1,7 @@
 (function(CoinPocketApp) {
 
   var self = CoinPocketApp.Controllers.ReceiveController = {
-    view: new CoinPocketApp.Views.ReceiveView()
+    view: CoinPocketApp.Views.receiveView
   };
 
   if (CoinPocketApp.Models.KeyPair.hasKeyPair()) {

@@ -1,15 +1,16 @@
 (function($, Views) {
 
-  var $container = $("#main");
+  function MainView() {
+    this.$container = $("#main");
+  }
 
-  var self = Views.MainView = function() { };
-
-  self.prototype.show = function() {
-    $container.fadeIn();
+  MainView.prototype.show = function() {
+    this.$container.fadeIn();
   };
 
-  self.prototype.hide = function() {
-    $container.hide();
+  MainView.prototype.hide = function() {
+    this.$container.hide();
   };
 
+  Views.mainView = new MainView();
 })(jQuery, CoinPocketApp.Views);

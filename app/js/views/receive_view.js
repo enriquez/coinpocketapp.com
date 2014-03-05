@@ -1,25 +1,27 @@
 (function($, QRCode, Views) {
 
-  var $container = $("#receive"),
-      $receiveAddress = $("#receive-address"),
-      $smsButton = $("#sms-button"),
-      $emailButton = $("#email-button");
+  function ReceiveView() {
+    this.$container = $("#receive");
+    this.$receiveAddress = $("#receive-address");
+    this.$smsButton = $("#sms-button");
+    this.$emailButton = $("#email-button");
+  }
 
-  var self = Views.ReceiveView = function() { };
-
-  self.prototype.show = function() {
-    $container.fadeIn();
+  ReceiveView.prototype.show = function() {
+    this.$container.fadeIn();
   };
 
-  self.prototype.hide = function() {
-    $container.hide();
+  ReceiveView.prototype.hide = function() {
+    this.$container.hide();
   };
 
-  self.prototype.setAddress = function(address) {
+  ReceiveView.prototype.setAddress = function(address) {
     new QRCode(document.getElementById("qrcode"), address);
-    $receiveAddress.text(address);
-    $smsButton.attr('href', 'sms:;body=' + address);
-    $emailButton.attr('href', 'mailto:?body=' + address);
+    this.$receiveAddress.text(address);
+    this.$smsButton.attr('href', 'sms:;body=' + address);
+    this.$emailButton.attr('href', 'mailto:?body=' + address);
   };
+
+  Views.receiveView = new ReceiveView();
 
 })(jQuery, QRCode, CoinPocketApp.Views);
