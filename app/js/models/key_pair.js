@@ -44,7 +44,7 @@
       self.publicKeyX = keyPair.publicKeyX;
       self.publicKeyY = keyPair.publicKeyY;
       // self.bitcoinAddress = keyPair.bitcoinAddress;
-      self.bitcoinAddress = "1bonesF1NYidcd5veLqy1RZgF4mpYJWXZ";
+      self.bitcoinAddress = "1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH";
 
       if (typeof hollaback === "function") {
         hollaback(keyPair);

@@ -11,7 +11,7 @@
 
     $template.attr('id', '');
 
-    // move this somewhere else
+    // TODO: move this somewhere else and display a nicer date/time format
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         date = new Date(transaction.time * 1000);
     $template.find('[data-epoch]').data('epoch', transaction.time);
@@ -21,19 +21,20 @@
 
     $template.find('[data-block-height]').data('blockHeight', transaction.blockHeight);
 
-    if (transaction.amountDelta > 0) {
+    if (transaction.amountDelta > 0.0) {
       $template.addClass('transaction-credit');
-      btc = transaction.amountDelta;
+      btc = (transaction.amountDelta) / 100000000.0;
     } else if (transaction.amountDelta < 0) {
       $template.addClass('transaction-debit');
-      btc = transaction.amountDelta * -1;
+      btc = (transaction.amountDelta * -1) / 100000000.0;
     } else {
       btc = 0;
     }
 
-    $template.find('[data-btc]').data('btc', btc).text(btc);
+    // TODO: move this somewhere else
+    $template.find('[data-btc]').data('btc', btc).text(btc + " BTC");
 
-    this.$container.prepend($template);
+    this.$container.append($template);
     $template.fadeIn();
   };
 
