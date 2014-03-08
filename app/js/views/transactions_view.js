@@ -14,12 +14,12 @@
     // TODO: move this somewhere else and display a nicer date/time format
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         date = new Date(transaction.time * 1000);
-    $template.find('[data-epoch]').data('epoch', transaction.time);
+    $template.find('[data-epoch]').attr('data-epoch', transaction.time);
     $template.find('[data-epoch]').find('span.date').text(months[date.getMonth()]);
     $template.find('[data-epoch]').find('span.time').text(date.getHours() + ":" + date.getMinutes());
 
 
-    $template.find('[data-block-height]').data('blockHeight', transaction.blockHeight);
+    $template.find('[data-block-height]').attr('data-block-height', transaction.blockHeight);
 
     if (transaction.amountDelta > 0.0) {
       $template.addClass('transaction-credit');
@@ -32,7 +32,7 @@
     }
 
     // TODO: move this somewhere else
-    $template.find('[data-btc]').data('btc', btc).text(btc + " BTC");
+    $template.find('[data-btc]').attr('data-btc', btc).text(btc + " BTC");
 
     this.$container.append($template);
     $template.fadeIn();
