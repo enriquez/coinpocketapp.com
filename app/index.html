@@ -120,6 +120,21 @@
             </div>
           </div>
 
+          <div id="transactions">
+
+            <div id="transaction-template" class="content transaction row" style="display:none">
+              <div class="col-xs-6" data-epoch="">
+                <span class="date"></span><br>
+                <span class="time"></span>
+              </div>
+              <div class="col-xs-6 text-right">
+                <span class="value" data-btc=""></span>
+                <span class="confirmations" data-block-height=""></span>
+              </div>
+            </div>
+
+          </div>
+
           <!-- <div class="transactions"> -->
 
           <!--   <div class="content transaction transaction&#45;debit transaction&#45;unconfirmed row"> -->
@@ -211,19 +226,23 @@
     <script src="/vendor/sjcl/core/random.js"></script>
     <script src="/vendor/js/qrcode.js"></script>
     <script src="/vendor/js/scancode.js"></script>
+    <script src="/vendor/blockchaininfo/src/blockchaininfo.js"></script>
 
     <script src="/js/coinpocketapp.js"></script>
     <script src="/js/models/bitcoin_worker.js"></script>
     <script src="/js/models/entropy.js"></script>
     <script src="/js/models/key_pair.js"></script>
     <script src="/js/models/page_hash.js"></script>
+    <script src="/js/models/transaction.js"></script>
     <script src="/js/views/welcome_modal_view.js"></script>
     <script src="/js/views/main_view.js"></script>
     <script src="/js/views/send_view.js"></script>
     <script src="/js/views/receive_view.js"></script>
+    <script src="/js/views/transactions_view.js"></script>
     <script src="/js/controllers/welcome_modal_controller.js"></script>
     <script src="/js/controllers/send_controller.js"></script>
     <script src="/js/controllers/receive_controller.js"></script>
+    <script src="/js/controllers/transaction_controller.js"></script>
     <script src="/js/controllers/main_controller.js"></script>
   </body>
 </html>

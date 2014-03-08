@@ -13,6 +13,7 @@ module.exports = function(grunt) {
         'app/vendor/sjcl/core/random.js',
         'app/vendor/js/qrcode.js',
         'app/vendor/js/scancode.js',
+        'app/vendor/blockchaininfo/src/blockchaininfo.js',
       ]
     },
     source: function() {
@@ -22,13 +23,16 @@ module.exports = function(grunt) {
         'app/js/models/entropy.js',
         'app/js/models/key_pair.js',
         'app/js/models/page_hash.js',
+        'app/js/models/transaction.js',
         'app/js/views/welcome_modal_view.js',
         'app/js/views/main_view.js',
         'app/js/views/send_view.js',
         'app/js/views/receive_view.js',
+        'app/js/views/transactions_view.js',
         'app/js/controllers/welcome_modal_controller.js',
         'app/js/controllers/send_controller.js',
         'app/js/controllers/receive_controller.js',
+        'app/js/controllers/transaction_controller.js',
         'app/js/controllers/main_controller.js'
       ];
     },
@@ -51,7 +55,8 @@ module.exports = function(grunt) {
         src: Files.source(),
         options: {
           specs: [ 'spec/models/**/*Spec.js' ],
-          vendor: Files.vendor()
+          vendor: Files.vendor(),
+          helpers: 'spec/helpers/JqueryAJAXFixtures.js'
         }
       },
       worker: {
