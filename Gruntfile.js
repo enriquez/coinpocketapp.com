@@ -13,6 +13,7 @@ module.exports = function(grunt) {
         'app/vendor/sjcl/core/random.js',
         'app/vendor/js/qrcode.js',
         'app/vendor/js/scancode.js',
+        'app/vendor/js/format_date.js',
         'app/vendor/blockchaininfo/src/blockchaininfo.js',
       ]
     },
@@ -21,6 +22,7 @@ module.exports = function(grunt) {
         'app/js/coinpocketapp.js',
         'app/js/models/bitcoin_worker.js',
         'app/js/models/entropy.js',
+        'app/js/models/block_height.js',
         'app/js/models/key_pair.js',
         'app/js/models/page_hash.js',
         'app/js/models/transaction.js',
@@ -30,6 +32,7 @@ module.exports = function(grunt) {
         'app/js/views/receive_view.js',
         'app/js/views/transactions_view.js',
         'app/js/controllers/welcome_modal_controller.js',
+        'app/js/controllers/block_height_controller.js',
         'app/js/controllers/send_controller.js',
         'app/js/controllers/receive_controller.js',
         'app/js/controllers/transaction_controller.js',

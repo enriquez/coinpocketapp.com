@@ -19,7 +19,7 @@
 
           <div id="balance-container" class="row">
             <div class="col-sm-12">
-              <h2 id="balance" class="text-center"><span data-attr-btc="0">$0.00</span></h2>
+              <h2 id="balance" class="text-center"><span data-btc="0">0 BTC</span></h2>
             </div>
           </div>
 
@@ -120,10 +120,10 @@
             </div>
           </div>
 
-          <div id="transactions">
+          <div id="transactions" data-current-block-height="">
 
             <div id="transaction-template" class="content transaction row" style="display:none">
-              <div class="col-xs-6" data-epoch="">
+              <div class="col-xs-6" data-time="">
                 <span class="date"></span><br>
                 <span class="time"></span>
               </div>
@@ -226,11 +226,15 @@
     <script src="/vendor/sjcl/core/random.js"></script>
     <script src="/vendor/js/qrcode.js"></script>
     <script src="/vendor/js/scancode.js"></script>
+    <script src="/vendor/js/format_btc.js"></script>
+    <script src="/vendor/js/format_confirmations.js"></script>
+    <script src="/vendor/js/format_date.js"></script>
     <script src="/vendor/blockchaininfo/src/blockchaininfo.js"></script>
 
     <script src="/js/coinpocketapp.js"></script>
     <script src="/js/models/bitcoin_worker.js"></script>
     <script src="/js/models/entropy.js"></script>
+    <script src="/js/models/block_height.js"></script>
     <script src="/js/models/key_pair.js"></script>
     <script src="/js/models/page_hash.js"></script>
     <script src="/js/models/transaction.js"></script>
@@ -240,6 +244,7 @@
     <script src="/js/views/receive_view.js"></script>
     <script src="/js/views/transactions_view.js"></script>
     <script src="/js/controllers/welcome_modal_controller.js"></script>
+    <script src="/js/controllers/block_height_controller.js"></script>
     <script src="/js/controllers/send_controller.js"></script>
     <script src="/js/controllers/receive_controller.js"></script>
     <script src="/js/controllers/transaction_controller.js"></script>

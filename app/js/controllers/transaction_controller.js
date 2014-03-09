@@ -8,7 +8,7 @@
         var transaction = newTransactions[i];
         transactionsView.insertNewTransaction(transaction);
       }
-    }
+    };
 
     if (keyPair.isGenerated) {
       transactions.fetchRecent(keyPair.bitcoinAddress, updateTransactions);
@@ -17,7 +17,7 @@
         transactions.fetchRecent(keyPair.bitcoinAddress, updateTransactions);
       });
     }
-  };
+  }
 
   Controllers.TransactionController = new TransactionController();
 

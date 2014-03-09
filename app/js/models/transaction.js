@@ -3,10 +3,10 @@
   function Transaction(attrs) {
     var self = this;
 
-    self.time = attrs.time
+    self.time = attrs.time;
     self.amountDelta = attrs.amountDelta;
     self.blockHeight = attrs.blockHeight;
-  };
+  }
 
   Transaction.prototype.confirmations = function(currentBlockHeight) {
     var confirmations = currentBlockHeight - this.blockHeight + 1;
@@ -22,7 +22,7 @@
 
   transactions.fetchRecent = function(address, hollaback) {
     BlockChainInfo.rawaddr(address, function(data) {
-      var txsData = data['txs'] || [],
+      var txsData = data.txs || [],
           recentTransactions = [];
 
       for (var i=0; i<txsData.length; i++) {
