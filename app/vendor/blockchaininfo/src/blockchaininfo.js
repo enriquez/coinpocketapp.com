@@ -20,5 +20,82 @@ var BlockChainInfo = (function(self, $) {
     getJSONForPath('/latestblock', hollaback);
   };
 
+  function WS() {
+    if (WS.prototype._singleton) {
+      return WS.prototype._singleton;
+    } else {
+      WS.prototype._singleton = this;
+    }
+
+    var self = this;
+
+    self.delayedMessages = [];
+    self.subscriptions = [];
+    self.isConnected = false;
+
+    self.webSocket = new WebSocket('wss://ws.blockchain.info/inv');
+
+    self.webSocket.onopen = function(e) {
+      console.log('open');
+      self.isConnected = true;
+
+      while (self.delayedMessages.length > 0) {
+        var delayedMessage = self.delayedMessages.pop();
+        self.sendMessage(delayedMessage);
+      }
+    };
+
+    self.webSocket.onclose = function(e) {
+      console.log('close');
+      self.isConnected = false;
+    };
+
+    self.webSocket.onmessage = function(e) {
+      var data = JSON.parse(e.data),
+          op   = data.op;
+
+      if (self.subscriptions[op]) {
+        for (var i = 0; i<self.subscriptions[op].length; i++) {
+          var hollaback = self.subscriptions[op][i]
+          hollaback(data);
+        }
+      }
+    };
+
+    self.webSocket.onerror = function(e) {
+      console.log('BlockChainInfo WebSocket Error: ', e);
+    };
+  }
+
+  WS.prototype.sendMessage = function(obj) {
+    if (this.isConnected) {
+      this.webSocket.send(JSON.stringify(obj));
+    } else {
+      this.delayedMessages.push(obj);
+    }
+  }
+
+  WS.prototype.onNewBlock = function(hollaback) {
+    var self = this;
+    if (!self.subscriptions['block']) {
+      self.subscriptions['block'] = [];
+    }
+
+    self.subscriptions['block'].push(hollaback);
+    self.sendMessage({ op: 'ping_block' });
+    self.sendMessage({ op: 'blocks_sub' });
+  };
+
+  WS.prototype.onNewTransactionForAddress = function(address, hollaback) {
+    var self = this;
+    if (!self.subscriptions['utx']) {
+      self.subscriptions['utx'] = [];
+    }
+
+    self.subscriptions['utx'].push(hollaback);
+    self.sendMessage({ op: 'addr_sub', addr: address });
+  };
+
+  self.WebSocket = WS;
   return self;
 })({}, jQuery);

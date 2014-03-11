@@ -1,4 +1,11 @@
 describe("Transaction", function() {
+  var transactions;
+
+  beforeEach(function() {
+    transactions = CoinPocketApp.Models.transactions;
+    transactions.length = 0;
+    transactions.unbind("transactions.updated");
+  });
 
   describe("transaction.confirmations", function() {
 
@@ -6,9 +13,11 @@ describe("Transaction", function() {
       var transaction;
 
       beforeEach(function() {
-        transaction = new CoinPocketApp.Models.Transaction({
+        transaction = new CoinPocketApp.Models.Transaction('address', {
+          tx_index: 0,
           time: 1389124087,
-          deltaAmount: 1000000000
+          out: [],
+          inputs: []
         });
       });
 
@@ -24,10 +33,12 @@ describe("Transaction", function() {
       var transaction;
 
       beforeEach(function() {
-        transaction = new CoinPocketApp.Models.Transaction({
+        transaction = new CoinPocketApp.Models.Transaction('address', {
+          tx_index: 0,
           time: 1389124087,
-          deltaAmount: 1000000000,
-          blockHeight: 280000
+          block_height: 280000,
+          out: [],
+          inputs: []
         });
       });
 
@@ -51,7 +62,6 @@ describe("Transaction", function() {
   });
 
   describe("transactions#fetchRecent", function() {
-    var transactions = CoinPocketApp.Models.transactions;
 
     describe("with no transactions", function() {
       var result;
@@ -86,9 +96,9 @@ describe("Transaction", function() {
       });
 
       it("is ordered by most recent first", function() {
-        expect(result[0].time).toEqual(1389124087);
-        expect(result[1].time).toEqual(1389067925);
-        expect(result[2].time).toEqual(1388545895);
+        expect(result[0].time).toEqual(1389124087000);
+        expect(result[1].time).toEqual(1389067925000);
+        expect(result[2].time).toEqual(1388545895000);
       });
 
       it("reports each transactions amount delta", function() {
@@ -103,6 +113,42 @@ describe("Transaction", function() {
         expect(result[2].blockHeight).toEqual(278021);
       });
 
+    });
+
+  });
+
+  describe("transactions#any", function() {
+
+    it("has no transacitons", function() {
+      expect(transactions.any()).toBe(false);
+    });
+
+    it("has transactions", function() {
+      transactions.push({});
+      expect(transactions.any()).toBe(true);
+    });
+
+  });
+
+  describe("transactions.updated event", function() {
+    var transactions = CoinPocketApp.Models.transactions;
+
+    it("triggers when new transactions are fetched", function(done) {
+      transactions.bind("transactions.updated", function(newTransactions) {
+        done();
+      });
+      transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit');
+    });
+
+    it("does not trigger if there are transactions already", function(done) {
+      transactions.push({});
+      var self = this;
+      transactions.bind("transactions.updated", function(newTransactions) {
+        throw new Error('should not trigger transactions.updated event');
+      });
+      transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit', function() {
+        done();
+      });
     });
 
   });

@@ -1,19 +1,15 @@
 (function(BlockChainInfo, Models) {
 
   function BlockHeight() {
-    this.height = 0;
-  }
-
-  BlockHeight.prototype.fetchHeight = function(hollaback) {
     var self = this;
-    BlockChainInfo.latestblock(function(json) {
-      self.height = json.height;
-      if (typeof hollaback === 'function') {
-        hollaback(self.height);
-      }
-      self.trigger('blockHeight.updated', self.height);
+    self.height = 0;
+
+    self.socket = new BlockChainInfo.WebSocket();
+    self.socket.onNewBlock(function(data) {
+      self.height = parseInt(data.x.height);
+      self.trigger('blockHeight.updated', self.height, data.x.txIndexes);
     });
-  };
+  }
 
   MicroEvent.mixin(BlockHeight);
   Models.blockHeight = new BlockHeight();

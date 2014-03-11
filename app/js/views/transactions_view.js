@@ -32,26 +32,48 @@
   function TransactionsView() {
     this.$container = $('#transactions');
     this.$transactionTemplate = $("#transaction-template");
+    this.$transactions = $("#transactions .transaction:visible");
   }
-
-  TransactionsView.prototype.insertNewTransaction = function(transaction) {
-    var $template = this.$transactionTemplate.clone();
-
-    $template.attr('id', '');
-
-    // setup transaction meta data
-    $template.find('[data-btc]').data('btc', transaction.amountDelta / 100000000.0);
-    $template.find('[data-time]').data('time', transaction.time * 1000);
-    $template.find('[data-block-height]').data('blockHeight', transaction.blockHeight);
-
-    // format the transaction based on meta data, add to DOM, fade in.
-    $template.formatTransaction();
-    this.$container.append($template);
-    $template.fadeIn();
-  };
 
   TransactionsView.prototype.updateBlockHeight = function(height) {
     this.$container.data('currentBlockHeight', height);
+  };
+
+  TransactionsView.prototype.insertTransaction = function(txId, btc, time, blockHeight) {
+    var $template = this.$transactionTemplate.clone(),
+        id = 'tx-' + txId,
+        selector = '#' + id;
+
+    if ($(selector).length === 0) {
+      $template.attr('id', id);
+      $template.attr('data-tx-id', txId);
+
+      // setup transaction meta data
+      $template.find('[data-btc]').data('btc', btc);
+      $template.find('[data-time]').data('time', time);
+      $template.find('[data-block-height]').data('blockHeight', blockHeight);
+
+      $template.formatTransaction();
+
+      var $transactions = $('.transaction');
+
+      $transactions.each(function(i, element) {
+        var $transaction = $(element);
+        if ($transaction.find('[data-time]').data('time') <= time) {
+          $template.insertBefore($transaction);
+          $template.fadeIn();
+          return false;
+        }
+      });
+    }
+  };
+
+  TransactionsView.prototype.transactionConfirmed = function(txId, height) {
+    var $transaction = $("#tx-" + txId);
+    if ($transaction.length > 0) {
+      $transaction.find('[data-block-height]').data('blockHeight', height);
+      $transaction.formatTransaction();
+    }
   };
 
   Views.transactionsView = new TransactionsView();

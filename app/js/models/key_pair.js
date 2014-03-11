@@ -2,7 +2,6 @@
 
   function KeyPair() {
     self = this;
-
     self.isGenerated = false;
   }
 
