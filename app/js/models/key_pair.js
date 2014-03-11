@@ -1,4 +1,4 @@
-(function(bitcoinWorker, Models) {
+(function(bitcoinWorker, entropy, Models) {
 
   function KeyPair() {
     var self = this;
@@ -42,7 +42,7 @@
     var self = this;
 
     var params = [
-      Models.entropy.randomWords(32),
+      entropy.randomWords(32),
       password
     ];
 
@@ -67,4 +67,4 @@
   MicroEvent.mixin(KeyPair);
   Models.keyPair = new KeyPair();
 
-})(CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);
+})(CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models.entropy, CoinPocketApp.Models);
