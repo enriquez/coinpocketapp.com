@@ -29,6 +29,19 @@
     return sjcl.random.randomWords(words);
   };
 
+  Entropy.prototype.addCryptoStrongEntropy = function() {
+    var ab = new Uint32Array(32);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(ab);
+      sjcl.random.addEntropy(ab, 1024, "crypto.getRandomValues");
+    } else if (window.msCrypto && window.msCrypto.getRandomValues) {
+      window.msCrypto.getRandomValues(ab);
+      sjcl.random.addEntropy(ab, 1024, "crypto.getRandomValues");
+    } else {
+      throw "Browser not supported: getRandomValues unavailable";
+    }
+  };
+
   MicroEvent.mixin(Entropy);
   Models.entropy = new Entropy();
 

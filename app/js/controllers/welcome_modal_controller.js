@@ -6,7 +6,9 @@
     self.passwordInputValue = '';
     self.passwordConfirmationValue = '';
 
-    if (!keyPair.isGenerated) {
+    if (keyPair.isGenerated) {
+      entropy.addCryptoStrongEntropy();
+    } else {
       welcomeModalView.show();
 
       welcomeModalView.bind("passwordInput.change", self.passwordInputChanged);
@@ -56,6 +58,7 @@
   };
 
   WelcomeModalController.prototype.entropySeeded = function() {
+    entropy.addCryptoStrongEntropy();
     welcomeModalView.entropySeeded();
     entropy.unbind('entropy.progress');
     entropy.unbind('entropy.seeded');
