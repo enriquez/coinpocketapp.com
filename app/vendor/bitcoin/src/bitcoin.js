@@ -76,3 +76,191 @@ Bitcoin.parseCode = function(code) {
 
   return out;
 }
+
+Bitcoin.Transaction = function() {
+  this.outputs = [];
+  this.inputs = [];
+
+  this._bigToLittleEndian = function(hex, sizeInBytes) {
+    if (hex.length % 2 === 1) { // odd length
+      hex = "0" + hex;
+    }
+    if (typeof sizeInBytes === 'undefined') {
+      sizeInBytes = hex.length / 2;
+    }
+
+    var out = '', zeros = 0;
+    for (var i=sizeInBytes; i > 0; i--) {
+      var currentByte = hex.substr((i * 2) - 2, 2);
+      if (currentByte === '') {
+        zeros++;
+      } else {
+        out += currentByte;
+      }
+    }
+
+    while(zeros > 0) {
+      out += "00";
+      zeros--;
+    }
+
+    return out;
+  }
+
+  this._btcTo8ByteLittleEndianHex = function(btc) {
+    var amountInSatoshis = btc * 100000000;
+    return this._bigToLittleEndian(amountInSatoshis.toString(16), 8);
+  }
+
+  this._bitcoinAddressToPubKeyHash = function(address) {
+    var addressHex = sjcl.codec.hex.fromBits(sjcl.codec.base58.toBits(address));
+    return addressHex.substring(2, addressHex.length - 8);
+  }
+
+  this._variableInt = function(integer) {
+    var result = '';
+
+    if (integer < 0xfd) {
+      result = this._bigToLittleEndian(integer.toString(16), 1);
+    } else if (length <= 0xffff) {
+      result = this._bigToLittleEndian(integer.toString(16), 2);
+      result = "fd" + result;
+    } else if (length <= 0xffffffff) {
+      result = this._bigToLittleEndian(integer.toString(16), 4);
+      result = "fe" + result;
+    } else {
+      result = this._bigToLittleEndian(integer.toString(16), 8);
+      result = "ff" + result;
+    }
+
+    return result;
+  }
+
+  this._byteLength = function(hex) {
+    return this._variableInt(hex.length / 2);
+  }
+
+}
+
+Bitcoin.Transaction.prototype.addPayToPubKeyHashOutput = function(address, amount) {
+  if (!Bitcoin.Address.validate(address)) {
+    throw "Invalid Bitcoin address";
+  }
+  if (amount < 0.00000001) {
+    throw "Invalid amount. Must be more than 0.00000001 BTC";
+  }
+
+  var output = '';
+
+  var value = this._btcTo8ByteLittleEndianHex(amount)
+
+  var script = '76a9'; // OP_DUP OP_HASH160
+  var pubKeyHash = this._bitcoinAddressToPubKeyHash(address);
+  script += this._byteLength(pubKeyHash);
+  script += pubKeyHash;
+  script += '88ac'; // OP_EQUALVERIFY OP_CHECKSIG
+
+  var scriptLength = this._byteLength(script);
+
+  output += value;
+  output += scriptLength;
+  output += script;
+  this.outputs.push(output);
+}
+
+Bitcoin.Transaction.prototype.addInput = function(unspentOutput) {
+  var self = this;
+
+  var input = {
+    hash: unspentOutput.tx_hash,
+    index: this._bigToLittleEndian(unspentOutput.tx_output_n.toString(16), 4),
+    script: unspentOutput.script
+  };
+
+  input.rawHex = function(overrideScript) {
+    var hex = '';
+    hex += this.hash;
+    hex += this.index;
+
+    var script;
+    if (typeof overrideScript === 'undefined') {
+      script = this.script;
+    } else {
+      script = overrideScript;
+    }
+
+    hex += self._byteLength(script);
+    hex += script;
+    hex += 'ffffffff';
+
+    return hex;
+  }
+
+  this.inputs.push(input);
+}
+
+Bitcoin.Transaction.prototype.rawHex = function(inputsOverride) {
+  var rawHex = '';
+  rawHex += '01000000'; // version
+
+  // number of inputs
+  rawHex += this._variableInt(this.inputs.length);
+
+  // inputs
+  if (typeof inputsOverride === 'string') {
+    rawHex += inputsOverride;
+  } else {
+    for (var i=0; i < this.inputs.length; i++) {
+      rawHex += this.inputs[i].rawHex();
+    }
+  }
+
+  // number of outputs
+  rawHex += this._variableInt(this.outputs.length);
+
+  // outputs
+  for (var i=0; i < this.outputs.length; i++) {
+    rawHex += this.outputs[i];
+  }
+
+  // lock_time
+  rawHex += '00000000';
+
+  return rawHex;
+}
+
+Bitcoin.Transaction.prototype.sign = function(privateKeyExponent, publicKeyX, publicKeyY) {
+  var secretKey = new sjcl.ecc.ecdsa.secretKey(sjcl.ecc.curves.k256, sjcl.bn.fromBits(privateKeyExponent));
+  var publicKey = '04' + sjcl.codec.hex.fromBits(publicKeyX) + sjcl.codec.hex.fromBits(publicKeyY);
+  var signedInputs = '';
+
+  for (var i=0; i < this.inputs.length; i++) {
+    var inputs = '';
+    for (var j=0; j < this.inputs.length; j++) {
+      if (i === j) {
+        inputs += this.inputs[i].rawHex();
+      } else {
+        inputs += this.inputs[i].rawHex('');
+      }
+    }
+
+    var transactionForSigning = sjcl.codec.hex.toBits(this.rawHex(inputs));
+    transactionForSigning += '01000000'; // SIGHASH_ALL
+
+    var doubleHashed = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(transactionForSigning));
+    var signature = sjcl.codec.hex.fromBits(secretKey.sign(doubleHashed, 10));
+    var coordinateLength = signature.length / 2;
+
+    var signatureR = '02' + (coordinateLength / 2).toString(16) + signature.substr(0, coordinateLength);
+    var signatureS = '02' + (coordinateLength / 2).toString(16) + signature.substr(coordinateLength);
+
+    var signatureDER = '30' + ((signatureR.length + signatureS.length) / 2).toString(16) + signatureR + signatureS;
+
+    var scriptSig = this._byteLength(signatureDER) + signatureDER + '0141' + publicKey;
+
+    signedInputs += this.inputs[i].rawHex(scriptSig);
+  }
+
+  var rawHex = this.rawHex(signedInputs);
+  return rawHex;
+}

@@ -8,7 +8,11 @@ var BlockChainInfo = (function(self, $) {
       format: 'json',
       jsonCompat: 'new'
     }, function(data) {
-      hollaback(data.query.results.json);
+      if (data.query.results) {
+        hollaback(data.query.results.json);
+      } else {
+        hollaback({});
+      }
     });
   }
 
@@ -18,6 +22,10 @@ var BlockChainInfo = (function(self, $) {
 
   self.latestblock = function(hollaback) {
     getJSONForPath('/latestblock', hollaback);
+  };
+
+  self.unspent = function(address, hollaback) {
+    getJSONForPath('/unspent?active=' + address, hollaback);
   };
 
   function WS() {
