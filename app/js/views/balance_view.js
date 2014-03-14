@@ -8,7 +8,7 @@
     var $element = this.$container.find('[data-btc]');
     $element.data('btc', balance);
     $element.formatBTC();
-  }
+  };
 
   Views.balanceView = new BalanceView();
 

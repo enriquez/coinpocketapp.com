@@ -30,7 +30,7 @@
       }
 
       hollaback(result);
-    })
+    });
   };
 
   Wallet.prototype.balanceBTC = function() {
