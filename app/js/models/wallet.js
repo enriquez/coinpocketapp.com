@@ -2,6 +2,24 @@
 
   function Wallet() {
     this.unspentOutputs = {};
+
+    this._btcToSatoshis = function(btc) {
+      return btc * 100000000;
+    };
+
+    this._satoshisToBtc = function(satoshis) {
+      return satoshis / 100000000;
+    };
+
+    this._eachUnspentOutput = function(action) {
+      for (var id in this.unspentOutputs) {
+        var unspentOutput = this.unspentOutputs[id];
+        // explicitly return false to break
+        if (action(unspentOutput) === false) {
+          break;
+        }
+      }
+    };
   }
 
   Wallet.prototype.updateUnspentOutputs = function(unspentOutputs) {
@@ -37,46 +55,45 @@
 
   Wallet.prototype.balanceBTC = function() {
     var value = 0;
-    for (var id in this.unspentOutputs) {
-      var unspentOutput = this.unspentOutputs[id];
+    this._eachUnspentOutput(function(unspentOutput) {
       value += unspentOutput.value;
-    }
+    });
 
-    return value / 100000000;
+    return this._satoshisToBtc(value);
   };
 
   Wallet.prototype.selectCoins = function(opts) {
     var totalRequested = opts.amountBTC + opts.minerFeeBTC,
         totalAvailable = this.balanceBTC(),
-        selectedCoins = [];
+        selectedCoins = [],
+        self = this;
 
     if (totalRequested <= totalAvailable) {
       // return the only output
-      if (Object.keys(this.unspentOutputs).length === 1) {
-        selectedCoins.push(this.unspentOutputs[Object.keys(this.unspentOutputs)[0]]);
-        return selectedCoins;
+      if (Object.keys(self.unspentOutputs).length === 1) {
+        selectedCoins.push(self.unspentOutputs[Object.keys(self.unspentOutputs)[0]]);
       }
+      if (selectedCoins.length > 0) { return selectedCoins };
 
       // look for an output that has the exact amount
-      for (var id in this.unspentOutputs) {
-        var unspentOutput = this.unspentOutputs[id];
-        if (totalRequested === unspentOutput.value / 100000000) {
+      self._eachUnspentOutput(function(unspentOutput) {
+        if (totalRequested === self._satoshisToBtc(unspentOutput.value)) {
           selectedCoins.push(unspentOutput);
-          return selectedCoins;
+          return false;
         }
-      }
+      });
+      if (selectedCoins.length > 0) { return selectedCoins };
 
       // collect outputs until requested amount is matched or exceeded
       var totalOutputValue = 0;
-      for (var id in this.unspentOutputs) {
-        var unspentOutput = this.unspentOutputs[id];
+      self._eachUnspentOutput(function(unspentOutput) {
         selectedCoins.push(unspentOutput);
-        totalOutputValue += unspentOutput.value / 100000000;
+        totalOutputValue += self._satoshisToBtc(unspentOutput.value);
 
         if (totalRequested <= totalOutputValue) {
-          return selectedCoins;
+          return false;
         }
-      }
+      });
 
     }
 
