@@ -73,7 +73,7 @@
       if (Object.keys(self.unspentOutputs).length === 1) {
         selectedCoins.push(self.unspentOutputs[Object.keys(self.unspentOutputs)[0]]);
       }
-      if (selectedCoins.length > 0) { return selectedCoins };
+      if (selectedCoins.length > 0) { return selectedCoins; }
 
       // look for an output that has the exact amount
       self._eachUnspentOutput(function(unspentOutput) {
@@ -82,7 +82,7 @@
           return false;
         }
       });
-      if (selectedCoins.length > 0) { return selectedCoins };
+      if (selectedCoins.length > 0) { return selectedCoins; }
 
       // collect outputs until requested amount is matched or exceeded
       var totalOutputValue = 0;
