@@ -9,13 +9,15 @@
       var unspentOutput = unspentOutputs[i];
       var id = unspentOutput.tx_hash + '-' + unspentOutput.tx_output_n;
 
-      this.unspentOutputs[id] = {
-        tx_hash: unspentOutput.tx_hash,
-        tx_output_n: unspentOutput.tx_output_n,
-        script: unspentOutput.script,
-        value: unspentOutput.value,
-        confirmations: unspentOutput.confirmations
-      };
+      if (unspentOutput.confirmations > 0) {
+        this.unspentOutputs[id] = {
+          tx_hash: unspentOutput.tx_hash,
+          tx_output_n: unspentOutput.tx_output_n,
+          script: unspentOutput.script,
+          value: unspentOutput.value,
+          confirmations: unspentOutput.confirmations
+        };
+      }
     }
   };
 
@@ -37,12 +39,48 @@
     var value = 0;
     for (var id in this.unspentOutputs) {
       var unspentOutput = this.unspentOutputs[id];
-      if (unspentOutput.confirmations > 0) {
-        value += unspentOutput.value;
-      }
+      value += unspentOutput.value;
     }
 
     return value / 100000000;
+  };
+
+  Wallet.prototype.selectCoins = function(opts) {
+    var totalRequested = opts.amountBTC + opts.minerFeeBTC,
+        totalAvailable = this.balanceBTC(),
+        selectedCoins = [];
+
+    if (totalRequested <= totalAvailable) {
+      // return the only output
+      if (Object.keys(this.unspentOutputs).length === 1) {
+        selectedCoins.push(this.unspentOutputs[Object.keys(this.unspentOutputs)[0]]);
+        return selectedCoins;
+      }
+
+      // look for an output that has the exact amount
+      for (var id in this.unspentOutputs) {
+        var unspentOutput = this.unspentOutputs[id];
+        if (totalRequested === unspentOutput.value / 100000000) {
+          selectedCoins.push(unspentOutput);
+          return selectedCoins;
+        }
+      }
+
+      // collect outputs until requested amount is matched or exceeded
+      var totalOutputValue = 0;
+      for (var id in this.unspentOutputs) {
+        var unspentOutput = this.unspentOutputs[id];
+        selectedCoins.push(unspentOutput);
+        totalOutputValue += unspentOutput.value / 100000000;
+
+        if (totalRequested <= totalOutputValue) {
+          return selectedCoins;
+        }
+      }
+
+    }
+
+    return selectedCoins;
   };
 
   Models.Wallet = Wallet;
