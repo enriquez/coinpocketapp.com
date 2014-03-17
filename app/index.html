@@ -88,7 +88,42 @@
                     <a href="#/" class="btn btn-default btn-block">Cancel</a>
                   </div>
                   <div class="col-xs-6">
-                    <button type="button" class="btn btn-primary btn-block">Next</button>
+                    <a href="#/confirmation" class="btn btn-primary btn-block">Next</a>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+
+          <div id="confirmation" class="content row">
+            <div class="col-xs-12">
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <p>TODO: transaction summary here</p>
+                  </div>
+                </div>
+
+              <form role="form">
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group">
+                      <label for="password">Password</label>
+                      <input type="text" class="form-control" id="password" name="password">
+                    </div>
+                    <hr/>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-6">
+                    <a href="#/send" class="btn btn-default btn-block">Back</a>
+                  </div>
+                  <div class="col-xs-6">
+                    <button type="button" class="btn btn-primary btn-block">Send</button>
                   </div>
                 </div>
 
@@ -244,6 +279,7 @@
     <script src="/js/views/main_view.js"></script>
     <script src="/js/views/send_view.js"></script>
     <script src="/js/views/receive_view.js"></script>
+    <script src="/js/views/confirmation_view.js"></script>
     <script src="/js/views/balance_view.js"></script>
     <script src="/js/views/transactions_view.js"></script>
     <script src="/js/controllers/welcome_modal_controller.js"></script>
@@ -251,6 +287,7 @@
     <script src="/js/controllers/empty_state_controller.js"></script>
     <script src="/js/controllers/send_controller.js"></script>
     <script src="/js/controllers/receive_controller.js"></script>
+    <script src="/js/controllers/confirmation_controller.js"></script>
     <script src="/js/controllers/transaction_controller.js"></script>
     <script src="/js/controllers/main_controller.js"></script>
   </body>

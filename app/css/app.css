@@ -36,12 +36,12 @@ input[type="password"] {
   color: white;
 }
 
-#send, #receive {
+#send, #confirmation, #receive {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-#send hr {
+#send hr, #confirmation hr {
   margin: 10px auto;
 }
 

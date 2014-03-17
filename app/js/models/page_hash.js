@@ -19,7 +19,8 @@
   PageHash.pages = [
     "#/",
     "#/send",
-    "#/receive"
+    "#/receive",
+    "#/confirmation"
   ];
 
   // Warning: params are not sanitized.

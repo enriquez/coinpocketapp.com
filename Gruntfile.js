@@ -32,6 +32,7 @@ module.exports = function(grunt) {
         'app/js/views/main_view.js',
         'app/js/views/send_view.js',
         'app/js/views/receive_view.js',
+        'app/js/views/confirmation_view.js',
         'app/js/views/balance_view.js',
         'app/js/views/transactions_view.js',
         'app/js/controllers/welcome_modal_controller.js',
@@ -39,6 +40,7 @@ module.exports = function(grunt) {
         'app/js/controllers/empty_state_controller.js',
         'app/js/controllers/send_controller.js',
         'app/js/controllers/receive_controller.js',
+        'app/js/controllers/confirmation_controller.js',
         'app/js/controllers/transaction_controller.js',
         'app/js/controllers/main_controller.js'
       ];
