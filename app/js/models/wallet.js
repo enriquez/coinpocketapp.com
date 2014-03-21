@@ -1,4 +1,4 @@
-(function(BlockChainInfo, Models) {
+(function(BlockChainInfo, keyPair, entropy, bitcoinWorker, Models) {
 
   function Wallet() {
     this.unspentOutputs = {};
@@ -63,7 +63,7 @@
   };
 
   Wallet.prototype.selectCoins = function(opts) {
-    var totalRequested = opts.amountBTC + opts.minerFeeBTC,
+    var totalRequested = parseFloat(opts.amountBTC) + parseFloat(opts.minerFeeBTC),
         totalAvailable = this.balanceBTC(),
         selectedCoins = [],
         self = this;
@@ -100,6 +100,69 @@
     return selectedCoins;
   };
 
+  Wallet.prototype.buildTransaction = function(fromAddress, opts, hollaback) {
+    var toAddress = opts.address,
+        amount = opts.amount,
+        transactionFee = opts.transactionFee,
+        result = {},
+        self = this;
+
+    bitcoinWorker.async('validateAddress', [toAddress], function(isAddressValid) {
+      result.isValid = false;
+
+      if (!toAddress) {
+        result.errorForAddress = "Address can't be blank";
+      } else if (!isAddressValid) {
+        result.errorForAddress = "Address is invalid";
+      } else if (/\D$/.test(amount)) {
+        result.errorForAmount = "Amount must be a number";
+      } else if (parseFloat(amount) < 0.00000001) {
+        result.errorForAmount = "Amount must be greater than 0.00000001 BTC";
+      } else if (transactionFee && /\D$/.test(transactionFee)) {
+        result.errorForTransactionFee = "Transaction Fee must be a number";
+      } else if (transactionFee && parseFloat(transactionFee) < 0.00000001) {
+        result.errorForTransactionFee = "Transaction Fee must be greater than 0.00000001 BTC";
+      } else {
+        result.isValid = true;
+
+        result.inputs = self.selectCoins({
+          amountBTC: amount,
+          minerFeeBTC: transactionFee
+        });
+
+        result.outputs = [
+          { address: toAddress, amount: amount }
+        ];
+
+        var totalInputs = 0;
+        for (var i=0; i<result.inputs.length; i++) {
+          var input = result.inputs[i];
+          totalInputs += input.value;
+        }
+
+        var changeAmount = totalInputs - self._btcToSatoshis(amount) - self._btcToSatoshis(transactionFee);
+        if (changeAmount > 0) {
+          result.outputs.push({
+            address: fromAddress,
+            amount: self._satoshisToBtc(changeAmount)
+          });
+        }
+      }
+
+      hollaback(result);
+    });
+  };
+
+  Wallet.prototype.sendTransaction = function(password, transaction, hollaback) {
+    bitcoinWorker.async('buildAndSignRawTransaction', [entropy.randomWords(32), password, keyPair, transaction.inputs, transaction.outputs], function(signedRawTransaction) {
+      if (signedRawTransaction) {
+        console.log('raw', signedRawTransaction);
+      } else {
+        hollaback(false);
+      }
+    });
+  };
+
   Models.Wallet = Wallet;
   Models.wallet = new Wallet();
-})(BlockChainInfo, CoinPocketApp.Models);
+})(BlockChainInfo, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.entropy, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);

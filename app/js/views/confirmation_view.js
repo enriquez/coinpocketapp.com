@@ -1,7 +1,16 @@
 (function($, Views) {
 
   function ConfirmationView() {
-    this.$container = $("#confirmation");
+    var self = this;
+
+    self.$container = $("#confirmation");
+    self.$form = $("#confirmation-form");
+    self.$passwordInput = $("#confirmation-password");
+    self.$sendButton = $("#confirmation-send-button");
+
+    self.$sendButton.click(function() {
+      self.trigger('sendButton.click', self.$form);
+    });
   }
 
   ConfirmationView.prototype.show = function() {
@@ -12,5 +21,7 @@
     this.$container.hide();
   };
 
-  Views.confirmationView= new ConfirmationView();
+  MicroEvent.mixin(ConfirmationView);
+
+  Views.confirmationView = new ConfirmationView();
 })(jQuery, CoinPocketApp.Views);

@@ -28,6 +28,11 @@ var BlockChainInfo = (function(self, $) {
     getJSONForPath('/unspent?active=' + address, hollaback);
   };
 
+  self.pushtx = function(tx, hollaback) {
+    var url = 'http://blockchain.info/pushtx',
+        postData = 'tx=' + tx;
+  };
+
   function WS() {
     if (WS.prototype._singleton) {
       return WS.prototype._singleton;

@@ -25,8 +25,7 @@ Bitcoin.Address.generate = function(hollaback) {
   var curve = sjcl.ecc.curves.k256;
   var keys  = sjcl.ecc.ecdsa.generateKeys(curve, Bitcoin.paranoia);
 
-  var publicKey = sjcl.bitArray.concat(sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x04"), keys.pub.get().x), keys.pub.get().y);
-
+  var publicKey = sjcl.bitArray.concat(sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x04"), keys.pub.get().x), keys.pub.get().y); 
   var hashed = sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x00"),
                                     sjcl.hash.ripemd160.hash(sjcl.hash.sha256.hash(publicKey)));
 
@@ -122,10 +121,10 @@ Bitcoin.Transaction = function() {
 
     if (integer < 0xfd) {
       result = this._bigToLittleEndian(integer.toString(16), 1);
-    } else if (length <= 0xffff) {
+    } else if (integer <= 0xffff) {
       result = this._bigToLittleEndian(integer.toString(16), 2);
       result = "fd" + result;
-    } else if (length <= 0xffffffff) {
+    } else if (integer <= 0xffffffff) {
       result = this._bigToLittleEndian(integer.toString(16), 4);
       result = "fe" + result;
     } else {
@@ -173,7 +172,7 @@ Bitcoin.Transaction.prototype.addInput = function(unspentOutput) {
 
   var input = {
     hash: unspentOutput.tx_hash,
-    index: this._bigToLittleEndian(unspentOutput.tx_output_n.toString(16), 4),
+    index: this._bigToLittleEndian(parseInt(unspentOutput.tx_output_n).toString(16), 4),
     script: unspentOutput.script
   };
 
@@ -230,8 +229,8 @@ Bitcoin.Transaction.prototype.rawHex = function(inputsOverride) {
 }
 
 Bitcoin.Transaction.prototype.sign = function(privateKeyExponent, publicKeyX, publicKeyY) {
-  var secretKey = new sjcl.ecc.ecdsa.secretKey(sjcl.ecc.curves.k256, sjcl.bn.fromBits(privateKeyExponent));
-  var publicKey = '04' + sjcl.codec.hex.fromBits(publicKeyX) + sjcl.codec.hex.fromBits(publicKeyY);
+  var secretKey = new sjcl.ecc.ecdsa.secretKey(sjcl.ecc.curves.k256, sjcl.bn.fromBits(sjcl.codec.hex.toBits(privateKeyExponent)));
+  var publicKey = '04' + publicKeyX + publicKeyY;
   var signedInputs = '';
 
   for (var i=0; i < this.inputs.length; i++) {
@@ -244,10 +243,9 @@ Bitcoin.Transaction.prototype.sign = function(privateKeyExponent, publicKeyX, pu
       }
     }
 
-    var transactionForSigning = sjcl.codec.hex.toBits(this.rawHex(inputs));
-    transactionForSigning += '01000000'; // SIGHASH_ALL
+    var transactionForSigning = this.rawHex(inputs) + '01000000';
 
-    var doubleHashed = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(transactionForSigning));
+    var doubleHashed = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(sjcl.codec.hex.toBits(transactionForSigning)));
     var signature = sjcl.codec.hex.fromBits(secretKey.sign(doubleHashed, 10));
     var coordinateLength = signature.length / 2;
 
@@ -265,9 +263,9 @@ Bitcoin.Transaction.prototype.sign = function(privateKeyExponent, publicKeyX, pu
     var signatureR = '02' + (rCoordinate.length / 2).toString(16) + rCoordinate;
     var signatureS = '02' + (sCoordinate.length / 2).toString(16) + sCoordinate;
 
-    var signatureDER = '30' + ((signatureR.length + signatureS.length) / 2).toString(16) + signatureR + signatureS;
+    var signatureDER = '30' + ((signatureR.length + signatureS.length) / 2).toString(16) + signatureR + signatureS + '01';
 
-    var scriptSig = this._byteLength(signatureDER) + signatureDER + '0141' + publicKey;
+    var scriptSig = this._byteLength(signatureDER) + signatureDER + '41' + publicKey;
 
     signedInputs += this.inputs[i].rawHex(scriptSig);
   }

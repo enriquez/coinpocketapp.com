@@ -14,6 +14,10 @@
     };
   }
 
+  PageHash.prototype.goTo = function(newPageHash) {
+    window.location.hash = newPageHash;
+  };
+
   MicroEvent.mixin(PageHash);
 
   PageHash.pages = [

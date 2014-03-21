@@ -38,9 +38,9 @@ module.exports = function(grunt) {
         'app/js/controllers/welcome_modal_controller.js',
         'app/js/controllers/balance_controller.js',
         'app/js/controllers/empty_state_controller.js',
+        'app/js/controllers/confirmation_controller.js',
         'app/js/controllers/send_controller.js',
         'app/js/controllers/receive_controller.js',
-        'app/js/controllers/confirmation_controller.js',
         'app/js/controllers/transaction_controller.js',
         'app/js/controllers/main_controller.js'
       ];

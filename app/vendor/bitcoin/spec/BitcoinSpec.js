@@ -419,7 +419,7 @@ describe("Bitcoin", function() {
       });
 
       it("returns the signed transaction", function() {
-        var actual = transaction.sign(keyPair.privateKeyExponent, keyPair.publicKeyX, keyPair.publicKeyY);
+        var actual = transaction.sign(sjcl.codec.hex.fromBits(keyPair.privateKeyExponent), sjcl.codec.hex.fromBits(keyPair.publicKeyX), sjcl.codec.hex.fromBits(keyPair.publicKeyY));
 
         expect(actual.substr(0,8)).toEqual('01000000');
         expect(actual.substr(8,2)).toEqual('01');
@@ -441,11 +441,11 @@ describe("Bitcoin", function() {
         var sLength = parseInt(scriptSig.substr(rLength * 2 + 12, 2), 16);
         expect(sLength).toBeLessThan(34);
         // s coordinate: scriptSig.substr(rLength * 2 + 28, sLength * 2)
-        expect(scriptSig.substr(signatureLength * 2 + 2, 2)).toEqual('01'); // hash type byte: SIGHASH_ALL
+        expect(scriptSig.substr(signatureLength * 2, 2)).toEqual('01'); // hash type byte: SIGHASH_ALL
 
-        var publicKeyLength = parseInt(scriptSig.substr(signatureLength * 2 + 4, 2), 16);
+        var publicKeyLength = parseInt(scriptSig.substr(signatureLength * 2 + 2, 2), 16);
         expect(publicKeyLength).toEqual(65);
-        expect(scriptSig.substr(signatureLength * 2 + 6, 2)).toEqual('04');
+        expect(scriptSig.substr(signatureLength * 2 + 4, 2)).toEqual('04');
 
         var nextIndex = 84 + (inputScriptLength * 2);
         expect(actual.substr(nextIndex, 8)).toEqual('ffffffff');

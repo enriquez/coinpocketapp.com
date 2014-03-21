@@ -44,19 +44,19 @@
 
                 <div class="row">
                   <div class="col-xs-12">
-                    <div class="form-group">
-                      <label for="address">Address</label>
-                      <input type="text" class="form-control" id="address" name="address">
+                    <div id="address-group" class="form-group">
+                      <label class="control-label" for="address">Address</label>
+                      <input type="text" class="form-control" id="address" name="address" autocomplete="off">
                     </div>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-xs-12">
-                    <div class="form-group">
-                      <label for="amount">Amount</label>
+                    <div id="amount-group" class="form-group">
+                      <label class="control-label" for="amount">Amount</label>
                       <div class="input-group">
-                        <input type="text" class="form-control text-right" id="amount" name="amount">
+                        <input type="text" class="form-control text-right" id="amount" name="amount" autocomplete="off">
                         <div class="input-group-btn">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">BTC <span class="caret"></span></button>
                           <ul class="dropdown-menu pull-right">
@@ -71,10 +71,10 @@
 
                 <div class="row">
                   <div class="col-xs-12">
-                    <div class="form-group">
-                      <label for="transaction-fee">Transaction Fee</label>
+                    <div id="transaction-fee-group" class="form-group">
+                      <label class="control-label" for="transaction-fee">Transaction Fee</label>
                       <div class="input-group">
-                        <input type="text" class="form-control text-right" id="transaction-fee" name="transaction-fee" placeholder="Calculate Automatically">
+                        <input type="text" class="form-control text-right" id="transaction-fee" name="transaction-fee" placeholder="Calculate Automatically" autocomplete="off">
                         <span class="input-group-addon">&nbsp;BTC &nbsp;</span>
                       </div>
                     </div>
@@ -88,7 +88,10 @@
                     <a href="#/" class="btn btn-default btn-block">Cancel</a>
                   </div>
                   <div class="col-xs-6">
-                    <a href="#/confirmation" class="btn btn-primary btn-block">Next</a>
+                    <a href="#/confirmation" id="next-button" class="btn btn-primary btn-block">Next</a>
+                  </div>
+                  <div class="col-xs-12 text-right">
+                    <span id="send-validation-message" class="text-danger"></span>
                   </div>
                 </div>
 
@@ -106,13 +109,13 @@
                   </div>
                 </div>
 
-              <form role="form">
+              <form id="confirmation-form" role="form">
 
                 <div class="row">
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label for="password">Password</label>
-                      <input type="text" class="form-control" id="password" name="password">
+                      <input type="text" class="form-control" id="confirmation-password" name="password">
                     </div>
                     <hr/>
                   </div>
@@ -123,7 +126,7 @@
                     <a href="#/send" class="btn btn-default btn-block">Back</a>
                   </div>
                   <div class="col-xs-6">
-                    <button type="button" class="btn btn-primary btn-block">Send</button>
+                    <button id="confirmation-send-button" type="button" class="btn btn-primary btn-block">Send</button>
                   </div>
                 </div>
 
@@ -285,9 +288,9 @@
     <script src="/js/controllers/welcome_modal_controller.js"></script>
     <script src="/js/controllers/balance_controller.js"></script>
     <script src="/js/controllers/empty_state_controller.js"></script>
+    <script src="/js/controllers/confirmation_controller.js"></script>
     <script src="/js/controllers/send_controller.js"></script>
     <script src="/js/controllers/receive_controller.js"></script>
-    <script src="/js/controllers/confirmation_controller.js"></script>
     <script src="/js/controllers/transaction_controller.js"></script>
     <script src="/js/controllers/main_controller.js"></script>
   </body>

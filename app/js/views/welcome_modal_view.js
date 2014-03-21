@@ -26,7 +26,6 @@
     });
   }
 
-
   WelcomeModalView.prototype.show = function() {
     this.$container.modal({
       backdrop: 'static',
