@@ -115,7 +115,7 @@
                   <div class="col-xs-12">
                     <div class="form-group">
                       <label for="password">Password</label>
-                      <input type="text" class="form-control" id="confirmation-password" name="password">
+                      <input type="password" class="form-control" id="confirmation-password" name="password">
                     </div>
                     <hr/>
                   </div>
@@ -123,10 +123,13 @@
 
                 <div class="row">
                   <div class="col-xs-6">
-                    <a href="#/send" class="btn btn-default btn-block">Back</a>
+                    <a id="confirmation-back-button" href="#/send" class="btn btn-default btn-block">Back</a>
                   </div>
                   <div class="col-xs-6">
-                    <button id="confirmation-send-button" type="button" class="btn btn-primary btn-block">Send</button>
+                    <button id="confirmation-send-button" type="button" class="btn btn-primary btn-block" data-loading-text="Sending...">Send</button>
+                  </div>
+                  <div class="col-xs-12 text-right">
+                    <span id="confirmation-validation-message" class="text-danger"></span>
                   </div>
                 </div>
 

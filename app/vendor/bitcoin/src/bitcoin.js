@@ -107,7 +107,7 @@ Bitcoin.Transaction = function() {
   }
 
   this._btcTo8ByteLittleEndianHex = function(btc) {
-    var amountInSatoshis = btc * 100000000;
+    var amountInSatoshis = parseInt((btc * 100000000).toFixed(0));
     return this._bigToLittleEndian(amountInSatoshis.toString(16), 8);
   }
 

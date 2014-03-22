@@ -1,5 +1,20 @@
-importScripts("/vendor/sjcl/sjcl.js",
+importScripts("/vendor/sjcl/core/sjcl.js",
+              "/vendor/sjcl/core/bitArray.js",
+              "/vendor/sjcl/core/codecString.js",
+              "/vendor/sjcl/core/aes.js",
+              "/vendor/sjcl/core/sha256.js",
+              "/vendor/sjcl/core/random.js",
+              "/vendor/sjcl/core/bn.js",
+              "/vendor/sjcl/core/ecc.js",
+              "/vendor/sjcl/core/codecBase64.js",
+              "/vendor/sjcl/core/codecHex.js",
+              "/vendor/sjcl/core/codecBytes.js",
+              "/vendor/sjcl/core/hmac.js",
+              "/vendor/sjcl/core/pbkdf2.js",
+              "/vendor/sjcl/core/ccm.js",
+              "/vendor/sjcl/core/convenience.js",
               "/vendor/bitcoin/src/sjcl_ext/codecBase58.js",
+              "/vendor/bitcoin/src/sjcl_ext/ecdsaDER.js",
               "/vendor/bitcoin/src/sjcl_ext/ripemd160.js",
               "/vendor/bitcoin/src/bitcoin.js");
 
@@ -45,13 +60,13 @@ var buildAndSignRawTransaction = function(seed, password, keyPair, inputs, outpu
     transaction.addPayToPubKeyHashOutput(output.address, output.amount);
   }
 
-  // try {
+  try {
     var privateKeyExponent = sjcl.json.decrypt(password, keyPair.encryptedPrivateKeyExponent);
     var result = transaction.sign(privateKeyExponent, keyPair.publicKeyX, keyPair.publicKeyY);
     hollaback(result);
-  // } catch (e) {
-  //   hollaback('');
-  // }
+  } catch (e) {
+    hollaback('');
+  }
 }
 
 var messageListener = function(e) {

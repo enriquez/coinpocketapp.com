@@ -49,7 +49,10 @@
         self.updateUnspentOutputs(result);
       }
 
-      hollaback(result);
+      if (typeof hollaback === 'function') {
+        hollaback(result);
+      }
+      self.trigger('unspentOutputs.updated', self.unspentOutputs);
     });
   };
 
@@ -63,7 +66,7 @@
   };
 
   Wallet.prototype.selectCoins = function(opts) {
-    var totalRequested = parseFloat(opts.amountBTC) + parseFloat(opts.minerFeeBTC),
+    var totalRequested = parseFloat((parseFloat(opts.amountBTC) + parseFloat(opts.minerFeeBTC)).toFixed(8)),
         totalAvailable = this.balanceBTC(),
         selectedCoins = [],
         self = this;
@@ -131,13 +134,13 @@
         });
 
         result.outputs = [
-          { address: toAddress, amount: amount }
+          { address: toAddress, amount: parseFloat(amount) }
         ];
 
-        var totalInputs = 0;
+        var totalInputs = 0.0;
         for (var i=0; i<result.inputs.length; i++) {
           var input = result.inputs[i];
-          totalInputs += input.value;
+          totalInputs += parseFloat(input.value);
         }
 
         var changeAmount = totalInputs - self._btcToSatoshis(amount) - self._btcToSatoshis(transactionFee);
@@ -156,13 +159,16 @@
   Wallet.prototype.sendTransaction = function(password, transaction, hollaback) {
     bitcoinWorker.async('buildAndSignRawTransaction', [entropy.randomWords(32), password, keyPair, transaction.inputs, transaction.outputs], function(signedRawTransaction) {
       if (signedRawTransaction) {
-        console.log('raw', signedRawTransaction);
+        BlockChainInfo.pushtx(signedRawTransaction, function(success) {
+          hollaback(success);
+        });
       } else {
         hollaback(false);
       }
     });
   };
 
+  MicroEvent.mixin(Wallet);
   Models.Wallet = Wallet;
   Models.wallet = new Wallet();
 })(BlockChainInfo, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.entropy, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);

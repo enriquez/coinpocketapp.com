@@ -1,16 +1,20 @@
-(function(pageHash, wallet, confirmationView, Controllers) {
+(function(pageHash, keyPair, wallet, confirmationView, Controllers) {
 
   function ConfirmationController() {
     var self = this;
 
     self.showOrHide(pageHash.currentPage);
-    pageHash.bind('pageHash.pageChanged', self.showOrHide);
+    pageHash.bind('pageHash.pageChanged', self.showOrHide.bind(self));
     confirmationView.bind('sendButton.click', self.sendButtonClicked.bind(self));
   }
 
   ConfirmationController.prototype.showOrHide = function(pageParams) {
     if (pageParams.page === '#/confirmation') {
-      confirmationView.show();
+      if (this.transaction) {
+        confirmationView.show();
+      } else {
+        pageHash.goTo("#/");
+      }
     } else {
       confirmationView.hide();
     }
@@ -22,17 +26,23 @@
   };
 
   ConfirmationController.prototype.sendButtonClicked = function($form) {
+    var self = this;
     var password = confirmationView.$passwordInput.val();
-    //TODO: show loading
-    wallet.sendTransaction(password, this.transaction, function(success) {
+    confirmationView.loading();
+    wallet.sendTransaction(password, self.transaction, function(success) {
+      self.transaction = null;
       if (success) {
-        console.log('sent!');
+        wallet.fetchUnspentOutputs(keyPair.bitcoinAddress, function() {
+          pageHash.goTo("#/");
+        });
       } else {
-        console.log('failed');
+        confirmationView.validationMessage('Error sending transaction');
       }
+
+      confirmationView.doneLoading();
     });
   };
 
   Controllers.confirmationController = new ConfirmationController();
 
-})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.wallet, CoinPocketApp.Views.confirmationView, CoinPocketApp.Controllers);
+})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.wallet, CoinPocketApp.Views.confirmationView, CoinPocketApp.Controllers);

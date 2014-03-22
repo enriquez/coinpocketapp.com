@@ -30,7 +30,20 @@ var BlockChainInfo = (function(self, $) {
 
   self.pushtx = function(tx, hollaback) {
     var url = 'http://blockchain.info/pushtx',
-        postData = 'tx=' + tx;
+        postData = 'tx=' + tx,
+        htmlpostUrl = document.location.protocol + "//" + document.location.host + '/htmlpost.xml';
+    var yql = 'use "' + htmlpostUrl + '" as htmlpost; select * from htmlpost where url="' + url + '" and postdata="' + postData + '" and xpath="//p"';
+    var yahooapiUrl = 'https://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent(yql);
+
+    $.ajax({
+      url: yahooapiUrl,
+      success: function(res) {
+        hollaback(true);
+      },
+      error: function(xhr, opt, err) {
+        hollaback(false);
+      }
+    });
   };
 
   function WS() {

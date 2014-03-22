@@ -213,6 +213,11 @@ describe("Bitcoin", function() {
             .toEqual("00e1f50500000000");
         });
 
+        it("returns 3075000000000000 given 0.0003", function() {
+          expect(transaction._btcTo8ByteLittleEndianHex(0.0003))
+            .toEqual("3075000000000000");
+        });
+
       });
 
       describe("_bitcoinAddressToPubKeyHash", function() {
