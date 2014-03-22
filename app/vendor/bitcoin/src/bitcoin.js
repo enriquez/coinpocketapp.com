@@ -246,24 +246,8 @@ Bitcoin.Transaction.prototype.sign = function(privateKeyExponent, publicKeyX, pu
     var transactionForSigning = this.rawHex(inputs) + '01000000';
 
     var doubleHashed = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(sjcl.codec.hex.toBits(transactionForSigning)));
-    var signature = sjcl.codec.hex.fromBits(secretKey.sign(doubleHashed, 10));
-    var coordinateLength = signature.length / 2;
 
-    var rCoordinate = signature.substr(0, coordinateLength);
-    var sCoordinate = signature.substr(coordinateLength);
-
-    if (parseInt(rCoordinate.substr(0, 2), 16) >= 0x7f) {
-      rCoordinate = "00" + rCoordinate;
-    }
-
-    if (parseInt(sCoordinate.substr(0, 2), 16) >= 0x7f) {
-      sCoordinate = "00" + sCoordinate;
-    }
-
-    var signatureR = '02' + (rCoordinate.length / 2).toString(16) + rCoordinate;
-    var signatureS = '02' + (sCoordinate.length / 2).toString(16) + sCoordinate;
-
-    var signatureDER = '30' + ((signatureR.length + signatureS.length) / 2).toString(16) + signatureR + signatureS + '01';
+    var signatureDER = sjcl.codec.hex.fromBits(secretKey.signDER(doubleHashed, 10)) + '01';
 
     var scriptSig = this._byteLength(signatureDER) + signatureDER + '41' + publicKey;
 
