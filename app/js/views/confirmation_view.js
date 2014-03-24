@@ -23,6 +23,7 @@
     this.$container.hide();
     this.clearValidations();
     this.doneLoading();
+    this.$passwordInput.val('');
   };
 
   ConfirmationView.prototype.loading = function() {

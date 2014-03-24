@@ -65,7 +65,11 @@ var buildAndSignRawTransaction = function(seed, password, keyPair, inputs, outpu
     var result = transaction.sign(privateKeyExponent, keyPair.publicKeyX, keyPair.publicKeyY);
     hollaback(result);
   } catch (e) {
-    hollaback('');
+    if (e instanceof sjcl.exception.corrupt) {
+      hollaback({ error: 'Invalid Password' });
+    } else {
+      hollaback({ error: 'Error: ' + e.message });
+    }
   }
 }
 

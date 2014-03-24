@@ -125,30 +125,61 @@
         result.errorForTransactionFee = "Transaction Fee must be a number";
       } else if (transactionFee && parseFloat(transactionFee) < 0.00000001) {
         result.errorForTransactionFee = "Transaction Fee must be greater than 0.00000001 BTC";
+      } else if (parseFloat(amount) > self.balanceBTC()) {
+        result.errorMessage = 'Insufficient funds';
+      } else if (transactionFee && parseFloat(amount) + parseFloat(transactionFee) > self.balanceBTC()) {
+        result.errorMessage = 'Insufficient funds';
       } else {
         result.isValid = true;
 
-        result.inputs = self.selectCoins({
-          amountBTC: amount,
-          minerFeeBTC: transactionFee
-        });
+        function buildInputsAndOuptuts(amount, transactionFee) {
+          result.inputs = [];
+          result.outputs = [];
 
-        result.outputs = [
-          { address: toAddress, amount: parseFloat(amount) }
-        ];
+          result.inputs = self.selectCoins({
+            amountBTC: amount,
+            minerFeeBTC: transactionFee
+          });
 
-        var totalInputs = 0.0;
-        for (var i=0; i<result.inputs.length; i++) {
-          var input = result.inputs[i];
-          totalInputs += parseFloat(input.value);
+          result.outputs = [
+            { address: toAddress, amount: parseFloat(amount) }
+          ];
+
+          var totalInputs = 0.0;
+          for (var i=0; i<result.inputs.length; i++) {
+            var input = result.inputs[i];
+            totalInputs += parseFloat(input.value);
+          }
+
+          var changeAmount = totalInputs - self._btcToSatoshis(amount) - self._btcToSatoshis(transactionFee);
+          if (changeAmount > 0) {
+            result.outputs.push({
+              address: fromAddress,
+              amount: self._satoshisToBtc(changeAmount)
+            });
+          }
         }
 
-        var changeAmount = totalInputs - self._btcToSatoshis(amount) - self._btcToSatoshis(transactionFee);
-        if (changeAmount > 0) {
-          result.outputs.push({
-            address: fromAddress,
-            amount: self._satoshisToBtc(changeAmount)
-          });
+        if (transactionFee) {
+          buildInputsAndOuptuts(amount, transactionFee);
+        } else {
+          // default to 0.0001 miner fee
+          // this wallet is for small everyday spending amounts...
+          // it is unlikely the priority will be high enough to be free
+          var calculatedFee = 0.0001;
+          buildInputsAndOuptuts(amount, calculatedFee);
+
+          var sizeEstimate = 148 * result.inputs.length + 34 * result.outputs.length + 10;
+
+          if (sizeEstimate > 1000) {
+            calculatedFee = Math.ceil(sizeEstimate / 1000) * 0.0001;
+            buildInputsAndOuptuts(amount, calculatedFee);
+          }
+
+          if (result.inputs.length === 0) {
+            result.isValid = false;
+            result.errorMessage = 'Unable to create transaction with sufficient fees. Try lowering the amount by ' + calculatedFee + ' BTC';
+          }
         }
       }
 
@@ -157,13 +188,14 @@
   };
 
   Wallet.prototype.sendTransaction = function(password, transaction, hollaback) {
-    bitcoinWorker.async('buildAndSignRawTransaction', [entropy.randomWords(32), password, keyPair, transaction.inputs, transaction.outputs], function(signedRawTransaction) {
-      if (signedRawTransaction) {
+    bitcoinWorker.async('buildAndSignRawTransaction', [entropy.randomWords(32), password, keyPair, transaction.inputs, transaction.outputs], function(result) {
+      if (result.error) {
+        hollaback(false, result.error);
+      } else {
+        var signedRawTransaction = result;
         BlockChainInfo.pushtx(signedRawTransaction, function(success) {
           hollaback(success);
         });
-      } else {
-        hollaback(false);
       }
     });
   };

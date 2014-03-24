@@ -29,17 +29,16 @@
     var self = this;
     var password = confirmationView.$passwordInput.val();
     confirmationView.loading();
-    wallet.sendTransaction(password, self.transaction, function(success) {
-      self.transaction = null;
+    wallet.sendTransaction(password, self.transaction, function(success, errorMessage) {
       if (success) {
         wallet.fetchUnspentOutputs(keyPair.bitcoinAddress, function() {
           pageHash.goTo("#/");
+          self.transaction = null;
         });
       } else {
-        confirmationView.validationMessage('Error sending transaction');
+        confirmationView.validationMessage(errorMessage);
+        confirmationView.doneLoading();
       }
-
-      confirmationView.doneLoading();
     });
   };
 
