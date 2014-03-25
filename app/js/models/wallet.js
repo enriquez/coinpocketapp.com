@@ -103,6 +103,34 @@
     return selectedCoins;
   };
 
+  Wallet.prototype._buildInputsAndOuptuts = function(obj, toAddress, fromAddress, amount, transactionFee) {
+    obj.inputs = [];
+    obj.outputs = [];
+
+    obj.inputs = this.selectCoins({
+      amountBTC: amount,
+      minerFeeBTC: transactionFee
+    });
+
+    obj.outputs = [
+      { address: toAddress, amount: parseFloat(amount) }
+    ];
+
+    var totalInputs = 0.0;
+    for (var i=0; i<obj.inputs.length; i++) {
+      var input = obj.inputs[i];
+      totalInputs += parseFloat(input.value);
+    }
+
+    var changeAmount = totalInputs - this._btcToSatoshis(amount) - this._btcToSatoshis(transactionFee);
+    if (changeAmount > 0) {
+      obj.outputs.push({
+        address: fromAddress,
+        amount: this._satoshisToBtc(changeAmount)
+      });
+    }
+  };
+
   Wallet.prototype.buildTransaction = function(fromAddress, opts, hollaback) {
     var toAddress = opts.address,
         amount = opts.amount,
@@ -132,42 +160,14 @@
       } else {
         result.isValid = true;
 
-        function buildInputsAndOuptuts(amount, transactionFee) {
-          result.inputs = [];
-          result.outputs = [];
-
-          result.inputs = self.selectCoins({
-            amountBTC: amount,
-            minerFeeBTC: transactionFee
-          });
-
-          result.outputs = [
-            { address: toAddress, amount: parseFloat(amount) }
-          ];
-
-          var totalInputs = 0.0;
-          for (var i=0; i<result.inputs.length; i++) {
-            var input = result.inputs[i];
-            totalInputs += parseFloat(input.value);
-          }
-
-          var changeAmount = totalInputs - self._btcToSatoshis(amount) - self._btcToSatoshis(transactionFee);
-          if (changeAmount > 0) {
-            result.outputs.push({
-              address: fromAddress,
-              amount: self._satoshisToBtc(changeAmount)
-            });
-          }
-        }
-
         if (transactionFee) {
-          buildInputsAndOuptuts(amount, transactionFee);
+          self._buildInputsAndOuptuts(result, toAddress, fromAddress, amount, transactionFee);
         } else {
           // default to 0.0001 miner fee
           // this wallet is for small everyday spending amounts...
           // it is unlikely the priority will be high enough to be free
           var calculatedFee = 0.0001;
-          buildInputsAndOuptuts(amount, calculatedFee);
+          self._buildInputsAndOuptuts(result, toAddress, fromAddress, amount, calculatedFee);
 
           var sizeEstimate = 148 * result.inputs.length + 34 * result.outputs.length + 10;
 

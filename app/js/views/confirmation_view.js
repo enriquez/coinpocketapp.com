@@ -76,7 +76,7 @@
     var totalInputValue = 0;
     for (var i=0; i<transaction.inputs.length; i++) {
       var input = transaction.inputs[i];
-      totalInputValue += input.value
+      totalInputValue += input.value;
     }
 
     totalInputValue = satoshiToBTC(totalInputValue);
@@ -90,7 +90,7 @@
       var address = output.address;
       if (address === changeAddress) {
         address = "Change";
-        changeAmount = output.amount
+        changeAmount = output.amount;
       }
       $output.attr('id', '');
       $output.addClass('confirmation-output');
@@ -105,13 +105,13 @@
 
     var minerFee = totalInputValue - totalOutputValue;
     if (minerFee > 0) {
-      var $output = this.$outputTemplate.clone();
-      $output.attr('id', '');
-      $output.addClass('confirmation-output');
-      $output.find('.confirmation-output-label').text('Miner Fee');
-      $output.find('.confirmation-output-amount').text(minerFee.toFixed(8) + " BTC");
-      this.$outputs.append($output);
-      $output.show();
+      var $minerFee = this.$outputTemplate.clone();
+      $minerFee.attr('id', '');
+      $minerFee.addClass('confirmation-output');
+      $minerFee.find('.confirmation-output-label').text('Miner Fee');
+      $minerFee.find('.confirmation-output-amount').text(minerFee.toFixed(8) + " BTC");
+      this.$outputs.append($minerFee);
+      $minerFee.show();
     }
 
     var netTransaction = totalOutputValue - changeAmount + minerFee;
