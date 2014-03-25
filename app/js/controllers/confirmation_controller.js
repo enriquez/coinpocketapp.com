@@ -22,6 +22,7 @@
 
   ConfirmationController.prototype.confirmTransaction = function(transaction) {
     this.transaction = transaction;
+    confirmationView.setTransaction(this.transaction, keyPair.bitcoinAddress);
     pageHash.goTo("#/confirmation");
   };
 

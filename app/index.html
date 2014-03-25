@@ -103,11 +103,68 @@
           <div id="confirmation" class="content row">
             <div class="col-xs-12">
 
-                <div class="row">
-                  <div class="col-xs-12">
-                    <p>TODO: transaction summary here</p>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <div class="row">
+                    <div class="col-xs-8 panel-title text-left">Sending <span id="confirmation-summary-btc"></span></div>
+                    <div class="col-xs-4 text-right"><a class="toggle-panel" href="#">show details</a></div>
                   </div>
                 </div>
+
+                <div class="panel-body" style="display:none">
+                  <div class="row">
+                    <div class="col-xs-7 text-left">
+                      <p>Total Inputs</p>
+                    </div>
+                    <div class="col-xs-5 text-right">
+                      <p id="confirmation-total-inputs"></p>
+                    </div>
+                  </div>
+                  <hr/>
+
+                  <div id="confirmation-outputs">
+                    <div id="confirmation-output-template" class="row" style="display:none">
+                      <div class="col-xs-7 text-left">
+                        <p class="confirmation-output-label overflow-ellipsis"></p>
+                      </div>
+                      <div class="col-xs-5 text-right">
+                        <p class="confirmation-output-amount"></p>
+                      </div>
+                    </div>
+                    <!-- <div class="row"> -->
+                    <!--   <div class="col&#45;xs&#45;7 text&#45;left"> -->
+                    <!--     <p>Miner Fee</p> -->
+                    <!--   </div> -->
+                    <!--   <div class="col&#45;xs&#45;5 text&#45;right"> -->
+                    <!--     <p>0.00010000 BTC</p> -->
+                    <!--   </div> -->
+                    <!-- </div> -->
+                    <!-- <div class="row"> -->
+                    <!--   <div class="col&#45;xs&#45;7 text&#45;left"> -->
+                    <!--     <p>Change</p> -->
+                    <!--   </div> -->
+                    <!--   <div class="col&#45;xs&#45;5 text&#45;right"> -->
+                    <!--     <p>0.00082400 BTC</p> -->
+                    <!--   </div> -->
+                    <!-- </div> -->
+                  </div>
+
+                  <hr>
+                  <div class="row">
+                    <div class="col-xs-7 text-left">
+                      <p>Net Transaction</p>
+                    </div>
+                    <div class="col-xs-5 text-right">
+                      <p id="confirmation-net-transaction-btc"></p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <hr>
+
+              <p>Enter your password below to send this transaction.</p>
 
               <form id="confirmation-form" role="form">
 

@@ -101,6 +101,11 @@ input[type="password"] {
   margin-top: 0;
 }
 
+.overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 footer {
   margin-top: 10px;
 }
