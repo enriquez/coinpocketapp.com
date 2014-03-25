@@ -97,6 +97,14 @@ input[type="password"] {
   right: 6px;
 }
 
+.transaction table {
+  margin-bottom: 0;
+}
+
+.transaction td hr {
+  margin: 5px 0;
+}
+
 .page-header {
   margin-top: 0;
 }

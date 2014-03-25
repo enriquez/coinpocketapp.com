@@ -7,6 +7,8 @@
     self.time = attrs.time * 1000;
     self.blockHeight = attrs.block_height;
     self.amountDelta = 0;
+    self.inputs = [];
+    self.outputs = [];
 
     // add credits
     for (var j=0; j<attrs.out.length; j++) {
@@ -14,6 +16,7 @@
       if (output.addr === address) {
         self.amountDelta += parseInt(output.value);
       }
+      self.outputs.push(output);
     }
 
     // subtract debits
@@ -22,6 +25,7 @@
       if (input.addr === address) {
         self.amountDelta -= parseInt(input.value);
       }
+      self.inputs.push(input);
     }
 
   }
