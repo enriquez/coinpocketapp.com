@@ -193,6 +193,7 @@
         hollaback(false, result.error);
       } else {
         var signedRawTransaction = result;
+        console.log(signedRawTransaction);
         BlockChainInfo.pushtx(signedRawTransaction, function(success) {
           hollaback(success);
         });

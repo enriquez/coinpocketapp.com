@@ -237,9 +237,9 @@ Bitcoin.Transaction.prototype.sign = function(privateKeyExponent, publicKeyX, pu
     var inputs = '';
     for (var j=0; j < this.inputs.length; j++) {
       if (i === j) {
-        inputs += this.inputs[i].rawHex();
+        inputs += this.inputs[j].rawHex();
       } else {
-        inputs += this.inputs[i].rawHex('');
+        inputs += this.inputs[j].rawHex('');
       }
     }
 

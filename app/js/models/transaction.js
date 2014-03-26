@@ -60,6 +60,7 @@
       }
 
       if (self.length === 0 && recentTransactions.length > 0) {
+        localStorage.setItem('hasTransactions', 'true');
         self.trigger('transactions.updated', recentTransactions);
       }
 
@@ -78,7 +79,7 @@
   };
 
   transactions.any = function() {
-    return this.length > 0;
+    return localStorage.getItem('hasTransactions') === 'true';
   };
 
   MicroEvent.mixin(transactions);
