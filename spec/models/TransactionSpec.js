@@ -117,19 +117,6 @@ describe("Transaction", function() {
 
   });
 
-  describe("transactions#any", function() {
-
-    it("has no transacitons", function() {
-      expect(transactions.any()).toBe(false);
-    });
-
-    it("has transactions", function() {
-      transactions.push({});
-      expect(transactions.any()).toBe(true);
-    });
-
-  });
-
   describe("transactions.updated event", function() {
     var transactions = CoinPocketApp.Models.transactions;
 
