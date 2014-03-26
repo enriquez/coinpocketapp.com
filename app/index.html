@@ -355,13 +355,44 @@
               <p>Your Bitcoins are encrypted and stored in your browser's local storage.</p>
               <p>Choose a password that will be used to encrypt your private keys. You will be asked for this password everytime you send Bitcoins.</p>
                 <div id="welcome-modal-password-group" class="form-group">
-                  <label class="control-label" for="password">Password</label>
+                  <label class="control-label" for="password">Password (at least 4 characters)</label>
                   <input type="password" class="form-control" id="password" name="password">
                 </div>
                 <div id="welcome-modal-password-confirmation-group" class="form-group">
                   <label class="control-label" for="password-confirmation">Password Confirmation</label>
                   <input type="password" class="form-control" id="password-confirmation" name="password-confirmation">
                 </div>
+
+                <p><strong>Please check and understand the following statements</strong></p>
+
+                <div class="form-group">
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="statements"> If I forget my password, I will lose my Bitcoins.
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="statements"> If the local storage data in this browser for coinpocketapp.com gets cleared, I will lose my Bitcoins.
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="statements"> If this device gets lost or stolen, I will lose my Bitcoins.
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="statements"> If an attacker gains physical access to this device, I may lose my Bitcoins.
+                    </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="statements"> If the software on this device is compromised, I may lose my Bitcoins.
+                    </label>
+                  </div>
+                </div>
+
                 <div class="form-group">
                   <label class="control-label" for="entropy">Entropy Level (Randomness)</label>
                   <div class="progress progress-striped active">
@@ -369,7 +400,9 @@
                       <span></span>
                     </div>
                   </div>
+                  <span class="help-block">Move your device around. Data from your device's accelerometers (and other sources) is collected to generate your keys.</span>
                 </div>
+
             </div>
             <div class="modal-footer">
               <span id="welcome-modal-validation-message" class="text-danger"></span>&nbsp;

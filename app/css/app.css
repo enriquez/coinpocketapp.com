@@ -118,6 +118,10 @@ input[type="password"] {
   text-overflow: ellipsis;
 }
 
+.progress {
+  margin-bottom: 5px;
+}
+
 footer {
   margin-top: 10px;
 }

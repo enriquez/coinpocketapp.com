@@ -73,6 +73,7 @@
   WelcomeModalView.prototype.loading = function() {
     this.$passwordInput.prop('disabled', true);
     this.$passwordConfirmationInput.prop('disabled', true);
+    this.$container.find('input[type=checkbox]').prop('disabled', true);
     this.$submitButton.button('loading');
   };
 
