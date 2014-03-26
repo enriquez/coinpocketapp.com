@@ -1,7 +1,9 @@
 (function(keyPair, mainView, Controllers) {
 
   function MainController() {
-    if (!keyPair.isGenerated) {
+    if (keyPair.isGenerated) {
+      mainView.show();
+    } else {
       mainView.hide();
       keyPair.bind('keyPair.generate', function() {
         mainView.show();

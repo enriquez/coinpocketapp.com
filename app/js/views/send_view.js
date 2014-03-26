@@ -13,6 +13,13 @@
     self.$validationMessage = $("#send-validation-message");
 
     $("#scancode-button").scancode();
+    $("[data-confirm]").click(function(e) {
+      e.preventDefault();
+      var message = $(this).data('confirm');
+      if (confirm(message)) {
+        document.location = $(this).attr('href');
+      }
+    });
 
     self.$sendButton.click(function(e) {
       e.preventDefault();
