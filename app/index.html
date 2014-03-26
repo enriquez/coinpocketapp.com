@@ -15,20 +15,22 @@
 
     <div class="container">
       <div class="row">
-        <div id="main" class="col-sm-6 col-sm-offset-3">
+        <div id="main" class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
 
-          <div id="balance-container" class="row">
-            <div class="col-sm-12">
-              <h2 id="balance" class="text-center"><span data-btc="0">loading...</span></h2>
+          <div class="bg-primary">
+            <div id="balance-container" class="row">
+              <div class="col-sm-12">
+                <h2 id="balance" class="text-center"><span data-btc="0">loading...</span></h2>
+              </div>
             </div>
-          </div>
 
-          <div id="button-container" class="row">
-            <div id="send-button" class="col-xs-6">
-              <a href="#/send">Send</a>
-            </div>
-            <div id="receive-button" class="col-xs-6">
-              <a href="#/receive" class="pull-right">Receive</a>
+            <div id="button-container" class="row">
+              <div id="send-button" class="col-xs-6">
+                <a href="#/send">Send</a>
+              </div>
+              <div id="receive-button" class="col-xs-6">
+                <a href="#/receive" class="pull-right">Receive</a>
+              </div>
             </div>
           </div>
 
@@ -114,10 +116,10 @@
 
                 <div class="panel-body" style="display:none">
                   <div class="row">
-                    <div class="col-xs-7 text-left">
+                    <div class="col-xs-6 text-left">
                       <p>Total Inputs</p>
                     </div>
-                    <div class="col-xs-5 text-right">
+                    <div class="col-xs-6 text-right">
                       <p id="confirmation-total-inputs"></p>
                     </div>
                   </div>
@@ -125,10 +127,10 @@
 
                   <div id="confirmation-outputs">
                     <div id="confirmation-output-template" class="row" style="display:none">
-                      <div class="col-xs-7 text-left">
+                      <div class="col-xs-6 text-left">
                         <p class="confirmation-output-label overflow-ellipsis"></p>
                       </div>
-                      <div class="col-xs-5 text-right">
+                      <div class="col-xs-6 text-right">
                         <p class="confirmation-output-amount"></p>
                       </div>
                     </div>
@@ -152,10 +154,10 @@
 
                   <hr>
                   <div class="row">
-                    <div class="col-xs-7 text-left">
+                    <div class="col-xs-6 text-left">
                       <p>Net Transaction</p>
                     </div>
-                    <div class="col-xs-5 text-right">
+                    <div class="col-xs-6 text-right">
                       <p id="confirmation-net-transaction-btc"></p>
                     </div>
                   </div>
@@ -222,11 +224,11 @@
           <div id="transactions" data-current-block-height="">
 
             <div id="transaction-template" class="content transaction row" data-tx-id='0' style="display:none">
-              <div class="col-xs-6 transaction-preview" data-time="">
+              <div class="col-xs-4 transaction-preview" data-time="">
                 <span class="date"></span><br>
                 <span class="time"></span>
               </div>
-              <div class="col-xs-6 transaction-preview text-right">
+              <div class="col-xs-8 transaction-preview text-right">
                 <span class="value" data-btc=""></span>
                 <span class="confirmations" data-block-height=""></span>
               </div>
@@ -250,14 +252,14 @@
                     <td colspan="2" class="transaction-inputs">
 
                       <div class="inputs-row-template" style="display:none">
-                        <div class="text-left col-xs-8 overflow-ellipsis inputs-address"></div>
-                        <div class="text-right col-xs-4 inputs-btc"></div>
+                        <div class="text-left col-xs-7 col-sm-8 overflow-ellipsis inputs-address"></div>
+                        <div class="text-right col-xs-5 col-sm-4 inputs-btc"></div>
                       </div>
 
                       <div class="col-xs-12"><hr></div>
 
-                      <div class="text-left col-xs-8">Total Inputs</div>
-                      <div class="text-right col-xs-4 total-inputs-btc"></div>
+                      <div class="text-left col-xs-7 col-sm-8">Total Inputs</div>
+                      <div class="text-right col-xs-5 col-sm-4 total-inputs-btc"></div>
 
                     </td>
                   </tr>
@@ -271,14 +273,14 @@
                     <td colspan="2" class="transaction-outputs">
 
                       <div class="outputs-row-template" style="display:none">
-                        <div class="text-left col-xs-8 overflow-ellipsis outputs-address"></div>
-                        <div class="text-right col-xs-4 outputs-btc"></div>
+                        <div class="text-left col-xs-7 col-sm-8 overflow-ellipsis outputs-address"></div>
+                        <div class="text-right col-xs-5 col-sm-4 outputs-btc"></div>
                       </div>
 
                       <div class="col-xs-12"><hr></div>
 
-                      <div class="text-left col-xs-8">Total Outputs</div>
-                      <div class="text-right col-xs-4 total-outputs-btc"></div>
+                      <div class="text-left col-xs-7 col-sm-8">Total Outputs</div>
+                      <div class="text-right col-xs-5 col-sm-4 total-outputs-btc"></div>
 
                     </td>
                   </tr>
