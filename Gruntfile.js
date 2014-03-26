@@ -13,10 +13,10 @@ module.exports = function(grunt) {
         'app/vendor/sjcl/core/random.js',
         'app/vendor/js/qrcode.js',
         'app/vendor/js/scancode.js',
+        'app/vendor/js/format_btc.js',
+        'app/vendor/js/format_confirmations.js',
         'app/vendor/js/format_date.js',
-        'app/vendor/blockchaininfo/src/blockchaininfo.js',
-      ]
-    },
+        'app/vendor/blockchaininfo/src/blockchaininfo.js', ] },
     source: function() {
       return [
         'app/js/coinpocketapp.js',
