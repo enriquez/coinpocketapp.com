@@ -105,6 +105,10 @@ input[type="password"] {
   margin: 5px 0;
 }
 
+.transaction-preview:hover {
+  cursor: pointer;
+}
+
 .page-header {
   margin-top: 0;
 }

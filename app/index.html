@@ -19,7 +19,7 @@
 
           <div id="balance-container" class="row">
             <div class="col-sm-12">
-              <h2 id="balance" class="text-center"><span data-btc="0">0 BTC</span></h2>
+              <h2 id="balance" class="text-center"><span data-btc="0">&nbsp;</span></h2>
             </div>
           </div>
 
@@ -222,73 +222,69 @@
           <div id="transactions" data-current-block-height="">
 
             <div id="transaction-template" class="content transaction row" data-tx-id='0' style="display:none">
-              <div class="col-xs-6" data-time="">
+              <div class="col-xs-6 transaction-preview" data-time="">
                 <span class="date"></span><br>
                 <span class="time"></span>
               </div>
-              <div class="col-xs-6 text-right">
+              <div class="col-xs-6 transaction-preview text-right">
                 <span class="value" data-btc=""></span>
                 <span class="confirmations" data-block-height=""></span>
               </div>
 
-
-              <table class="table col-xs-12" style="display: block">
+              <table class="table table-condensed transaction-details" style="display:none">
                 <tbody>
                   <tr>
                     <td><strong>Confirmations</strong></td>
-                    <td class="text-right">1023</td>
+                    <td class="text-right" data-block-height=""></td>
                   </tr>
                   <tr>
                     <td><strong>Miner Fee</strong></td>
-                    <td class="text-right">0.0001 BTC</td>
+                    <td class="text-right transaction-fee"></td>
                   </tr>
                   <tr>
                     <td><strong>Inputs</strong></td>
-                    <td class="text-right"><a href="#">hide</a></td>
+                    <td class="text-right"><a class="toggle-input-row" href="#">show</a></td>
                   </tr>
 
-                  <tr>
-                    <td colspan="2">
+                  <tr class="inputs-row" style="display:none">
+                    <td colspan="2" class="transaction-inputs">
 
-                      <div class="text-left col-xs-8 overflow-ellipsis">149d3fKVVfvktPQ7mGbK5g7HU7a5WiSpAb</div>
-                      <div class="text-right col-xs-4">0.01000000 BTC</div>
-                      <div class="text-left col-xs-8 overflow-ellipsis">1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH</div>
-                      <div class="text-right col-xs-4">1.00000000 BTC</div>
+                      <div class="inputs-row-template" style="display:none">
+                        <div class="text-left col-xs-8 overflow-ellipsis inputs-address"></div>
+                        <div class="text-right col-xs-4 inputs-btc"></div>
+                      </div>
 
                       <div class="col-xs-12"><hr></div>
 
                       <div class="text-left col-xs-8">Total Inputs</div>
-                      <div class="text-right col-xs-4">1.00000000 BTC</div>
-
+                      <div class="text-right col-xs-4 total-inputs-btc"></div>
 
                     </td>
                   </tr>
 
                   <tr>
                     <td><strong>Outputs</strong></td>
-                    <td class="text-right"><a href="#">hide</a></td>
+                    <td class="text-right"><a class="toggle-output-row" href="#">show</a></td>
                   </tr>
 
-                  <tr>
-                    <td colspan="2">
+                  <tr class="outputs-row" style="display:none">
+                    <td colspan="2" class="transaction-outputs">
 
-                      <div class="text-left col-xs-8 overflow-ellipsis">149d3fKVVfvktPQ7mGbK5g7HU7a5WiSpAb</div>
-                      <div class="text-right col-xs-4">0.01000000 BTC</div>
-                      <div class="text-left col-xs-8 overflow-ellipsis">1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH</div>
-                      <div class="text-right col-xs-4">1.00000000 BTC</div>
+                      <div class="outputs-row-template" style="display:none">
+                        <div class="text-left col-xs-8 overflow-ellipsis outputs-address"></div>
+                        <div class="text-right col-xs-4 outputs-btc"></div>
+                      </div>
 
                       <div class="col-xs-12"><hr></div>
 
                       <div class="text-left col-xs-8">Total Outputs</div>
-                      <div class="text-right col-xs-4">1.00000000 BTC</div>
+                      <div class="text-right col-xs-4 total-outputs-btc"></div>
 
                     </td>
                   </tr>
 
                 </tbody>
               </table>
-
-
 
             </div>
 

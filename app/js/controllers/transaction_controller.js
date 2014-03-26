@@ -6,13 +6,7 @@
     var updateTransactions = function(newTransactions) {
       for (var i = 0; i < newTransactions.length; i++) {
         var transaction = newTransactions[i];
-        console.log(transaction);
-        transactionsView.insertTransaction(
-          transaction.id,
-          transaction.amountDeltaBTC(),
-          transaction.time,
-          transaction.blockHeight
-        );
+        transactionsView.insertTransaction(transaction);
       }
     };
 
