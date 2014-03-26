@@ -42,7 +42,7 @@
 
             <div class="col-xs-12">
               <hr/>
-              <form role="form">
+              <form role="form" action="#/confirmation">
 
                 <div class="row">
                   <div class="col-xs-12">
@@ -91,7 +91,7 @@
                     <a href="#/" class="btn btn-default btn-block">Cancel</a>
                   </div>
                   <div class="col-xs-6">
-                    <a href="#/confirmation" id="next-button" class="btn btn-primary btn-block">Next</a>
+                    <button id="next-button" class="btn btn-primary btn-block">Next</button>
                   </div>
                   <div class="col-xs-12 text-right">
                     <span id="send-validation-message" class="text-danger"></span>
@@ -169,7 +169,7 @@
 
               <p>Enter your password below to send this transaction.</p>
 
-              <form id="confirmation-form" role="form">
+              <form id="confirmation-form" role="form" action="#/confirmation">
 
                 <div class="row">
                   <div class="col-xs-12">
@@ -215,8 +215,8 @@
 
           <div id="empty-state" class="content row">
             <div class="col-xs-12">
-              <div class="page-header"><h2>Coin Pocket App <small>Bitcoin Wallet</small></h2></div>
-              <p>Thanks for trying Coin Pocket App!</p>
+              <div class="page-header"><h2>Coin Pocket <small>Mobile Bitcoins</small></h2></div>
+              <p>Thanks for trying Coin Pocket!</p>
               <p>Get started by funding this wallet. Hit the "Receive" button above to get this wallet's address.</p>
             </div>
           </div>
@@ -341,34 +341,35 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Welcome to Coin Pocket App</h4>
+            <h4 class="modal-title" id="myModalLabel">Welcome to Coin Pocket</h4>
           </div>
-          <div class="modal-body">
-            <p>Your Bitcoins are encrypted and stored in your browser's local storage.</p>
-            <p>Choose a password that will be used to encrypt your private keys. You will be asked for this password everytime you send Bitcoins.</p>
-            <form id="welcome-modal-form" role="form">
-              <div id="welcome-modal-password-group" class="form-group">
-                <label class="control-label" for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password">
-              </div>
-              <div id="welcome-modal-password-confirmation-group" class="form-group">
-                <label class="control-label" for="password-confirmation">Password Confirmation</label>
-                <input type="password" class="form-control" id="password-confirmation" name="password-confirmation">
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="entropy">Entropy Level (Randomness)</label>
-                <div class="progress progress-striped active">
-                  <div id="welcome-modal-entropy" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1">
-                    <span></span>
+          <form id="welcome-modal-form" role="form" action="#">
+            <div class="modal-body">
+              <p>Your Bitcoins are encrypted and stored in your browser's local storage.</p>
+              <p>Choose a password that will be used to encrypt your private keys. You will be asked for this password everytime you send Bitcoins.</p>
+                <div id="welcome-modal-password-group" class="form-group">
+                  <label class="control-label" for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <div id="welcome-modal-password-confirmation-group" class="form-group">
+                  <label class="control-label" for="password-confirmation">Password Confirmation</label>
+                  <input type="password" class="form-control" id="password-confirmation" name="password-confirmation">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="entropy">Entropy Level (Randomness)</label>
+                  <div class="progress progress-striped active">
+                    <div id="welcome-modal-entropy" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1">
+                      <span></span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <span id="welcome-modal-validation-message" class="text-danger"></span>&nbsp;
-            <button id="welcome-modal-continue" type="button" class="btn btn-primary" data-loading-text="Loading...">Continue</button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <span id="welcome-modal-validation-message" class="text-danger"></span>&nbsp;
+              <button id="welcome-modal-continue" class="btn btn-primary" data-loading-text="Loading...">Continue</button>
+            </div>
+          </form>
+
         </div>
       </div>
     </div>

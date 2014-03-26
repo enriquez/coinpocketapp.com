@@ -145,6 +145,8 @@
         result.errorForAddress = "Address can't be blank";
       } else if (!isAddressValid) {
         result.errorForAddress = "Address is invalid";
+      } else if (!amount) {
+        result.errorForAmount = "Amount can't be blank";
       } else if (/\D$/.test(amount)) {
         result.errorForAmount = "Amount must be a number";
       } else if (parseFloat(amount) < 0.00000001) {

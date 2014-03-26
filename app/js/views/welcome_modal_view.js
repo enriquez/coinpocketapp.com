@@ -21,7 +21,8 @@
       self.trigger('passwordConfirmationInput.change', self.$passwordConfirmationInput);
     });
 
-    self.$submitButton.click(function() {
+    self.$submitButton.click(function(e) {
+      e.preventDefault();
       self.trigger('submitButton.click', self.$form);
     });
   }

@@ -21,6 +21,11 @@
       self.trigger('sendButton.click', self.$form);
     });
 
+    self.$form.submit(function(e) {
+      e.preventDefault();
+      self.trigger('sendButton.click', self.$form);
+    });
+
     $(".toggle-panel").click(function(e) {
       e.preventDefault();
       var $panelBody = self.$container.find(".panel-body");
