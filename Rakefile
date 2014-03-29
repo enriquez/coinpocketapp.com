@@ -31,17 +31,17 @@ class FileList
     Dir.glob(File.join(SPEC_ROOT, '/**/*Spec.js')) - worker_specs
   end
 
-  def worker_scripts
-    [WORKER_JS]
+  def worker_script
+    WORKER_JS
   end
 
-  def worker_source_scripts
-    import_scripts_stub = [File.join(SPEC_ROOT, '/helpers/WorkerHelper.js')]
-    imported_scripts = FrontEndTasks.list_scripts(WORKER_JS, DEV_ROOT)
-    worker_script = [WORKER_JS]
+  # def worker_source_scripts
+  #   import_scripts_stub = [File.join(SPEC_ROOT, '/helpers/WorkerHelper.js')]
+  #   imported_scripts = FrontEndTasks.list_scripts(WORKER_JS, DEV_ROOT)
+  #   worker_script = [WORKER_JS]
 
-    import_scripts_stub + imported_scripts + worker_script
-  end
+  #   import_scripts_stub + imported_scripts + worker_script
+  # end
 
   def worker_specs
     Dir.glob(File.join(SPEC_ROOT, '/workers/**/*Spec.js'))
@@ -87,7 +87,7 @@ namespace :lint do
   end
 
   task :workers do
-    FrontEndTasks.lint(*file_list.worker_scripts)
+    FrontEndTasks.lint(file_list.worker_script)
   end
 
   task :bitcoin do
@@ -109,8 +109,8 @@ namespace :spec do
 
   task :workers do
     FrontEndTasks.spec({
-      :source_files => file_list.worker_source_scripts,
-      :helper_files => [],
+      :worker_file  => file_list.worker_script,
+      :public_root  => FileList::DEV_ROOT,
       :spec_files   => file_list.worker_specs,
       :port         => 8002
     })
@@ -119,7 +119,6 @@ namespace :spec do
   task :bitcoin do
     FrontEndTasks.spec({
       :source_files => file_list.bitcoin_scripts,
-      :helper_files => [],
       :spec_files   => file_list.bitcoin_specs,
       :port         => 8003
     })
