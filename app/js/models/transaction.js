@@ -14,7 +14,7 @@
     for (var j=0; j<attrs.out.length; j++) {
       var output = attrs.out[j];
       if (output.addr === address) {
-        self.amountDelta += parseInt(output.value);
+        self.amountDelta += parseInt(output.value, 10);
       }
       self.outputs.push(output);
     }
@@ -23,7 +23,7 @@
     for (var k=0; k<attrs.inputs.length; k++) {
       var input = attrs.inputs[k].prev_out;
       if (input.addr === address) {
-        self.amountDelta -= parseInt(input.value);
+        self.amountDelta -= parseInt(input.value, 10);
       }
       self.inputs.push(input);
     }

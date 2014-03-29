@@ -27,8 +27,8 @@ sjcl.ecc.ecdsa.secretKey.prototype.encodeDER = function(rs) {
   );
 
   return sjcl.codec.bytes.toBits(buffer);
-}
+};
 
 sjcl.ecc.ecdsa.secretKey.prototype.signDER = function(hash, paranoia) {
   return this.encodeDER(this.sign(hash, paranoia));
-}
+};

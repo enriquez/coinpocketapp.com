@@ -32,17 +32,17 @@ var seedGenerateAndEncryptKeys = function(seed, password, hollaback) {
 
     hollaback(keyPair);
   });
-}
+};
 
 var parseCode = function(code, hollaback) {
   var result = Bitcoin.parseCode(code);
   hollaback(result);
-}
+};
 
 var validateAddress = function(address, hollaback) {
   var result = Bitcoin.Address.validate(address);
   hollaback(result);
-}
+};
 
 var buildAndSignRawTransaction = function(seed, password, keyPair, inputs, outputs, hollaback) {
   if (seed.length < 32) throw "Seed must be 32 words";
@@ -71,7 +71,7 @@ var buildAndSignRawTransaction = function(seed, password, keyPair, inputs, outpu
       hollaback({ error: 'Error: ' + e.message });
     }
   }
-}
+};
 
 var messageListener = function(e) {
   if (e.data) {
@@ -85,15 +85,15 @@ var messageListener = function(e) {
       var message = {
         id: id,
         result: result
-      }
+      };
 
-      self.postMessage(message)
+      self.postMessage(message);
     });
 
     if (typeof fn === "function") {
       fn.apply(null, params);
     }
   }
-}
+};
 
 self.addEventListener('message', messageListener);

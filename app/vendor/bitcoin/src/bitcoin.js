@@ -74,7 +74,7 @@ Bitcoin.parseCode = function(code) {
   }
 
   return out;
-}
+};
 
 Bitcoin.Transaction = function() {
   this.outputs = [];
@@ -104,17 +104,17 @@ Bitcoin.Transaction = function() {
     }
 
     return out;
-  }
+  };
 
   this._btcTo8ByteLittleEndianHex = function(btc) {
-    var amountInSatoshis = parseInt((btc * 100000000).toFixed(0));
+    var amountInSatoshis = parseInt((btc * 100000000).toFixed(0), 10);
     return this._bigToLittleEndian(amountInSatoshis.toString(16), 8);
-  }
+  };
 
   this._bitcoinAddressToPubKeyHash = function(address) {
     var addressHex = sjcl.codec.hex.fromBits(sjcl.codec.base58.toBits(address));
     return addressHex.substring(2, addressHex.length - 8);
-  }
+  };
 
   this._variableInt = function(integer) {
     var result = '';
@@ -133,13 +133,13 @@ Bitcoin.Transaction = function() {
     }
 
     return result;
-  }
+  };
 
   this._byteLength = function(hex) {
     return this._variableInt(hex.length / 2);
-  }
+  };
 
-}
+};
 
 Bitcoin.Transaction.prototype.addPayToPubKeyHashOutput = function(address, amount) {
   if (!Bitcoin.Address.validate(address)) {
@@ -151,7 +151,7 @@ Bitcoin.Transaction.prototype.addPayToPubKeyHashOutput = function(address, amoun
 
   var output = '';
 
-  var value = this._btcTo8ByteLittleEndianHex(amount)
+  var value = this._btcTo8ByteLittleEndianHex(amount);
 
   var script = '76a9'; // OP_DUP OP_HASH160
   var pubKeyHash = this._bitcoinAddressToPubKeyHash(address);
@@ -165,14 +165,14 @@ Bitcoin.Transaction.prototype.addPayToPubKeyHashOutput = function(address, amoun
   output += scriptLength;
   output += script;
   this.outputs.push(output);
-}
+};
 
 Bitcoin.Transaction.prototype.addInput = function(unspentOutput) {
   var self = this;
 
   var input = {
     hash: unspentOutput.tx_hash,
-    index: this._bigToLittleEndian(parseInt(unspentOutput.tx_output_n).toString(16), 4),
+    index: this._bigToLittleEndian(parseInt(unspentOutput.tx_output_n, 10).toString(16), 4),
     script: unspentOutput.script
   };
 
@@ -193,10 +193,10 @@ Bitcoin.Transaction.prototype.addInput = function(unspentOutput) {
     hex += 'ffffffff';
 
     return hex;
-  }
+  };
 
   this.inputs.push(input);
-}
+};
 
 Bitcoin.Transaction.prototype.rawHex = function(inputsOverride) {
   var rawHex = '';
@@ -218,15 +218,15 @@ Bitcoin.Transaction.prototype.rawHex = function(inputsOverride) {
   rawHex += this._variableInt(this.outputs.length);
 
   // outputs
-  for (var i=0; i < this.outputs.length; i++) {
-    rawHex += this.outputs[i];
+  for (var j=0; j < this.outputs.length; j++) {
+    rawHex += this.outputs[j];
   }
 
   // lock_time
   rawHex += '00000000';
 
   return rawHex;
-}
+};
 
 Bitcoin.Transaction.prototype.sign = function(privateKeyExponent, publicKeyX, publicKeyY) {
   var secretKey = new sjcl.ecc.ecdsa.secretKey(sjcl.ecc.curves.k256, sjcl.bn.fromBits(sjcl.codec.hex.toBits(privateKeyExponent)));
@@ -256,4 +256,4 @@ Bitcoin.Transaction.prototype.sign = function(privateKeyExponent, publicKeyX, pu
 
   var rawHex = this.rawHex(signedInputs);
   return rawHex;
-}
+};

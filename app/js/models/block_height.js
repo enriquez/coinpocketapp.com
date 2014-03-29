@@ -6,7 +6,7 @@
 
     self.socket = new BlockChainInfo.WebSocket();
     self.socket.onNewBlock(function(data) {
-      self.height = parseInt(data.x.height);
+      self.height = parseInt(data.x.height, 10);
       self.trigger('blockHeight.updated', self.height, data.x.txIndexes);
     });
   }

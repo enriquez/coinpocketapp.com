@@ -8,8 +8,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Bitcoin Wallet</title>
 
-    <link href="vendor/bootstrap-3.1.1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- build:style css/styles.min.css -->
+    <link href="vendor/bootstrap-3.1.1-dist/css/bootstrap.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
+    <!-- /build -->
+
   </head>
   <body>
 
@@ -48,7 +51,7 @@
             </div>
 
             <div class="col-xs-12">
-              <hr/>
+              <hr>
               <form role="form" action="#/confirmation">
 
                 <div class="row">
@@ -88,7 +91,7 @@
                         <span class="input-group-addon">&nbsp;BTC &nbsp;</span>
                       </div>
                     </div>
-                    <hr/>
+                    <hr>
                   </div>
                 </div>
 
@@ -130,7 +133,7 @@
                       <p id="confirmation-total-inputs"></p>
                     </div>
                   </div>
-                  <hr/>
+                  <hr>
 
                   <div id="confirmation-outputs">
                     <div id="confirmation-output-template" class="row" style="display:none">
@@ -184,7 +187,7 @@
                       <label for="password">Password</label>
                       <input type="password" class="form-control" id="confirmation-password" name="password">
                     </div>
-                    <hr/>
+                    <hr>
                   </div>
                 </div>
 
@@ -414,6 +417,7 @@
       </div>
     </div>
 
+    <!-- build:script js/scripts.min.js -->
     <script src="/vendor/js/jquery-1.11.0.js"></script>
     <script src="/vendor/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
     <script src="/vendor/js/microevent.js"></script>
@@ -453,5 +457,7 @@
     <script src="/js/controllers/receive_controller.js"></script>
     <script src="/js/controllers/transaction_controller.js"></script>
     <script src="/js/controllers/main_controller.js"></script>
+    <!-- /build -->
+
   </body>
 </html>
