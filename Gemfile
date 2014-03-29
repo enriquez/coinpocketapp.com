@@ -3,4 +3,4 @@ source 'https://rubygems.org'
 ruby '2.0.0'
 
 gem 'rake', '~> 10.1'
-gem "front_end_tasks", :path => '~/code/projects/front_end_tasks'
+gem "front_end_tasks", '~> 0.1.0'

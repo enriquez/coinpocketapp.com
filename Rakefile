@@ -35,14 +35,6 @@ class FileList
     WORKER_JS
   end
 
-  # def worker_source_scripts
-  #   import_scripts_stub = [File.join(SPEC_ROOT, '/helpers/WorkerHelper.js')]
-  #   imported_scripts = FrontEndTasks.list_scripts(WORKER_JS, DEV_ROOT)
-  #   worker_script = [WORKER_JS]
-
-  #   import_scripts_stub + imported_scripts + worker_script
-  # end
-
   def worker_specs
     Dir.glob(File.join(SPEC_ROOT, '/workers/**/*Spec.js'))
   end

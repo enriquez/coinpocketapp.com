@@ -1,7 +1,8 @@
-PATH
-  remote: ~/code/projects/front_end_tasks
+GEM
+  remote: https://rubygems.org/
   specs:
-    front_end_tasks (0.0.1)
+    execjs (2.0.2)
+    front_end_tasks (0.1.0)
       jasmine (~> 2.0.0)
       jshintrb (~> 0.2.4)
       nokogiri (~> 1.6.1)
@@ -9,11 +10,6 @@ PATH
       uglifier (~> 2.5.0)
       webrick (~> 1.3.1)
       yui-compressor (~> 0.12.0)
-
-GEM
-  remote: https://rubygems.org/
-  specs:
-    execjs (2.0.2)
     jasmine (2.0.0)
       jasmine-core (~> 2.0.0)
       phantomjs
@@ -43,5 +39,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  front_end_tasks!
+  front_end_tasks (~> 0.1.0)
   rake (~> 10.1)
