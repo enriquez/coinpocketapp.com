@@ -11,6 +11,12 @@ class FileList
   INDEX_HTML = File.join(DEV_ROOT, 'index.html')
   WORKER_JS  = File.join(DEV_ROOT, 'js/workers/bitcoin_worker.js')
 
+  ASSETS = [File.join(DEV_ROOT, 'htmlpost.xml')]
+
+  def base_files
+    [INDEX_HTML] + ASSETS
+  end
+
   def app_scripts
     FrontEndTasks.list_scripts(INDEX_HTML, DEV_ROOT)
   end
@@ -70,7 +76,20 @@ end
 file_list = FileList.new
 
 task :build => :clean do
-  FrontEndTasks.build(FileList::DEV_ROOT, FileList::BUILD_ROOT, FileList::INDEX_HTML)
+  FrontEndTasks.build(
+    FileList::DEV_ROOT,
+    FileList::BUILD_ROOT,
+    file_list.base_files
+  )
+end
+
+task :build_debug => :clean do
+  FrontEndTasks.build(
+    FileList::DEV_ROOT,
+    FileList::BUILD_ROOT,
+    file_list.base_files,
+    :js_concat_only => true
+  )
 end
 
 task :build_gzip => :build do
@@ -163,6 +182,10 @@ end
 task :spec => ['spec:app', 'spec:workers', 'spec:bitcoin']
 
 namespace :server do
+  task :debug => :build_debug do
+    FrontEndTasks.server(:public_dir => './build', :port => 8000)
+  end
+
   task :prod => :build_gzip do
     FrontEndTasks.server(:public_dir => './build', :port => 8000)
   end

@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     execjs (2.0.2)
-    front_end_tasks (0.2.0)
+    front_end_tasks (0.3.0)
       jasmine (~> 2.0.0)
       jshintrb (~> 0.2.4)
       nokogiri (~> 1.6.1)
@@ -39,5 +39,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  front_end_tasks (~> 0.2.0)
+  front_end_tasks (~> 0.3.0)
   rake (~> 10.1)
