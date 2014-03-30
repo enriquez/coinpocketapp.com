@@ -35,13 +35,13 @@ sjcl.codec.base58 = {
     var powersOf58 = this._powersOf58(str.length);
     var value = new sjcl.bn(), i, c = sjcl.codec.base58._chars, bitCount = 0;
     for (i=0; i<str.length; i++) {
-      x   = c.indexOf(str.charAt(i));
-      pos = str.length - i - 1;
+      var x   = c.indexOf(str.charAt(i));
+      var pos = str.length - i - 1;
       if (x < 0) {
         throw new sjcl.exception.invalid("this isn't base58!");
       }
 
-      addend = (new sjcl.bn(x)).mul(powersOf58[pos]);
+      var addend = (new sjcl.bn(x)).mul(powersOf58[pos]);
       value.addM(addend);
     }
 
@@ -99,7 +99,7 @@ sjcl.codec.base58 = {
       new sjcl.bn(1)
     ];
 
-    for (i=1;i<=maxPower;i++) {
+    for (var i=1;i<=maxPower;i++) {
       var result = (new sjcl.bn(58)).mul(out[i-1]);
       out.push(result);
     }
