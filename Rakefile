@@ -61,12 +61,27 @@ class FileList
     Dir.glob(File.join(DEV_ROOT, 'vendor/bitcoin/spec/**/*Spec.js'))
   end
 
+  def build_files
+    Dir.glob(File.join(BUILD_ROOT, '**/*')).select { |f| File.file?(f) }
+  end
+
 end
 
 file_list = FileList.new
 
 task :build => :clean do
   FrontEndTasks.build(FileList::DEV_ROOT, FileList::BUILD_ROOT, FileList::INDEX_HTML)
+end
+
+task :build_gzip => :build do
+  blacklist_extensions = ['.woff', '.eot', '.gz']
+  files = file_list.build_files.reject do |f|
+    blacklist_extensions.include?(File.extname(f))
+  end
+
+  if files.any?
+    FrontEndTasks.gzip(*files)
+  end
 end
 
 task :clean do
@@ -120,7 +135,7 @@ end
 task :spec => ['spec:app', 'spec:workers', 'spec:bitcoin']
 
 namespace :server do
-  task :prod => :build do
+  task :prod => :build_gzip do
     FrontEndTasks.server(:public_dir => './build', :port => 8000)
   end
 end
