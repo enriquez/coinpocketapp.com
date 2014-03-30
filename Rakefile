@@ -100,6 +100,14 @@ namespace :lint do
   task :bitcoin do
     FrontEndTasks.lint(*file_list.bitcoin_source_scripts)
   end
+
+  task :build => 'rake:build' do
+    build_javascripts = [
+      './build/js/scripts.min.js',
+      './build/js/workers/bitcoin_worker.js'
+    ]
+    FrontEndTasks.lint(*build_javascripts)
+  end
 end
 
 task :lint => ['lint:app', 'lint:workers', 'lint:bitcoin']
@@ -130,6 +138,26 @@ namespace :spec do
       :port         => 8003
     })
   end
+
+  task :app_build => 'rake:build' do
+    FrontEndTasks.spec({
+      :source_files => ['./build/js/scripts.min.js'],
+      :helper_files => file_list.app_spec_helpers,
+      :spec_files   => file_list.app_specs,
+      :port         => 8001
+    })
+  end
+
+  task :worker_build => 'rake:build' do
+    FrontEndTasks.spec({
+      :worker_file  => './build/js/workers/bitcoin_worker.js',
+      :public_root  => FileList::BUILD_ROOT,
+      :spec_files   => file_list.worker_specs,
+      :port         => 8002
+    })
+  end
+
+  task :build => [:app_build, :worker_build]
 end
 
 task :spec => ['spec:app', 'spec:workers', 'spec:bitcoin']
