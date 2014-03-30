@@ -10,7 +10,7 @@ Bitcoin.Address.validate = function(address) {
   if (isValidFormat) {
     var bits         = sjcl.codec.base58.toBits(address),
         length       = sjcl.bitArray.bitLength(bits),
-        ripemdHashed = sjcl.bitArray.clamp(bits, length - 32);
+        ripemdHashed = sjcl.bitArray.clamp(bits, length - 32),
         checksum     = sjcl.bitArray.bitSlice(bits, length - 32);
 
     var doubleHashed = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(ripemdHashed));
