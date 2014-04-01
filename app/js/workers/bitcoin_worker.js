@@ -74,7 +74,7 @@ var buildAndSignRawTransaction = function(seed, password, keyPair, inputs, outpu
 };
 
 var messageListener = function(e) {
-  if (e.data) {
+  if (e.data.functionName) {
     var id = e.data.id,
         functionName = e.data.functionName,
         params = e.data.params;
