@@ -59,7 +59,7 @@
         recentTransactions.push(transaction);
       }
 
-      if (self.length === 0 && recentTransactions.length > 0) {
+      if (!self.any() && recentTransactions.length > 0) {
         localStorage.setItem('hasTransactions', 'true');
         self.trigger('transactions.updated', recentTransactions);
       }
@@ -75,6 +75,11 @@
     self.socket.onNewTransactionForAddress(address, function(data) {
       var transaction = new Transaction(address, data.x);
       hollaback([transaction]);
+
+      if (!self.any()) {
+        localStorage.setItem('hasTransactions', 'true');
+        self.trigger('transactions.updated', recentTransactions);
+      }
     });
   };
 
