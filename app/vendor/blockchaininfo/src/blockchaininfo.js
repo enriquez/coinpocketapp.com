@@ -1,27 +1,18 @@
 var BlockChainInfo = (function(self, $) {
 
   function getJSONForPath(path, hollaback) {
-    var url = 'http://blockchain.info' + path;
-    var yql = "select * from json where url=\"" + url + "\"";
-    $.getJSON("https://query.yahooapis.com/v1/public/yql", {
-      q: yql,
-      format: 'json',
-      jsonCompat: 'new'
-    }, function(data) {
-      if (data.query.results) {
-        hollaback(data.query.results.json);
+    var url = 'https://blockchain.info' + path;
+    $.getJSON(url, { cors: 'true' }, function(data) {
+      if (data) {
+        hollaback(data);
       } else {
         hollaback({});
       }
     });
   }
 
-  self.rawaddr = function(address, hollaback) {
-    getJSONForPath('/rawaddr/' + address, hollaback);
-  };
-
-  self.latestblock = function(hollaback) {
-    getJSONForPath('/latestblock', hollaback);
+  self.multiaddr = function(address, hollaback) {
+    getJSONForPath('/multiaddr?active=' + address, hollaback);
   };
 
   self.unspent = function(address, hollaback) {
@@ -29,14 +20,13 @@ var BlockChainInfo = (function(self, $) {
   };
 
   self.pushtx = function(tx, hollaback) {
-    var url = 'http://blockchain.info/pushtx',
-        postData = 'tx=' + tx,
-        htmlpostUrl = document.location.protocol + "//" + document.location.host + '/htmlpost.xml';
-    var yql = 'use "' + htmlpostUrl + '" as htmlpost; select * from htmlpost where url="' + url + '" and postdata="' + postData + '" and xpath="//p"';
-    var yahooapiUrl = 'https://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent(yql);
+    var url = 'https://blockchain.info/pushtx?cors=true',
+        postData = { tx: tx };
 
     $.ajax({
-      url: yahooapiUrl,
+      type: 'POST',
+      url: url,
+      data: postData,
       success: function(res) {
         hollaback(true);
       },
@@ -86,13 +76,13 @@ var BlockChainInfo = (function(self, $) {
           self.connect();
 
           // re-subscribe new blocks when reconnecting
-          if (self.subscriptions['block'].length > 0) {
+          if (self.subscriptions['block'] && self.subscriptions['block'].length > 0) {
             self.sendMessage({ op: 'ping_block' });
             self.sendMessage({ op: 'blocks_sub' });
           }
 
           // re-subscribe new transactions when reconnecting
-          if (self.subscriptions['utx'].length > 0) {
+          if (self.subscriptions['utx'] && self.subscriptions['utx'].length > 0) {
             for (var i=0;i<self.subscriptions['utx_addresses'].length;i++) {
               var address = self.subscriptions['utx_addresses'][i];
               self.sendMessage({ op: 'addr_sub', addr: address });

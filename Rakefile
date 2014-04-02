@@ -11,7 +11,7 @@ class FileList
   INDEX_HTML = File.join(DEV_ROOT, 'index.html')
   WORKER_JS  = File.join(DEV_ROOT, 'js/workers/bitcoin_worker.js')
 
-  ASSETS = [File.join(DEV_ROOT, 'htmlpost.xml')]
+  ASSETS = []
 
   def base_files
     [INDEX_HTML] + ASSETS

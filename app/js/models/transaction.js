@@ -49,7 +49,7 @@
 
   transactions.fetchRecent = function(address, hollaback) {
     var self = this;
-    BlockChainInfo.rawaddr(address, function(data) {
+    BlockChainInfo.multiaddr(address, function(data) {
       var txsData = data.txs || [],
           recentTransactions = [];
 
