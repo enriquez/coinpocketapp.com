@@ -2,10 +2,14 @@ var BlockChainInfo = (function(self, $) {
 
   function getJSONForPath(path, hollaback) {
     var url = 'https://blockchain.info' + path;
-    $.getJSON(url, { cors: 'true' }, function(data) {
-      if (data) {
+    $.ajax({
+      type: 'GET',
+      url: url,
+      data: { cors: 'true' },
+      success: function(data) {
         hollaback(data);
-      } else {
+      },
+      error: function(xhr, opt, err) {
         hollaback({});
       }
     });
