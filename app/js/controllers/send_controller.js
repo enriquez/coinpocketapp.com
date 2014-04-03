@@ -1,9 +1,15 @@
-(function(pageHash, keyPair, wallet, bitcoinWorker, sendView, confirmationController, Controllers) {
+(function(pageHash, keyPair, wallet, bitcoinWorker, browser, sendView, confirmationController, Controllers) {
 
   function SendController() {
     this.showOrHide(pageHash.currentPage);
     pageHash.bind('pageHash.pageChanged', this.showOrHide);
     sendView.bind('nextButton.click', this.nextButtonClicked);
+
+    if (browser.canScanCode()) {
+      sendView.showScanCode();
+    } else {
+      sendView.hideScanCode();
+    }
   }
 
   SendController.prototype.showOrHide = function(pageParams) {
@@ -70,4 +76,4 @@
 
   Controllers.sendController = new SendController();
 
-})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.wallet, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Views.sendView, CoinPocketApp.Controllers.confirmationController, CoinPocketApp.Controllers);
+})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.wallet, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models.browser, CoinPocketApp.Views.sendView, CoinPocketApp.Controllers.confirmationController, CoinPocketApp.Controllers);

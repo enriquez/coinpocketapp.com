@@ -39,7 +39,7 @@
 
           <div id="send" class="content row">
 
-            <div class="col-xs-12">
+            <div id="scancode" class="col-xs-12">
               <div class="row">
                 <div class="col-xs-10">
                   <a id="scancode-button" href="scancode://scan" data-scancode-callback-path="/#/send" class="btn btn-default btn-block">Scan Code</a>
@@ -48,10 +48,10 @@
                   <a href="https://itunes.apple.com/us/app/scan-code-qr-code-reader/id828167977?ls=1&mt=8" class="btn btn-default btn-block" data-confirm="Coin Pocket uses 'Scan Code - QR Code Reader'. Launch App Store now?"><span class="glyphicon glyphicon-info-sign"></span></a>
                 </div>
               </div>
+              <hr>
             </div>
 
             <div class="col-xs-12">
-              <hr>
               <form role="form" action="#/confirmation">
 
                 <div class="row">
@@ -450,6 +450,7 @@
     <script src="/vendor/blockchaininfo/src/blockchaininfo.js"></script>
 
     <script src="/js/coinpocketapp.js"></script>
+    <script src="/js/models/browser.js"></script>
     <script src="/js/models/bitcoin_worker.js"></script>
     <script src="/js/models/entropy.js"></script>
     <script src="/js/models/block_height.js"></script>

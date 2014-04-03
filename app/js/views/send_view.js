@@ -11,6 +11,7 @@
     self.$transactionFeeGroup = $("transaction-fee-group");
     self.$sendButton = $("#next-button");
     self.$validationMessage = $("#send-validation-message");
+    self.$scancode = $("#scancode");
 
     $("#scancode-button").scancode();
     $("[data-confirm]").click(function(e) {
@@ -68,6 +69,14 @@
 
   SendView.prototype.invalidTransactionFeeInput = function() {
     this.$transactionFeeGroup.addClass('has-error');
+  };
+
+  SendView.prototype.showScanCode = function() {
+    this.$scancode.show();
+  };
+
+  SendView.prototype.hideScanCode = function() {
+    this.$scancode.hide();
   };
 
   MicroEvent.mixin(SendView);
