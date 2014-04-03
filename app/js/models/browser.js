@@ -17,5 +17,15 @@
     return this._isMobileSafari() && !this._isMobileSafariStandalone();
   };
 
+  Browser.prototype.hasCryptoGetRandomValues = function() {
+    var crypto = window.crypto || window.msCrypto;
+
+    if (crypto && crypto.getRandomValues) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   Models.browser = new Browser();
 })(window, CoinPocketApp.Models);

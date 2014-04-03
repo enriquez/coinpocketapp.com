@@ -370,7 +370,11 @@
             <h4 class="modal-title" id="myModalLabel">Welcome to Coin Pocket</h4>
           </div>
           <form id="welcome-modal-form" role="form" action="#">
-            <div class="modal-body">
+            <div id="welcome-modal-unsupported" class="modal-body" style="display:none">
+              <p><strong>Your browser is not supported. Sorry :(</strong></p>
+              <p class="reason"></p>
+            </div>
+            <div id="welcome-modal-body" class="modal-body">
               <p>Your Bitcoins are encrypted and stored in your browser's local storage.</p>
               <p>Choose a password that will be used to encrypt your private keys. You will be asked for this password everytime you send Bitcoins.</p>
                 <div id="welcome-modal-password-group" class="form-group">

@@ -4,6 +4,9 @@
     var self = this;
 
     self.$container = $("#myModal");
+    self.$modalBody = $("#welcome-modal-body");
+    self.$modalFooter = $("#myModal .modal-footer");
+    self.$unsupportedBrowser = $("#welcome-modal-unsupported");
     self.$passwordInput = $("#password");
     self.$passwordConfirmationInput = $("#password-confirmation");
     self.$submitButton = $("#welcome-modal-continue");
@@ -80,6 +83,13 @@
   WelcomeModalView.prototype.clearFields = function() {
     this.$passwordInput.val('');
     this.$passwordConfirmationInput.val('');
+  };
+
+  WelcomeModalView.prototype.showUnsupportedMessage = function(reason) {
+    this.$unsupportedBrowser.find('.reason').text(reason);
+    this.$unsupportedBrowser.show();
+    this.$modalBody.hide();
+    this.$modalFooter.children().hide();
   };
 
   MicroEvent.mixin(WelcomeModalView);

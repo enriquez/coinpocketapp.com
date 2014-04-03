@@ -1,4 +1,4 @@
-(function(entropy, keyPair, welcomeModalView, Controllers) {
+(function(entropy, keyPair, browser, welcomeModalView, Controllers) {
 
   function WelcomeModalController() {
     var self = this;
@@ -10,6 +10,10 @@
       entropy.addCryptoStrongEntropy();
     } else {
       welcomeModalView.show();
+
+      if (!browser.hasCryptoGetRandomValues()) {
+        welcomeModalView.showUnsupportedMessage("A secure random number generator is not present. Try again in Chrome or Firefox.");
+      }
 
       welcomeModalView.bind("passwordInput.change", self.passwordInputChanged);
       welcomeModalView.bind("passwordConfirmationInput.change", self.passwordConfirmationInputChanged);
@@ -71,4 +75,4 @@
 
   Controllers.welcomeModalController = new WelcomeModalController();
 
-})(CoinPocketApp.Models.entropy, CoinPocketApp.Models.keyPair, CoinPocketApp.Views.welcomeModalView, CoinPocketApp.Controllers);
+})(CoinPocketApp.Models.entropy, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.browser, CoinPocketApp.Views.welcomeModalView, CoinPocketApp.Controllers);
