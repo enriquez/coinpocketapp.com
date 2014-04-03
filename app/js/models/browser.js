@@ -4,14 +4,14 @@
     var self = this;
 
     self._isMobileSafari = function() {
-      return /Mobile\/\w+ Safari\//.test(window.navigator.userAgent);
+      return (/Mobile\/\w+ Safari\//).test(window.navigator.userAgent);
     };
 
     self._isMobileSafariStandalone = function() {
       return self.isMobileSafari && window.navigator.standalone;
     };
 
-  };
+  }
 
   Browser.prototype.canScanCode = function() {
     return this._isMobileSafari() && !this._isMobileSafariStandalone();

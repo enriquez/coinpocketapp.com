@@ -124,15 +124,16 @@ describe("Transaction", function() {
       transactions.bind("transactions.updated", function(newTransactions) {
         done();
       });
+      localStorage.removeItem('hasTransactions');
       transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit');
     });
 
     it("does not trigger if there are transactions already", function(done) {
-      transactions.push({});
       var self = this;
       transactions.bind("transactions.updated", function(newTransactions) {
         throw new Error('should not trigger transactions.updated event');
       });
+      localStorage.setItem('hasTransactions', 'true');
       transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit', function() {
         done();
       });

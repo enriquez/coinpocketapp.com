@@ -1,7 +1,6 @@
-$.getJSON = function(endPoint, data, hollaback) {
-  if (typeof data === 'function') {
-    hollaback = data;
-  }
+$.ajax = function(opts) {
+  var endPoint = opts.url;
+  var hollaback = opts.success;
 
   if (endPoint === "https://blockchain.info/multiaddr?active=1M3p9Gfhn9vrPgjYLZEcFSnxSM6WuCVm2Y-empty") {
     // Empty transactions
