@@ -2,7 +2,7 @@ $.ajax = function(opts) {
   var endPoint = opts.url;
   var hollaback = opts.success;
 
-  if (endPoint === "https://blockchain.info/multiaddr?active=1M3p9Gfhn9vrPgjYLZEcFSnxSM6WuCVm2Y-empty") {
+  if (endPoint === "https://blockchain.info/multiaddr?active=1M3p9Gfhn9vrPgjYLZEcFSnxSM6WuCVm2Y-empty&offset=0") {
     // Empty transactions
     var json = {
       "address": "1M3p9Gfhn9vrPgjYLZEcFSnxSM6WuCVm2Y",
@@ -15,7 +15,7 @@ $.ajax = function(opts) {
     var txs = [];
 
     hollaback({ 'txs': txs, 'wallet': json });
-  } else if (endPoint === "https://blockchain.info/multiaddr?active=1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit") {
+  } else if (endPoint === "https://blockchain.info/multiaddr?active=1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit&offset=0") {
     // 2 credits and 1 debit
     var json = {
       "address": "1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit",

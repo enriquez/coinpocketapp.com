@@ -15,8 +15,8 @@ var BlockChainInfo = (function(self, $) {
     });
   }
 
-  self.multiaddr = function(address, hollaback) {
-    getJSONForPath('/multiaddr?active=' + address, hollaback);
+  self.multiaddr = function(address, offset, hollaback) {
+    getJSONForPath('/multiaddr?active=' + address + '&offset=' + offset, hollaback);
   };
 
   self.unspent = function(address, hollaback) {

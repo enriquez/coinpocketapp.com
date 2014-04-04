@@ -47,11 +47,13 @@
   var transactions = [];
   transactions.socket = new BlockChainInfo.WebSocket();
 
-  transactions.fetchRecent = function(address, hollaback) {
+  transactions.fetchRecent = function(address, offset, hollaback) {
     var self = this;
-    BlockChainInfo.multiaddr(address, function(data) {
+    BlockChainInfo.multiaddr(address, offset, function(data) {
       var txsData = data.txs || [],
           recentTransactions = [];
+
+      self.totalCount = parseInt(data.wallet.n_tx, 10);
 
       for (var i=0; i<txsData.length; i++) {
         var txData = txsData[i];

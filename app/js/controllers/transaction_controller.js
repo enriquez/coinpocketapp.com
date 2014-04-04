@@ -8,11 +8,21 @@
         var transaction = newTransactions[i];
         transactionsView.insertTransaction(transaction);
       }
+
+      if (transactionsView.visibleTransactionCount() < transactions.totalCount) {
+        transactionsView.showLoadMore();
+      } else {
+        transactionsView.hideLoadMore();
+      }
     };
 
-    if (blockHeight.height > 0) {
-      transactionsView.updateBlockHeight(blockHeight.height);
-    }
+    transactionsView.bind('loadButton.clicked', function() {
+      transactionsView.loadMoreLoading();
+      transactions.fetchRecent(keyPair.bitcoinAddress, transactionsView.visibleTransactionCount(), function(newTxs) {
+        transactionsView.loadMoreDoneLoading();
+        updateTransactions(newTxs);
+      });
+    });
 
     blockHeight.bind('blockHeight.updated', function(height, txIds) {
       transactionsView.updateBlockHeight(height);
@@ -22,11 +32,11 @@
     });
 
     if (keyPair.isGenerated) {
-      transactions.fetchRecent(keyPair.bitcoinAddress, updateTransactions);
+      transactions.fetchRecent(keyPair.bitcoinAddress, transactionsView.visibleTransactionCount(), updateTransactions);
       transactions.onNewTransaction(keyPair.bitcoinAddress, updateTransactions);
     } else {
       keyPair.bind('keyPair.generate', function() {
-        transactions.fetchRecent(keyPair.bitcoinAddress, updateTransactions);
+        transactions.fetchRecent(keyPair.bitcoinAddress, transactionsView.visibleTransactionCount(), updateTransactions);
         transactions.onNewTransaction(keyPair.bitcoinAddress, updateTransactions);
       });
     }

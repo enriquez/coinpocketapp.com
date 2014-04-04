@@ -30,9 +30,16 @@
   };
 
   function TransactionsView() {
-    this.$container = $('#transactions');
-    this.$transactionTemplate = $("#transaction-template");
-    this.$transactions = $("#transactions .transaction:visible");
+    var self = this;
+    self.$container = $('#transactions');
+    self.$transactionTemplate = $("#transaction-template");
+    self.$loadMore = $("#load-more");
+    self.$loadMoreButton = $("#load-more-button");
+
+    self.$loadMoreButton.click(function(e) {
+      e.preventDefault();
+      self.trigger('loadButton.clicked');
+    });
   }
 
   TransactionsView.prototype.updateBlockHeight = function(height) {
@@ -138,5 +145,27 @@
     }
   };
 
+  TransactionsView.prototype.hideLoadMore = function() {
+    this.$loadMore.hide();
+    this.$loadMoreButton.button('reset');
+  };
+
+  TransactionsView.prototype.showLoadMore = function() {
+    this.$loadMore.show();
+  };
+
+  TransactionsView.prototype.loadMoreLoading = function() {
+    this.$loadMoreButton.button('loading');
+  };
+
+  TransactionsView.prototype.loadMoreDoneLoading = function() {
+    this.$loadMoreButton.button('reset');
+  };
+
+  TransactionsView.prototype.visibleTransactionCount = function() {
+    return $(".transaction:visible").length;
+  };
+
+  MicroEvent.mixin(TransactionsView);
   Views.transactionsView = new TransactionsView();
 })(jQuery, CoinPocketApp.Views);

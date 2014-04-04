@@ -3,7 +3,6 @@ describe("Transaction", function() {
 
   beforeEach(function() {
     transactions = CoinPocketApp.Models.transactions;
-    transactions.length = 0;
     transactions.unbind("transactions.updated");
   });
 
@@ -68,7 +67,7 @@ describe("Transaction", function() {
 
       beforeEach(function(done) {
         result = null;
-        transactions.fetchRecent('1M3p9Gfhn9vrPgjYLZEcFSnxSM6WuCVm2Y-empty', function(txs) {
+        transactions.fetchRecent('1M3p9Gfhn9vrPgjYLZEcFSnxSM6WuCVm2Y-empty', 0, function(txs) {
           result = txs;
           done()
         });
@@ -85,7 +84,7 @@ describe("Transaction", function() {
 
       beforeEach(function(done) {
         result = null;
-        transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit', function(txs) {
+        transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit', 0, function(txs) {
           result = txs;
           done()
         });
@@ -118,14 +117,13 @@ describe("Transaction", function() {
   });
 
   describe("transactions.updated event", function() {
-    var transactions = CoinPocketApp.Models.transactions;
 
     it("triggers when new transactions are fetched", function(done) {
       transactions.bind("transactions.updated", function(newTransactions) {
         done();
       });
       localStorage.removeItem('hasTransactions');
-      transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit');
+      transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit', 0);
     });
 
     it("does not trigger if there are transactions already", function(done) {
@@ -134,8 +132,26 @@ describe("Transaction", function() {
         throw new Error('should not trigger transactions.updated event');
       });
       localStorage.setItem('hasTransactions', 'true');
-      transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit', function() {
+      transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit', 0, function() {
         done();
+      });
+    });
+
+  });
+
+  describe("transactions.totalCount", function() {
+
+    it("returns 0", function(done) {
+      transactions.fetchRecent('1M3p9Gfhn9vrPgjYLZEcFSnxSM6WuCVm2Y-empty', 0, function(txs) {
+        expect(transactions.totalCount).toEqual(0);
+        done()
+      });
+    });
+
+    it("returns 3", function(done) {
+      transactions.fetchRecent('1KCVyR5Ucq3ExNhVFwbTWkeviU1ZpWpSoH-2credit1debit', 0, function(txs) {
+        expect(transactions.totalCount).toEqual(3);
+        done()
       });
     });
 
