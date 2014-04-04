@@ -1,3 +1,4 @@
+require 'digest'
 require 'front_end_tasks'
 require 'front_end_tasks/cli'
 require 'front_end_tasks/documents'
@@ -193,6 +194,28 @@ end
 
 task :server do
   FrontEndTasks.server(:public_dir => './app', :port => 8000)
+end
+
+task :commits, :since_tag do |task, args|
+  tag = ENV["SINCE_TAG"] || args[:since_tag] || `git describe --abbrev=0 --tags`
+  puts `git log #{tag.strip}..HEAD --oneline`
+end
+
+task :checksum => :build_gzip do
+  file_hash = {}
+  left_column_length = 0
+  build_files = file_list.build_files.reject { |f| File.extname(f) == '.gz' }
+  build_files.each do |f|
+    hash = Digest::SHA256.hexdigest(File.read(f))
+    file = f.gsub(FileList::BUILD_ROOT + '/', '')
+
+    file_hash[file] = hash
+    left_column_length = file.length if file.length > left_column_length
+  end
+
+  file_hash.each_pair do |file, hash|
+    puts "#{file.ljust(left_column_length)} #{hash}"
+  end
 end
 
 task :default => ['lint', 'spec']
