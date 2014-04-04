@@ -198,7 +198,10 @@ end
 
 task :commits, :since_tag do |task, args|
   tag = ENV["SINCE_TAG"] || args[:since_tag] || `git describe --abbrev=0 --tags`
+  puts
+  puts '## Commits'
   puts `git log #{tag.strip}..HEAD --oneline`
+  puts
 end
 
 task :checksum => :build_gzip do
@@ -213,9 +216,14 @@ task :checksum => :build_gzip do
     left_column_length = file.length if file.length > left_column_length
   end
 
+  puts
+  puts "## Checksums"
   file_hash.each_pair do |file, hash|
     puts "#{file.ljust(left_column_length)} #{hash}"
   end
+  puts
 end
+
+task :release_notes => [:checksum, :commits]
 
 task :default => ['lint', 'spec']
