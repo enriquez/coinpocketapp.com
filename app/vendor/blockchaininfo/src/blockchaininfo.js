@@ -112,6 +112,10 @@ var BlockChainInfo = (function(self, $) {
       };
 
       self.webSocket.onerror = function(e) {
+        self.isConnected = false;
+        for (var i=0; i<self.reconnectFailureCallbacks.length; i++) {
+          self.reconnectFailureCallbacks[i].call();
+        }
         console.log('BlockChainInfo WebSocket Error: ', e);
       };
     }
