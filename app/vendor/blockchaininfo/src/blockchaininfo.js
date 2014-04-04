@@ -5,7 +5,7 @@ var BlockChainInfo = (function(self, $) {
     $.ajax({
       type: 'GET',
       url: url,
-      data: { cors: 'true' },
+      data: { cors: 'true', format: 'json' },
       success: function(data) {
         hollaback(data);
       },
@@ -16,7 +16,7 @@ var BlockChainInfo = (function(self, $) {
   }
 
   self.multiaddr = function(address, offset, hollaback) {
-    getJSONForPath('/multiaddr?active=' + address + '&offset=' + offset, hollaback);
+    getJSONForPath('/multiaddr?active=' + address + '&no_compact=true&offset=' + offset, hollaback);
   };
 
   self.unspent = function(address, hollaback) {
