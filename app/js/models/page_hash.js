@@ -23,6 +23,7 @@
   PageHash.pages = [
     "#/",
     "#/send",
+    "#/settings",
     "#/receive",
     "#/confirmation"
   ];

@@ -166,6 +166,13 @@
     return $(".transaction:visible").length;
   };
 
+  TransactionsView.prototype.setUnits = function(rate, units) {
+    var elements = this.$container.find('[data-btc]');
+    elements.data('rate', rate);
+    elements.data('units', units);
+    elements.formatBTC();
+  };
+
   MicroEvent.mixin(TransactionsView);
   Views.transactionsView = new TransactionsView();
 })(jQuery, CoinPocketApp.Views);

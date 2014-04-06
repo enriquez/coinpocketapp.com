@@ -1,4 +1,4 @@
-(function(blockHeight, transactions, keyPair, transactionsView, Controllers) {
+(function(blockHeight, transactions, keyPair, conversionRate, transactionsView, Controllers) {
 
   function TransactionController() {
     var self = this;
@@ -8,6 +8,9 @@
         var transaction = newTransactions[i];
         transactionsView.insertTransaction(transaction);
       }
+
+      var current = conversionRate.current();
+      transactionsView.setUnits(current.rate, current.units);
 
       if (transactionsView.visibleTransactionCount() < transactions.totalCount) {
         transactionsView.showLoadMore();
@@ -40,8 +43,18 @@
         transactions.onNewTransaction(keyPair.bitcoinAddress, updateTransactions);
       });
     }
+
+    conversionRate.bind('selectedRateSource.updated', function(rate) {
+      var current = conversionRate.current();
+      transactionsView.setUnits(current.rate, current.units);
+    });
+
+    conversionRate.bind('selectedUnits.updated', function(selectedUnit) {
+      var current = conversionRate.current();
+      transactionsView.setUnits(current.rate, current.units);
+    });
   }
 
   Controllers.TransactionController = new TransactionController();
 
-})(CoinPocketApp.Models.blockHeight, CoinPocketApp.Models.transactions, CoinPocketApp.Models.keyPair, CoinPocketApp.Views.transactionsView, CoinPocketApp.Controllers);
+})(CoinPocketApp.Models.blockHeight, CoinPocketApp.Models.transactions, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.conversionRate, CoinPocketApp.Views.transactionsView, CoinPocketApp.Controllers);

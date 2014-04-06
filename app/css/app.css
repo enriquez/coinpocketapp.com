@@ -11,7 +11,6 @@ input[type="password"] {
   font-size: 0.9em;
 }
 
-#settings-container,
 #balance-container,
 #button-container {
   background-color: #2ecc71;
@@ -36,7 +35,7 @@ input[type="password"] {
   color: white;
 }
 
-#send, #confirmation, #receive {
+#send, #confirmation, #settings, #receive {
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -105,6 +104,7 @@ input[type="password"] {
   margin: 5px 0;
 }
 
+#balance:hover,
 .transaction-preview:hover {
   cursor: pointer;
 }

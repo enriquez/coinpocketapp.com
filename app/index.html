@@ -28,11 +28,14 @@
             </div>
 
             <div id="button-container" class="row">
-              <div id="send-button" class="col-xs-6">
+              <div id="send-button" class="col-xs-4">
                 <a href="#/send">Send</a>
               </div>
-              <div id="receive-button" class="col-xs-6">
-                <a href="#/receive" class="pull-right">Receive</a>
+              <div id="settings-button" class="col-xs-4 text-center">
+                <a href="#/settings">Settings</a>
+              </div>
+              <div id="receive-button" class="col-xs-4 text-right">
+                <a href="#/receive">Receive</a>
               </div>
             </div>
           </div>
@@ -204,6 +207,17 @@
                 </div>
 
               </form>
+            </div>
+          </div>
+
+          <div id="settings" class="content row">
+            <div class="col-xs-12">
+              <p>Conversion Rate for 1 BTC</p>
+              <div id="conversion-rates" class="list-group">
+              </div>
+            </div>
+            <div class="col-xs-12">
+              <a href="#/" class="btn btn-default btn-block">Done</a>
             </div>
           </div>
 
@@ -464,12 +478,14 @@
     <script src="/js/models/block_height.js"></script>
     <script src="/js/models/key_pair.js"></script>
     <script src="/js/models/page_hash.js"></script>
+    <script src="/js/models/conversion_rate.js"></script>
     <script src="/js/models/wallet.js"></script>
     <script src="/js/models/transaction.js"></script>
     <script src="/js/views/welcome_modal_view.js"></script>
     <script src="/js/views/empty_state_view.js"></script>
     <script src="/js/views/main_view.js"></script>
     <script src="/js/views/send_view.js"></script>
+    <script src="/js/views/settings_view.js"></script>
     <script src="/js/views/receive_view.js"></script>
     <script src="/js/views/confirmation_view.js"></script>
     <script src="/js/views/balance_view.js"></script>
@@ -480,6 +496,7 @@
     <script src="/js/controllers/empty_state_controller.js"></script>
     <script src="/js/controllers/confirmation_controller.js"></script>
     <script src="/js/controllers/send_controller.js"></script>
+    <script src="/js/controllers/settings_controller.js"></script>
     <script src="/js/controllers/receive_controller.js"></script>
     <script src="/js/controllers/transaction_controller.js"></script>
     <script src="/js/controllers/connection_status_controller.js"></script>
