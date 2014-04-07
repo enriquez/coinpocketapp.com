@@ -70,6 +70,7 @@
   }
 
   SendController.prototype.showOrHide = function(pageParams) {
+    var self = this;
     if (pageParams.page === '#/send') {
       sendView.show();
 
@@ -77,14 +78,19 @@
         bitcoinWorker.async("parseCode", [pageParams.params.code], function(result) {
           if (result.address) {
             sendView.setAddress(result.address);
-          } else {
-            sendView.setAddress('');
           }
 
           if (result.amount) {
+            self.amountUnits = 'btc';
+            sendView.setConversion('$0.00 USD');
+            sendView.setAmountUnitsToBTC();
             sendView.setAmount(result.amount);
+          }
+
+          if (result.address && result.amount) {
+            self.nextButtonClicked();
           } else {
-            sendView.setAmount('');
+            pageHash.goTo("#/send"); // clear qr code data from url
           }
         });
       }

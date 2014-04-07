@@ -53,6 +53,7 @@
 
   SendView.prototype.setAmount = function(amount) {
     this.$amount.val(amount);
+    this.trigger('amount.changed', this.$amount.val());
   };
 
   SendView.prototype.setTransactionFee = function(amount) {
