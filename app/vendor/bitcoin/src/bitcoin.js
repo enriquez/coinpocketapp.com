@@ -47,7 +47,7 @@ Bitcoin.parseCode = function(code) {
     return { address: code };
   }
 
-  var matches = /^(?:bitcoin:)(1[1-9A-HJ-NP-Za-km-z]{27,33})\??(.*)/.exec(code),
+  var matches = /^(?:bitcoin:)(?:\/\/)?(1[1-9A-HJ-NP-Za-km-z]{27,33})\??(.*)/.exec(code),
       out = {};
 
   if (matches && matches.length === 3) {

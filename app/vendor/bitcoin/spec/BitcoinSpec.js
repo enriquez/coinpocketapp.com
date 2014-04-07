@@ -164,6 +164,15 @@ describe("Bitcoin", function() {
       });
     });
 
+    it("parses blockchain.info payment request qrcode with leading bitcoin://", function() {
+      var actual = Bitcoin.parseCode('bitcoin://1ADei3yngtnFhqJRuKEp2YdNqritUi8icD?amount=0.0736');
+
+      expect(actual).toEqual({
+        address : '1ADei3yngtnFhqJRuKEp2YdNqritUi8icD',
+        amount : 0.0736
+      });
+    });
+
     it("does not parse a testnet address", function() {
       var actual = Bitcoin.parseCode('bitcoin%3AmrkkTkkuCWzLzNSn4BpRMCfMPRbfWTvYnJ%3Famount%3D0.0004');
 
