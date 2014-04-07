@@ -126,6 +126,14 @@ input[type="password"] {
   padding-top: 25px;
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
+.input-group-addon {
+  padding: 6px 8px;
+}
+
 footer {
   margin-top: 10px;
 }
