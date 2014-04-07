@@ -160,6 +160,17 @@
     return null;
   };
 
+  ConversionRate.prototype.selectedRate = function() {
+    for (var i=0; i<this.rates.length; i++) {
+      var rate = this.rates[i];
+      if (rate.source === this.selectedRateSource) {
+        return rate.rate;
+      }
+    }
+
+    return null;
+  };
+
   MicroEvent.mixin(ConversionRate);
   Models.conversionRate = new ConversionRate();
 })(jQuery, CoinPocketApp.Models);

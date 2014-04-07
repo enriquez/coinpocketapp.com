@@ -1,4 +1,4 @@
-(function(pageHash, keyPair, wallet, confirmationView, Controllers) {
+(function(pageHash, keyPair, wallet, conversionRate, confirmationView, Controllers) {
 
   function ConfirmationController() {
     var self = this;
@@ -22,7 +22,7 @@
 
   ConfirmationController.prototype.confirmTransaction = function(transaction) {
     this.transaction = transaction;
-    confirmationView.setTransaction(this.transaction, keyPair.bitcoinAddress);
+    confirmationView.setTransaction(this.transaction, keyPair.bitcoinAddress, conversionRate.selectedRate());
     pageHash.goTo("#/confirmation");
   };
 
@@ -45,4 +45,4 @@
 
   Controllers.confirmationController = new ConfirmationController();
 
-})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.wallet, CoinPocketApp.Views.confirmationView, CoinPocketApp.Controllers);
+})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.wallet, CoinPocketApp.Models.conversionRate, CoinPocketApp.Views.confirmationView, CoinPocketApp.Controllers);

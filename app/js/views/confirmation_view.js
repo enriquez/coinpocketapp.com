@@ -11,11 +11,13 @@
     self.$validationMessage = $("#confirmation-validation-message");
 
     self.$summaryBTC = $("#confirmation-summary-btc");
+    self.$summaryUSD = $("#confirmation-summary-usd");
     self.$transactionSummary = $("#confirmation .panel-body");
     self.$totalInputs = $("#confirmation-total-inputs");
     self.$outputs = $("#confirmation-outputs");
     self.$outputTemplate = $("#confirmation-output-template");
-    self.$netTransaction = $("#confirmation-net-transaction-btc");
+    self.$netTransactionBTC = $("#confirmation-net-transaction-btc");
+    self.$netTransactionUSD = $("#confirmation-net-transaction-usd");
 
     self.$sendButton.click(function() {
       self.trigger('sendButton.click', self.$form);
@@ -71,7 +73,7 @@
     this.$validationMessage.text('');
   };
 
-  ConfirmationView.prototype.setTransaction = function(transaction, changeAddress) {
+  ConfirmationView.prototype.setTransaction = function(transaction, changeAddress, conversionRate) {
     function satoshiToBTC(satoshis) {
       return satoshis / 100000000;
     }
@@ -118,10 +120,12 @@
       this.$outputs.append($minerFee);
       $minerFee.show();
     }
-
-    var netTransaction = totalOutputValue - changeAmount + minerFee;
-    this.$summaryBTC.text(parseFloat(netTransaction.toFixed(8)) + " BTC");
-    this.$netTransaction.text(netTransaction.toFixed(8) + " BTC");
+    var netTransaction = parseFloat((totalOutputValue - changeAmount + minerFee).toFixed(8));
+    var netTransactionUSD = '$' + (netTransaction * parseFloat(conversionRate)).toFixed(2);
+    this.$summaryBTC.text(netTransaction + " BTC");
+    this.$summaryUSD.text(netTransactionUSD);
+    this.$netTransactionBTC.text(netTransaction.toFixed(8) + " BTC");
+    this.$netTransactionUSD.text('~ ' + netTransactionUSD + ' USD');
     this.$totalInputs.text(totalInputValue.toFixed(8) + " BTC");
   };
 

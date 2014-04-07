@@ -122,6 +122,10 @@ input[type="password"] {
   margin-bottom: 5px;
 }
 
+.no-label {
+  padding-top: 25px;
+}
+
 footer {
   margin-top: 10px;
 }

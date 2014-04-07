@@ -5,6 +5,8 @@
     self.$container = $("#send");
     self.$address = $("#address");
     self.$amount = $("#amount");
+    self.$switchUnitsButton = $("#switch-units");
+    self.$conversion = $("#conversion");
     self.$transactionFee = $("#transaction-fee");
     self.$addressGroup = $("#address-group");
     self.$amountGroup = $("#amount-group");
@@ -25,6 +27,15 @@
     self.$sendButton.click(function(e) {
       e.preventDefault();
       self.trigger('nextButton.click');
+    });
+
+    self.$switchUnitsButton.click(function(e) {
+      e.preventDefault();
+      self.trigger('switchUnitsButton.click');
+    });
+
+    self.$amount.on('input', function() {
+      self.trigger('amount.changed', $(this).val());
     });
   }
 
@@ -77,6 +88,18 @@
 
   SendView.prototype.hideScanCode = function() {
     this.$scancode.hide();
+  };
+
+  SendView.prototype.setConversion = function(text) {
+    this.$conversion.text(text);
+  };
+
+  SendView.prototype.setAmountUnitsToUSD = function() {
+    this.$amountGroup.find('span.input-group-addon').text('USD');
+  };
+
+  SendView.prototype.setAmountUnitsToBTC = function() {
+    this.$amountGroup.find('span.input-group-addon').text('BTC');
   };
 
   MicroEvent.mixin(SendView);
