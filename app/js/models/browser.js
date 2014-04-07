@@ -3,18 +3,18 @@
   function Browser() {
     var self = this;
 
-    self._isMobileSafari = function() {
-      return (/Mobile\/\w+ Safari\//).test(window.navigator.userAgent);
-    };
-
     self._isMobileSafariStandalone = function() {
       return self.isMobileSafari && window.navigator.standalone;
     };
 
   }
 
+  Browser.prototype.isMobileSafari = function() {
+    return (/Mobile\/\w+ Safari\//).test(window.navigator.userAgent);
+  };
+
   Browser.prototype.canScanCode = function() {
-    return this._isMobileSafari() && !this._isMobileSafariStandalone();
+    return this.isMobileSafari() && !this._isMobileSafariStandalone();
   };
 
   Browser.prototype.hasCryptoGetRandomValues = function() {
