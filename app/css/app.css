@@ -40,7 +40,7 @@ input[type="password"] {
   padding-bottom: 10px;
 }
 
-#send hr, #confirmation hr {
+#send hr, #confirmation hr, #settings hr {
   margin: 10px auto;
 }
 
