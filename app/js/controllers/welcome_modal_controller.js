@@ -12,7 +12,7 @@
       welcomeModalView.show();
 
       if (!browser.hasCryptoGetRandomValues()) {
-        welcomeModalView.showUnsupportedMessage("A secure random number generator is not present. Try again in Chrome or Firefox.");
+        welcomeModalView.showUnsupportedMessage("A secure random number generator is not present. Try again in Safari, Chrome, or Firefox.");
       }
 
       welcomeModalView.bind("passwordInput.change", self.passwordInputChanged);
@@ -47,8 +47,6 @@
     } else if (self.passwordInputValue.length < 4) {
       welcomeModalView.validationMessage("Password must be more than 4 characters");
       welcomeModalView.invalidPasswordInput();
-    } else if ($form.serializeArray().length !== 7) {
-      welcomeModalView.validationMessage('Please check all of the above statements');
     } else if (entropy.progress() < 1.0) {
       welcomeModalView.validationMessage("Need more Entropy");
     } else {

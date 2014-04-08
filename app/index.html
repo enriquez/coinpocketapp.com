@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>BTC Wallet - Coin Pocket</title>
 
     <!-- build:style css/styles.min.css -->
@@ -259,10 +257,23 @@
 
           <div id="empty-state" class="content row">
             <div class="col-xs-12">
-              <div class="page-header"><h2>Coin Pocket <small>Mobile Bitcoins</small></h2></div>
+              <div class="page-header"><h2>Coin Pocket <small class="nowrap">Bitcoin in your browser</small></h2></div>
               <p>Thanks for trying Coin Pocket!</p>
-              <p>Get started by funding this wallet. Hit the "Receive" button above to get this wallet's address.</p>
-              <p class="ios-only">Please take the time to read some <a href="https://github.com/enriquez/coinpocketapp.com/wiki/iOS-Safety-Tips">safety tips for iOS users on the wiki</a>.</p>
+              <p>Your Bitcoin address is: <span id="empty-state-receive-address"></span></p>
+
+              <h3>Getting Started</h3>
+              <p>Before you jump in, please follow the steps below.</p>
+              <ol>
+                <li>Backup your device now!</li>
+                <li>Practice restoring from that backup.</li>
+                <li class="ios-only">Read more detail on backups and general <a href="https://github.com/enriquez/coinpocketapp.com/wiki/iOS-Safety-Tips" target="_blank">safety tips for iOS users on the wiki</a></li>
+                <li class="ios-only">To scan QR Codes, download <a href="https://itunes.apple.com/us/app/scan-code-qr-code-reader/id828167977?ls=1&mt=8">Scan Code from the App Store</a></li>
+                <li>Bookmark this page.</li>
+                <li>Send some Bitcoin to this wallet's address located on the <a href="#/receive">Receive</a> link above.</li>
+              </ol>
+
+              <h3>About</h3>
+              <p>Coin Pocket is an <a href="https://github.com/enriquez/coinpocketapp.com" target="_blank">open source project</a> created by <a href="http://enriquez.me" target="_blank">Mike Enriquez</a>. It is officially hosted and maintained at <a href="https://btc.coinpocketapp.com">https://btc.coinpocketapp.com</a>.</p>
             </div>
           </div>
 
@@ -381,10 +392,10 @@
           <footer class="text-center">
             <p>
               Coin Pocket <span class="coin-pocket-version"></span> &middot;
-              <a href="http://github.com/enriquez/coinpocketapp.com">Source</a> &middot;
-              <a href="http://github.com/enriquez/coinpocketapp.com/blob/master/LICENSE.txt">MIT License</a>
+              <a href="http://github.com/enriquez/coinpocketapp.com" target="_blank">Source</a> &middot;
+              <a href="http://github.com/enriquez/coinpocketapp.com/blob/master/LICENSE.txt" target="_blank">MIT License</a>
             </p>
-            <p>&copy; 2014 <a href="http://enriquez.me">Enriquez Software LLC.</a></p>
+            <p>&copy; 2014 <a href="http://enriquez.me" target="_blank">Enriquez Software LLC.</a></p>
           </footer>
 
         </div>
@@ -395,7 +406,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Welcome to Coin Pocket</h4>
+            <h4 class="modal-title" id="myModalLabel">Welcome to Coin Pocket <small class="nowrap">Bitcoin in your browser</small></h4>
           </div>
           <form id="welcome-modal-form" role="form" action="#">
             <div id="welcome-modal-unsupported" class="modal-body" style="display:none">
@@ -403,61 +414,33 @@
               <p class="reason"></p>
             </div>
             <div id="welcome-modal-body" class="modal-body">
-              <p>Your Bitcoins are encrypted and stored in your browser's local storage.</p>
-              <p>Choose a password that will be used to encrypt your private keys. You will be asked for this password everytime you send Bitcoins.</p>
-                <div id="welcome-modal-password-group" class="form-group">
-                  <label class="control-label" for="password">Password (at least 4 characters)</label>
-                  <input type="password" class="form-control" id="password" name="password">
-                </div>
-                <div id="welcome-modal-password-confirmation-group" class="form-group">
-                  <label class="control-label" for="password-confirmation">Password Confirmation</label>
-                  <input type="password" class="form-control" id="password-confirmation" name="password-confirmation">
-                </div>
+              <p>This browser does not have an address stored. Generate a new address by filling out the form below and hitting continue.</p>
 
-                <p><strong>Please check and understand the following statements</strong></p>
+              <div id="welcome-modal-password-group" class="form-group">
+                <label class="control-label" for="password">Password (at least 4 characters)</label>
+                <input type="password" class="form-control" id="password" name="password">
+                <span class="help-block">DO NOT FORGET THIS PASSWORD. There is no way to recover it.</span>
+              </div>
 
-                <div class="form-group">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" name="statements"> If I forget my password, I will lose my Bitcoins.
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" name="statements"> If the local storage data in this browser for coinpocketapp.com gets cleared, I will lose my Bitcoins.
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" name="statements"> If this device gets lost or stolen, I will lose my Bitcoins.
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" name="statements"> If an attacker gains physical access to this device, I may lose my Bitcoins.
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox" name="statements"> If the software on this device is compromised, I may lose my Bitcoins.
-                    </label>
+              <div id="welcome-modal-password-confirmation-group" class="form-group">
+                <label class="control-label" for="password-confirmation">Password Confirmation</label>
+                <input type="password" class="form-control" id="password-confirmation" name="password-confirmation">
+              </div>
+
+              <div class="form-group">
+                <label class="control-label" for="entropy">Entropy Level (Randomness)</label>
+                <div class="progress progress-striped active">
+                  <div id="welcome-modal-entropy" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1">
+                    <span></span>
                   </div>
                 </div>
-
-                <div class="form-group">
-                  <label class="control-label" for="entropy">Entropy Level (Randomness)</label>
-                  <div class="progress progress-striped active">
-                    <div id="welcome-modal-entropy" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1">
-                      <span></span>
-                    </div>
-                  </div>
-                  <span class="help-block">Move your device around. Data from your device's accelerometers (and other sources) is collected to generate your keys.</span>
-                </div>
+                <span class="help-block">Move your device around. Data from your device's accelerometers (and other sources) is collected to generate your keys.</span>
+              </div>
 
             </div>
             <div class="modal-footer">
               <span id="welcome-modal-validation-message" class="text-danger"></span>&nbsp;
-              <button id="welcome-modal-continue" class="btn btn-primary" data-loading-text="Loading...">Continue</button>
+              <button id="welcome-modal-continue" class="btn btn-primary" data-loading-text="Please Wait...">Continue</button>
             </div>
           </form>
 
