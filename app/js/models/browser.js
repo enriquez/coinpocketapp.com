@@ -10,7 +10,7 @@
   }
 
   Browser.prototype.isMobileSafari = function() {
-    return (/Mobile\/\w+ Safari\//).test(window.navigator.userAgent);
+    return (/Version\/\S+ Mobile\/\w+ Safari\//).test(window.navigator.userAgent);
   };
 
   Browser.prototype.canScanCode = function() {
