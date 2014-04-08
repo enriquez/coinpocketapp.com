@@ -87,6 +87,15 @@
       });
       if (selectedCoins.length > 0) { return selectedCoins; }
 
+      // look for an output that is greater than requested amount
+      self._eachUnspentOutput(function(unspentOutput) {
+        if (totalRequested < self._satoshisToBtc(unspentOutput.value)) {
+          selectedCoins.push(unspentOutput);
+          return false;
+        }
+      });
+      if (selectedCoins.length > 0) { return selectedCoins; }
+
       // collect outputs until requested amount is matched or exceeded
       var totalOutputValue = 0;
       self._eachUnspentOutput(function(unspentOutput) {

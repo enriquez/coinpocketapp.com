@@ -153,13 +153,46 @@ describe("Wallet", function() {
       })[0].tx_hash).toEqual('pickme');
     });
 
+    it("prefers single amounts that greater than the requested amount over age", function() {
+      var expected = {
+        tx_hash: "pickme",
+        tx_index: 115190320,
+        tx_output_n: 0,
+        script: "76a9147ae9da425681e3816686b5944d054f6a869da30988ac",
+        value: 160000000,
+        confirmations:1
+      };
+      var older = {
+        tx_hash: "older",
+        tx_index: 115190320,
+        tx_output_n: 0,
+        script: "76a9147ae9da425681e3816686b5944d054f6a869da30988ac",
+        value: 120000000,
+        confirmations:9
+      };
+      var oldest = {
+        tx_hash: "oldest",
+        tx_index: 115190320,
+        tx_output_n: 0,
+        script: "76a9147ae9da425681e3816686b5944d054f6a869da30988ac",
+        value: 100000000,
+        confirmations:11
+      };
+      wallet.updateUnspentOutputs([oldest, older, expected]);
+
+      expect(wallet.selectCoins({
+        amountBTC: 1.4999,
+        minerFeeBTC: 0.0001
+      })[0].tx_hash).toEqual('pickme');
+    });
+
     it("collects outputs starting from oldest to newest until the requested amount is matched or exceeded", function() {
       var first = {
         tx_hash: "first",
         tx_index: 115190320,
         tx_output_n: 0,
         script: "76a9147ae9da425681e3816686b5944d054f6a869da30988ac",
-        value: 100000000,
+        value: 100000000, // 1.0
         confirmations:10
       };
       var second = {
@@ -167,7 +200,7 @@ describe("Wallet", function() {
         tx_index: 115190320,
         tx_output_n: 0,
         script: "76a9147ae9da425681e3816686b5944d054f6a869da30988ac",
-        value: 50000000,
+        value: 50000000, // 0.5
         confirmations:9
       };
       var third = {
@@ -175,7 +208,7 @@ describe("Wallet", function() {
         tx_index: 115190320,
         tx_output_n: 0,
         script: "76a9147ae9da425681e3816686b5944d054f6a869da30988ac",
-        value: 150010000,
+        value: 120010000, // 1.2001
         confirmations:8
       };
 
@@ -189,7 +222,7 @@ describe("Wallet", function() {
       expect(selectsFirst[0].tx_hash).toEqual('first');
 
       var selectsFirstTwo = wallet.selectCoins({
-        amountBTC: 1.2,
+        amountBTC: 1.3,
         minerFeeBTC: 0.0001
       });
       expect(selectsFirstTwo.length).toEqual(2);
