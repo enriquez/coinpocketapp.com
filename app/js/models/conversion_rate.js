@@ -67,16 +67,20 @@
   ConversionRate.prototype.updateCoinbase = function(hollaback) {
     var self = this;
     var url = 'https://coinbase.com/api/v1/prices/sell?callback=?';
-    $.getJSON(url, function(data) {
-      if (data && data.subtotal && data.subtotal.amount) {
-        // this price is what you would pay with fees for 1 BTC
-        var price = data.subtotal.amount;
-        self.rates[0].rate = price;
-        hollaback(price);
-        self.triggerSelectedRateUpdate(self.rates[0]);
-        self.saveToStore();
-      } else {
-        hollaback();
+    $.ajax(url, {
+      dataType: 'jsonp',
+      jsonpCallback: 'invalid_callback_param',
+      success: function(data) {
+        if (data && data.subtotal && data.subtotal.amount) {
+          // this price is what you would pay with fees for 1 BTC
+          var price = data.subtotal.amount;
+          self.rates[0].rate = price;
+          hollaback(price);
+          self.triggerSelectedRateUpdate(self.rates[0]);
+          self.saveToStore();
+        } else {
+          hollaback();
+        }
       }
     });
   };
