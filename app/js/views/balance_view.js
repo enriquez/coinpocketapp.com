@@ -14,12 +14,15 @@
   BalanceView.prototype.setBalance = function(balance) {
     this.$balance.data('btc', balance);
     this.$balance.formatBTC();
+    this.balanceIsSet = true;
   };
 
   BalanceView.prototype.setUnits = function(rate, units) {
     this.$balance.data('rate', rate);
     this.$balance.data('units', units);
-    this.$balance.formatBTC();
+    if (this.balanceIsSet) {
+      this.$balance.formatBTC();
+    }
   };
 
   MicroEvent.mixin(BalanceView);
