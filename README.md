@@ -9,6 +9,7 @@ Coin Pocket only needs a static web server for hosting. It currently relies on [
 ## Features
 
 * Native QR Code scanning on iOS using [Scan Code - QR Code Reader](http://scan-code-qr-code-reader/id828167977?ls=1&mt=8)
+* Accessible offline. Coin Pocket will stay available for existing users if the server goes down.
 * Live updates. Watch transactions appear and become confirmed.
 * Simple and easy to understand UI. Great for new users to Bitcoin.
 

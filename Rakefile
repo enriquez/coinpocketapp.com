@@ -1,4 +1,5 @@
 require 'digest'
+require 'webrick'
 require 'front_end_tasks'
 require 'front_end_tasks/cli'
 require 'front_end_tasks/documents'
@@ -104,6 +105,8 @@ task :build_gzip => :build do
   end
 end
 
+task :build_prod => [:build_gzip, :manifest, :release_notes]
+
 task :clean do
   `rm -r build`
 end
@@ -187,7 +190,8 @@ namespace :server do
     FrontEndTasks.server(:public_dir => './build', :port => 8000)
   end
 
-  task :prod => :build_gzip do
+  task :prod => :build_prod do
+    WEBrick::HTTPUtils::DefaultMimeTypes.store('manifest', 'text/cache-manifest')
     FrontEndTasks.server(:public_dir => './build', :port => 8000)
   end
 end
@@ -218,10 +222,37 @@ task :checksum => :build_gzip do
 
   puts
   puts "## Checksums"
+  puts "```"
   file_hash.each_pair do |file, hash|
     puts "#{file.ljust(left_column_length)} #{hash}"
   end
-  puts
+  puts "```"
+end
+
+task :manifest => :build_gzip do
+  manifest_file = File.open(File.join(FileList::BUILD_ROOT, 'coinpocketapp.manifest'), 'w')
+  file_hash = {}
+  left_column_length = 0
+  build_files = file_list.build_files.reject { |f| File.extname(f) == '.gz' || File.extname(f) == '.manifest' }
+  build_files.each do |f|
+    hash = Digest::SHA256.hexdigest(File.read(f))
+    file = f.gsub(FileList::BUILD_ROOT + '/', '')
+
+    file_hash[file] = hash
+    left_column_length = file.length if file.length > left_column_length
+  end
+
+  manifest_file.puts "CACHE MANIFEST"
+  manifest_file.puts
+  manifest_file.puts "CACHE:"
+
+  file_hash.each_pair do |file, hash|
+    manifest_file.puts "#{file.ljust(left_column_length)} # #{hash}"
+  end
+  manifest_file.puts
+  manifest_file.puts "NETWORK:"
+  manifest_file.puts "*"
+  manifest_file.close
 end
 
 task :release_notes => [:checksum, :commits]
