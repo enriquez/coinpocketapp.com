@@ -1,5 +1,5 @@
 var CoinPocketApp = (function($, self) {
-  self.VERSION = 'v0.6.1';
+  self.VERSION = 'v1.0.0-beta1';
   $('.coin-pocket-version').text(self.VERSION);
 
   self.Models = {};
