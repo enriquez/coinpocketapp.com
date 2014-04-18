@@ -1,4 +1,4 @@
-(function(BlockChainInfo, keyPair, entropy, bitcoinWorker, Models) {
+(function(HelloBlock, keyPair, entropy, bitcoinWorker, Models) {
 
   function Wallet() {
     this.unspentOutputs = {};
@@ -22,16 +22,28 @@
     };
   }
 
+  Wallet.prototype._reverseEndian = function(hex) {
+    var reversed = '';
+    for (var i=hex.length/2; i > 0; i--) {
+      var currentByte = hex.substr((i * 2) - 2, 2);
+      reversed += currentByte;
+    }
+
+    return reversed;
+  }
+
   Wallet.prototype.updateUnspentOutputs = function(unspentOutputs) {
+    var self = this;
     for (var i=0; i<unspentOutputs.length; i++) {
       var unspentOutput = unspentOutputs[i];
-      var id = unspentOutput.tx_hash + '-' + unspentOutput.tx_output_n;
+      var txHash = self._reverseEndian(unspentOutput.txHash);
+      var id = txHash + '-' + unspentOutput.index;
 
       if (unspentOutput.confirmations > 0) {
         this.unspentOutputs[id] = {
-          tx_hash: unspentOutput.tx_hash,
-          tx_output_n: unspentOutput.tx_output_n,
-          script: unspentOutput.script,
+          tx_hash: txHash,
+          tx_output_n: unspentOutput.index,
+          script: unspentOutput.scriptPubKey,
           value: unspentOutput.value,
           confirmations: unspentOutput.confirmations
         };
@@ -41,10 +53,10 @@
 
   Wallet.prototype.fetchUnspentOutputs = function(address, hollaback) {
     var self = this;
-    BlockChainInfo.unspent(address, function(data) {
+    HelloBlock.Addresses.unspents(address, {}, function(data) {
       var result = [];
-      if (data.unspent_outputs && data.unspent_outputs.length > 0) {
-        result = data.unspent_outputs;
+      if (data.unspents && data.unspents.length > 0) {
+        result = data.unspents;
         self.unspentOutputs = {};
         self.updateUnspentOutputs(result);
       }
@@ -205,7 +217,7 @@
       } else {
         var signedRawTransaction = result;
         console.log(signedRawTransaction);
-        BlockChainInfo.pushtx(signedRawTransaction, function(success) {
+        HelloBlock.Transactions.propogate(signedRawTransaction, function(success) {
           hollaback(success);
         });
       }
@@ -215,4 +227,4 @@
   MicroEvent.mixin(Wallet);
   Models.Wallet = Wallet;
   Models.wallet = new Wallet();
-})(BlockChainInfo, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.entropy, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);
+})(HelloBlock, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.entropy, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);

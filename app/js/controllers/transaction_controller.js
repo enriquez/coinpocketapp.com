@@ -29,9 +29,7 @@
 
     blockHeight.bind('blockHeight.updated', function(height, txIds) {
       transactionsView.updateBlockHeight(height);
-      for (var i = 0; i < txIds.length; i++) {
-        transactionsView.transactionConfirmed(txIds[i], height);
-      }
+      transactions.fetchRecent(keyPair.bitcoinAddress, transactionsView.visibleTransactionCount(), updateTransactions);
     });
 
     if (keyPair.isGenerated) {

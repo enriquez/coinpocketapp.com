@@ -1,33 +1,68 @@
-(function(BlockChainInfo, Models) {
+(function(HelloBlock, Models) {
 
   function Transaction(address, attrs) {
     var self = this;
 
-    self.id = attrs.tx_index;
-    self.time = attrs.time * 1000;
-    self.blockHeight = attrs.block_height;
-    self.amountDelta = 0;
-    self.inputs = [];
-    self.outputs = [];
+    if (attrs.txHash) {
+      self.id = attrs.txHash;
+      self.time = attrs.estimatedTxTime * 1000;
+      self.blockHeight = attrs.blockHeight;
+      self.amountDelta = 0;
+      self.inputs = [];
+      self.outputs = [];
 
-    // add credits
-    for (var j=0; j<attrs.out.length; j++) {
-      var output = attrs.out[j];
-      if (output.addr === address) {
-        self.amountDelta += parseInt(output.value, 10);
+      // add credits
+      for (var j=0; j<attrs.outputs.length; j++) {
+        var output = attrs.outputs[j];
+        if (output.address === address) {
+          self.amountDelta += parseInt(output.value, 10);
+        }
+        self.outputs.push({
+          addr: output.address,
+          n: output.index,
+          value: output.value
+        });
       }
-      self.outputs.push(output);
-    }
 
-    // subtract debits
-    for (var k=0; k<attrs.inputs.length; k++) {
-      var input = attrs.inputs[k].prev_out;
-      if (input.addr === address) {
-        self.amountDelta -= parseInt(input.value, 10);
+      // subtract debits
+      for (var k=0; k<attrs.inputs.length; k++) {
+        var input = attrs.inputs[k];
+        if (input.address === address) {
+          self.amountDelta -= parseInt(input.value, 10);
+        }
+        self.inputs.push({
+          addr: input.address,
+          n: input.prevTxoutIndex,
+          tx_index: input.prevTxHash,
+          value: input.value
+        });
       }
-      self.inputs.push(input);
-    }
+    } else {
+      self.id = attrs.hash;
+      self.time = attrs.time * 1000;
+      self.blockHeight = attrs.block_height;
+      self.amountDelta = 0;
+      self.inputs = [];
+      self.outputs = [];
 
+      // add credits
+      for (var j=0; j<attrs.out.length; j++) {
+        var output = attrs.out[j];
+        if (output.addr === address) {
+          self.amountDelta += parseInt(output.value, 10);
+        }
+        self.outputs.push(output);
+      }
+
+      // subtract debits
+      for (var k=0; k<attrs.inputs.length; k++) {
+        var input = attrs.inputs[k].prev_out;
+        if (input.addr === address) {
+          self.amountDelta -= parseInt(input.value, 10);
+        }
+        self.inputs.push(input);
+      }
+    }
   }
 
   Transaction.prototype.confirmations = function(currentBlockHeight) {
@@ -49,11 +84,11 @@
 
   transactions.fetchRecent = function(address, offset, hollaback) {
     var self = this;
-    BlockChainInfo.multiaddr(address, offset, function(data) {
-      var txsData = data.txs || [],
+    HelloBlock.Addresses.transactions(address, { offset: offset }, function(data) {
+      var txsData = data.transactions || [],
           recentTransactions = [];
 
-      self.totalCount = parseInt(data.wallet.n_tx, 10);
+      self.totalCount = txsData.length;
 
       for (var i=0; i<txsData.length; i++) {
         var txData = txsData[i];
@@ -93,4 +128,4 @@
   Models.transactions = transactions;
   Models.Transaction = Transaction;
 
-})(BlockChainInfo, CoinPocketApp.Models);
+})(HelloBlock, CoinPocketApp.Models);

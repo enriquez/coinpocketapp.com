@@ -52,89 +52,88 @@
         id = 'tx-' + transaction.id,
         selector = '#' + id;
 
-    if ($(selector).length === 0) {
-      $template.attr('id', id);
-      $template.attr('data-tx-id', transaction.id);
+    $template.attr('id', id);
+    $template.attr('data-tx-id', transaction.id);
 
-      // setup transaction meta data
-      $template.find('[data-btc]').data('btc', transaction.amountDeltaBTC());
-      $template.find('[data-time]').data('time', transaction.time);
-      $template.find('[data-block-height]').data('blockHeight', transaction.blockHeight);
+    // setup transaction meta data
+    $template.find('[data-btc]').data('btc', transaction.amountDeltaBTC());
+    $template.find('[data-time]').data('time', transaction.time);
+    $template.find('[data-block-height]').data('blockHeight', transaction.blockHeight);
 
-      var inputsTotal = 0;
-      for (var i=0; i<transaction.inputs.length; i++) {
-        var input = transaction.inputs[i];
-        var $inputTemplate = $template.find('.inputs-row-template').clone();
-        $inputTemplate.removeClass('inputs-row-template');
-        $inputTemplate.find('.inputs-address').text(input.addr);
-        $inputTemplate.find('.inputs-btc').text((input.value / 100000000).toFixed(8) + " BTC");
+    var inputsTotal = 0;
+    for (var i=0; i<transaction.inputs.length; i++) {
+      var input = transaction.inputs[i];
+      var $inputTemplate = $template.find('.inputs-row-template').clone();
+      $inputTemplate.removeClass('inputs-row-template');
+      $inputTemplate.find('.inputs-address').text(input.addr);
+      $inputTemplate.find('.inputs-btc').text((input.value / 100000000).toFixed(8) + " BTC");
 
-        $template.find('.transaction-inputs').prepend($inputTemplate);
-        $inputTemplate.show();
+      $template.find('.transaction-inputs').prepend($inputTemplate);
+      $inputTemplate.show();
 
-        inputsTotal += input.value;
-      }
-
-      var outputsTotal = 0;
-      for (var j=0; j<transaction.outputs.length; j++) {
-        var output = transaction.outputs[j];
-        var $outputTemplate = $template.find('.outputs-row-template').clone();
-        $outputTemplate.removeClass('outputs-row-template');
-        $outputTemplate.find('.outputs-address').text(output.addr);
-        $outputTemplate.find('.outputs-btc').text((output.value / 100000000).toFixed(8) + " BTC");
-
-        $template.find('.transaction-outputs').prepend($outputTemplate);
-        $outputTemplate.show();
-
-        outputsTotal += output.value;
-      }
-
-      $template.find('.total-inputs-btc').text((inputsTotal / 100000000).toFixed(8) + " BTC");
-      $template.find('.total-outputs-btc').text((outputsTotal / 100000000).toFixed(8) + " BTC");
-      $template.find('.transaction-fee').text(parseFloat(((inputsTotal - outputsTotal) / 100000000).toFixed(8)) + " BTC");
-
-      $template.formatTransaction();
-
-      $template.find('.toggle-input-row').click(function(e) {
-        e.preventDefault();
-        var $inputsRow = $template.find('.inputs-row');
-        if ($inputsRow.is(':visible')) {
-          $inputsRow.fadeOut();
-          $(this).text('show');
-        } else {
-          $inputsRow.fadeIn();
-          $(this).text('hide');
-        }
-      });
-
-      $template.find('.toggle-output-row').click(function(e) {
-        e.preventDefault();
-        var $outputRow = $template.find('.outputs-row');
-        if ($outputRow.is(':visible')) {
-          $outputRow.fadeOut();
-          $(this).text('show');
-        } else {
-          $outputRow.fadeIn();
-          $(this).text('hide');
-        }
-      });
-
-      $template.find('.transaction-preview').click(function(e) {
-        e.preventDefault();
-        $(this).parent().find('.transaction-details').fadeToggle();
-      });
-
-      var $transactions = $('.transaction');
-
-      $transactions.each(function(i, element) {
-        var $transaction = $(element);
-        if ($transaction.find('[data-time]').data('time') <= transaction.time) {
-          $template.insertBefore($transaction);
-          $template.fadeIn();
-          return false;
-        }
-      });
+      inputsTotal += input.value;
     }
+
+    var outputsTotal = 0;
+    for (var j=0; j<transaction.outputs.length; j++) {
+      var output = transaction.outputs[j];
+      var $outputTemplate = $template.find('.outputs-row-template').clone();
+      $outputTemplate.removeClass('outputs-row-template');
+      $outputTemplate.find('.outputs-address').text(output.addr);
+      $outputTemplate.find('.outputs-btc').text((output.value / 100000000).toFixed(8) + " BTC");
+
+      $template.find('.transaction-outputs').prepend($outputTemplate);
+      $outputTemplate.show();
+
+      outputsTotal += output.value;
+    }
+
+    $template.find('.total-inputs-btc').text((inputsTotal / 100000000).toFixed(8) + " BTC");
+    $template.find('.total-outputs-btc').text((outputsTotal / 100000000).toFixed(8) + " BTC");
+    $template.find('.transaction-fee').text(parseFloat(((inputsTotal - outputsTotal) / 100000000).toFixed(8)) + " BTC");
+
+    $template.formatTransaction();
+
+    $template.find('.toggle-input-row').click(function(e) {
+      e.preventDefault();
+      var $inputsRow = $template.find('.inputs-row');
+      if ($inputsRow.is(':visible')) {
+        $inputsRow.fadeOut();
+        $(this).text('show');
+      } else {
+        $inputsRow.fadeIn();
+        $(this).text('hide');
+      }
+    });
+
+    $template.find('.toggle-output-row').click(function(e) {
+      e.preventDefault();
+      var $outputRow = $template.find('.outputs-row');
+      if ($outputRow.is(':visible')) {
+        $outputRow.fadeOut();
+        $(this).text('show');
+      } else {
+        $outputRow.fadeIn();
+        $(this).text('hide');
+      }
+    });
+
+    $template.find('.transaction-preview').click(function(e) {
+      e.preventDefault();
+      $(this).parent().find('.transaction-details').fadeToggle();
+    });
+
+    $(selector).remove();
+    var $transactions = $('.transaction');
+
+    $transactions.each(function(i, element) {
+      var $transaction = $(element);
+      if ($transaction.find('[data-time]').data('time') <= transaction.time) {
+        $template.insertBefore($transaction);
+        $template.fadeIn();
+        return false;
+      }
+    });
   };
 
   TransactionsView.prototype.transactionConfirmed = function(txId, height) {
