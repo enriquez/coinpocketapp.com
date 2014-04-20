@@ -9,12 +9,16 @@
 
   }
 
+  Browser.prototype.isChromeiOS = function() {
+    return (/CriOS\/\S+ Mobile\/\S+ Safari\//).test(window.navigator.userAgent);
+  };
+
   Browser.prototype.isMobileSafari = function() {
     return (/Version\/\S+ Mobile\/\w+ Safari\//).test(window.navigator.userAgent);
   };
 
   Browser.prototype.canScanCode = function() {
-    return this.isMobileSafari() && !this._isMobileSafariStandalone();
+    return (this.isMobileSafari() || this.isChromeiOS) && !this._isMobileSafariStandalone();
   };
 
   Browser.prototype.hasCryptoGetRandomValues = function() {
