@@ -134,6 +134,9 @@
           return false;
         }
       });
+    } else {
+      $(selector).find('[data-block-height]').data('blockHeight', transaction.blockHeight);
+      $(selector).formatTransaction();
     }
   };
 

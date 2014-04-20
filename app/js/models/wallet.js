@@ -1,4 +1,4 @@
-(function(BlockChainInfo, keyPair, entropy, bitcoinWorker, Models) {
+(function(BitcoinNetwork, keyPair, entropy, bitcoinWorker, Models) {
 
   function Wallet() {
     this.unspentOutputs = {};
@@ -41,7 +41,7 @@
 
   Wallet.prototype.fetchUnspentOutputs = function(address, hollaback) {
     var self = this;
-    BlockChainInfo.unspent(address, function(data) {
+    BitcoinNetwork.unspentOutputs(address, function(data) {
       var result = [];
       if (data.unspent_outputs && data.unspent_outputs.length > 0) {
         result = data.unspent_outputs;
@@ -205,7 +205,7 @@
       } else {
         var signedRawTransaction = result;
         console.log(signedRawTransaction);
-        BlockChainInfo.pushtx(signedRawTransaction, function(success) {
+        BitcoinNetwork.pushTransaction(signedRawTransaction, function(success) {
           hollaback(success);
         });
       }
@@ -215,4 +215,4 @@
   MicroEvent.mixin(Wallet);
   Models.Wallet = Wallet;
   Models.wallet = new Wallet();
-})(BlockChainInfo, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.entropy, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);
+})(BitcoinNetwork, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.entropy, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);

@@ -1,9 +1,9 @@
-(function(BlockChainInfo, Models) {
+(function(BlockChainInfo, BitcoinNetwork, Models) {
 
   function Transaction(address, attrs) {
     var self = this;
 
-    self.id = attrs.tx_index;
+    self.id = attrs.hash;
     self.time = attrs.time * 1000;
     self.blockHeight = attrs.block_height;
     self.amountDelta = 0;
@@ -49,11 +49,13 @@
 
   transactions.fetchRecent = function(address, offset, hollaback) {
     var self = this;
-    BlockChainInfo.multiaddr(address, offset, function(data) {
+    BitcoinNetwork.transactions(address, offset, function(data) {
       var txsData = data.txs || [],
           recentTransactions = [];
 
-      self.totalCount = parseInt(data.wallet.n_tx, 10);
+      if (data.wallet) {
+        self.totalCount = parseInt(data.wallet.n_tx, 10);
+      }
 
       for (var i=0; i<txsData.length; i++) {
         var txData = txsData[i];
@@ -93,4 +95,4 @@
   Models.transactions = transactions;
   Models.Transaction = Transaction;
 
-})(BlockChainInfo, CoinPocketApp.Models);
+})(BlockChainInfo, BitcoinNetwork, CoinPocketApp.Models);

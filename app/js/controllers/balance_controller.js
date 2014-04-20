@@ -5,12 +5,13 @@
       blockHeight.bind('blockHeight.updated', function(height) {
         wallet.fetchUnspentOutputs(keyPair.bitcoinAddress);
       });
+      blockHeight.beginPolling();
     } else {
       keyPair.bind('keyPair.generate', function() {
-        wallet.fetchUnspentOutputs(keyPair.bitcoinAddress);
         blockHeight.bind('blockHeight.updated', function(height) {
           wallet.fetchUnspentOutputs(keyPair.bitcoinAddress);
         });
+        blockHeight.beginPolling();
       });
     }
 

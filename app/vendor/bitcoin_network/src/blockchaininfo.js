@@ -7,10 +7,10 @@ var BlockChainInfo = (function(self, $) {
       url: url,
       data: { cors: 'true', format: 'json' },
       success: function(data) {
-        hollaback(data);
+        hollaback(data, true);
       },
       error: function(xhr, opt, err) {
-        hollaback({});
+        hollaback({}, false, xhr.status);
       }
     });
   }
@@ -20,7 +20,22 @@ var BlockChainInfo = (function(self, $) {
   };
 
   self.unspent = function(address, hollaback) {
-    getJSONForPath('/unspent?active=' + address, hollaback);
+    var url = 'https://blockchain.info/unspent?active=' + address;
+    $.ajax({
+      type: 'GET',
+      url: url,
+      data: { cors: 'true', format: 'json' },
+      success: function(data) {
+        hollaback(data, true);
+      },
+      error: function(xhr, opt, err) {
+        if (xhr.status === 500) {
+          hollaback({}, true); // 500 error means no unspent outputs
+        } else {
+          hollaback({}, false, xhr.status);
+        }
+      }
+    });
   };
 
   self.pushtx = function(tx, hollaback) {
@@ -32,10 +47,10 @@ var BlockChainInfo = (function(self, $) {
       url: url,
       data: postData,
       success: function(res) {
-        hollaback(true);
+        hollaback(true, true);
       },
       error: function(xhr, opt, err) {
-        hollaback(false);
+        hollaback(false, false, xhr.status);
       }
     });
   };
@@ -131,6 +146,10 @@ var BlockChainInfo = (function(self, $) {
     }
   }
 
+  WS.prototype.pingBlock = function() {
+    this.sendMessage({ op: 'ping_block' });
+  }
+
   WS.prototype.onNewBlock = function(hollaback) {
     var self = this;
     if (!self.subscriptions['block']) {
@@ -138,7 +157,6 @@ var BlockChainInfo = (function(self, $) {
     }
 
     self.subscriptions['block'].push(hollaback);
-    self.sendMessage({ op: 'ping_block' });
     self.sendMessage({ op: 'blocks_sub' });
   };
 

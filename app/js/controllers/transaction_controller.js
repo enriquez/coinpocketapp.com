@@ -27,20 +27,20 @@
       });
     });
 
-    blockHeight.bind('blockHeight.updated', function(height, txIds) {
+    blockHeight.bind('blockHeight.updated', function(height) {
       transactionsView.updateBlockHeight(height);
-      for (var i = 0; i < txIds.length; i++) {
-        transactionsView.transactionConfirmed(txIds[i], height);
-      }
+      transactions.fetchRecent(keyPair.bitcoinAddress, 0, updateTransactions);
     });
 
     if (keyPair.isGenerated) {
-      transactions.fetchRecent(keyPair.bitcoinAddress, transactionsView.visibleTransactionCount(), updateTransactions);
-      transactions.onNewTransaction(keyPair.bitcoinAddress, updateTransactions);
+      transactions.onNewTransaction(keyPair.bitcoinAddress, function() {
+        transactions.fetchRecent(keyPair.bitcoinAddress, 0, updateTransactions);
+      });
     } else {
       keyPair.bind('keyPair.generate', function() {
-        transactions.fetchRecent(keyPair.bitcoinAddress, transactionsView.visibleTransactionCount(), updateTransactions);
-        transactions.onNewTransaction(keyPair.bitcoinAddress, updateTransactions);
+        transactions.onNewTransaction(keyPair.bitcoinAddress, function() {
+          transactions.fetchRecent(keyPair.bitcoinAddress, 0, updateTransactions);
+        });
       });
     }
 
