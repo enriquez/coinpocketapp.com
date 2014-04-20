@@ -4,7 +4,7 @@
     var self = this;
 
     self._isMobileSafariStandalone = function() {
-      return self.isMobileSafari && window.navigator.standalone;
+      return self.isMobileSafari() && window.navigator.standalone;
     };
 
   }
@@ -18,7 +18,7 @@
   };
 
   Browser.prototype.canScanCode = function() {
-    return (this.isMobileSafari() || this.isChromeiOS) && !this._isMobileSafariStandalone();
+    return (this.isMobileSafari() || this.isChromeiOS()) && !this._isMobileSafariStandalone();
   };
 
   Browser.prototype.hasCryptoGetRandomValues = function() {
