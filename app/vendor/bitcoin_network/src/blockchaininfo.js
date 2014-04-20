@@ -177,6 +177,10 @@ var BlockChainInfo = (function(self, $) {
   };
 
   WS.prototype.onConnectSuccess = function(hollaback) {
+    if (this.isConnected) {
+      hollaback();
+    }
+
     this.connectSuccessCallbacks.push(hollaback);
   };
 
