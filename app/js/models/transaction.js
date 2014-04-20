@@ -82,7 +82,7 @@
 
       if (!self.any()) {
         localStorage.setItem('hasTransactions', 'true');
-        self.trigger('transactions.updated', recentTransactions);
+        self.trigger('transactions.updated');
       }
     });
   };
