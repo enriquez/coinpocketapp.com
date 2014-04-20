@@ -31,5 +31,17 @@
     }
   };
 
+  Browser.prototype.canUseLocalStorage = function() {
+    var result = true;
+
+    try {
+      localStorage.setItem('localStorageCheck', '');
+    } catch(e) {
+      result = false;
+    }
+
+    return result;
+  };
+
   Models.browser = new Browser();
 })(window, CoinPocketApp.Models);

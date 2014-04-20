@@ -13,6 +13,8 @@
 
       if (!browser.hasCryptoGetRandomValues()) {
         welcomeModalView.showUnsupportedMessage("A secure random number generator is not present. Try again in Safari, Chrome, or Firefox.");
+      } else if (!browser.canUseLocalStorage()) {
+        welcomeModalView.showUnsupportedMessage("Turn off private browsing and try again. Coin Pocket needs to use local storage.");
       }
 
       welcomeModalView.bind("passwordInput.change", self.passwordInputChanged);
