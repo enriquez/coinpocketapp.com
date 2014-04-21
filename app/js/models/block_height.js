@@ -21,6 +21,11 @@
   BlockHeight.prototype.beginPolling = function() {
     var self = this;
 
+    // try to get the block height ASAP
+    BitcoinNetwork.currentBlockHeight(function(height) {
+      self._triggerNewBlock(height);
+    });
+
     // the socket doesn't always notify us, so we'll poll for it every 15 seconds :(
     // it doesn't always give us the latest block height either :(
     self.socket.onConnectSuccess(function() {
@@ -31,10 +36,6 @@
     });
 
     self.socket.onReconnectFailure(function() {
-      BitcoinNetwork.currentBlockHeight(function(height) {
-        self._triggerNewBlock(height);
-      });
-
       setInterval(function() {
         BitcoinNetwork.currentBlockHeight(function(height) {
           self._triggerNewBlock(height);

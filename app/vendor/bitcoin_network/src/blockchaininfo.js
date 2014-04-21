@@ -5,6 +5,7 @@ var BlockChainInfo = (function(self, $) {
     $.ajax({
       type: 'GET',
       url: url,
+      timeout: 5000,
       data: { cors: 'true', format: 'json' },
       success: function(data) {
         hollaback(data, true);
@@ -24,6 +25,7 @@ var BlockChainInfo = (function(self, $) {
     $.ajax({
       type: 'GET',
       url: url,
+      timeout: 5000,
       data: { cors: 'true', format: 'json' },
       success: function(data) {
         hollaback(data, true);
@@ -45,6 +47,7 @@ var BlockChainInfo = (function(self, $) {
     $.ajax({
       type: 'POST',
       url: url,
+      timeout: 5000,
       data: postData,
       success: function(res) {
         hollaback(true, true);
