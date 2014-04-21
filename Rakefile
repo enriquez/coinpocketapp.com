@@ -13,7 +13,12 @@ class FileList
   INDEX_HTML = File.join(DEV_ROOT, 'index.html')
   WORKER_JS  = File.join(DEV_ROOT, 'js/workers/bitcoin_worker.js')
 
-  ASSETS = []
+  ASSETS = [
+    File.join(DEV_ROOT, 'apple-touch-icon.png'),
+    File.join(DEV_ROOT, 'apple-touch-icon-76x76.png'),
+    File.join(DEV_ROOT, 'apple-touch-icon-120x120.png'),
+    File.join(DEV_ROOT, 'apple-touch-icon-152x152.png'),
+  ]
 
   def base_files
     [INDEX_HTML] + ASSETS
