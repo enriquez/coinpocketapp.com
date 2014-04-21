@@ -1,4 +1,4 @@
-(function(pageHash, keyPair, wallet, conversionRate, confirmationView, Controllers) {
+(function(pageHash, keyPair, wallet, conversionRate, transactions, confirmationView, Controllers) {
 
   function ConfirmationController() {
     var self = this;
@@ -32,10 +32,13 @@
     confirmationView.loading();
     wallet.sendTransaction(password, self.transaction, function(success, errorMessage) {
       if (success) {
-        wallet.fetchUnspentOutputs(keyPair.bitcoinAddress, function() {
+        // sending a transaction doesn't always trigger blockchain.info's socket to notify us of the transaction.
+        // we manually refresh the transactions after sending in case we didn't get the notification.
+        transactions.fetchRecent(keyPair.bitcoinAddress, 0, function(transactions) {
           pageHash.goTo("#/");
           self.transaction = null;
         });
+        wallet.fetchUnspentOutputs(keyPair.bitcoinAddress, function() { });
       } else {
         confirmationView.validationMessage(errorMessage);
         confirmationView.doneLoading();
@@ -45,4 +48,4 @@
 
   Controllers.confirmationController = new ConfirmationController();
 
-})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.wallet, CoinPocketApp.Models.conversionRate, CoinPocketApp.Views.confirmationView, CoinPocketApp.Controllers);
+})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.wallet, CoinPocketApp.Models.conversionRate, CoinPocketApp.Models.transactions, CoinPocketApp.Views.confirmationView, CoinPocketApp.Controllers);

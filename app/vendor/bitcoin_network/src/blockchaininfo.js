@@ -30,7 +30,7 @@ var BlockChainInfo = (function(self, $) {
       },
       error: function(xhr, opt, err) {
         if (xhr.status === 500) {
-          hollaback({}, true); // 500 error means no unspent outputs
+          hollaback({ unspent_outputs: [] }, true); // 500 error means no unspent outputs
         } else {
           hollaback({}, false, xhr.status);
         }

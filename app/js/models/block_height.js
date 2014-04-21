@@ -22,6 +22,7 @@
     var self = this;
 
     // the socket doesn't always notify us, so we'll poll for it every 15 seconds :(
+    // it doesn't always give us the latest block height either :(
     self.socket.onConnectSuccess(function() {
       self.socket.pingBlock();
       setInterval(function() {

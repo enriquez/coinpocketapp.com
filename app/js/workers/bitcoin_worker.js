@@ -77,7 +77,7 @@ var messageListener = function(e) {
   if (e.data.functionName) {
     var id = e.data.id,
         functionName = e.data.functionName,
-        params = e.data.params;
+        params = JSON.parse(e.data.params);
 
     var fn = self[functionName];
 

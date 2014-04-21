@@ -4,7 +4,7 @@
     this.unspentOutputs = {};
 
     this._btcToSatoshis = function(btc) {
-      return btc * 100000000;
+      return parseInt((btc * 100000000).toFixed(0), 10);
     };
 
     this._satoshisToBtc = function(satoshis) {
@@ -43,7 +43,7 @@
     var self = this;
     BitcoinNetwork.unspentOutputs(address, function(data) {
       var result = [];
-      if (data.unspent_outputs && data.unspent_outputs.length > 0) {
+      if (data.unspent_outputs) {
         result = data.unspent_outputs;
         self.unspentOutputs = {};
         self.updateUnspentOutputs(result);
@@ -131,11 +131,11 @@
       totalInputs += parseFloat(input.value);
     }
 
-    var changeAmount = totalInputs - this._btcToSatoshis(amount) - this._btcToSatoshis(transactionFee);
+    var changeAmount = this._satoshisToBtc(totalInputs - this._btcToSatoshis(amount) - this._btcToSatoshis(transactionFee));
     if (changeAmount > 0) {
       obj.outputs.push({
         address: fromAddress,
-        amount: this._satoshisToBtc(changeAmount)
+        amount: changeAmount
       });
     }
   };

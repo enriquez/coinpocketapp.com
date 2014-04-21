@@ -71,11 +71,14 @@
       if (typeof hollaback === 'function') {
         hollaback(recentTransactions);
       }
+
+      self.trigger('transactions.fetched', recentTransactions);
     });
   };
 
   transactions.onNewTransaction = function(address, hollaback) {
     var self = this;
+    // This callback doesn't always fire when it is supposed to :(
     self.socket.onNewTransactionForAddress(address, function(data) {
       var transaction = new Transaction(address, data.x);
       hollaback([transaction]);

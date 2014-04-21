@@ -19,7 +19,7 @@
     var message = {
       id: this.currentMessageId,
       functionName: functionName,
-      params: params,
+      params: JSON.stringify(params),
     };
 
     this.callbacks[message.id] = hollaback;

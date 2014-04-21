@@ -19,27 +19,28 @@
       }
     };
 
+    transactions.bind('transactions.fetched', updateTransactions);
+
     transactionsView.bind('loadButton.clicked', function() {
       transactionsView.loadMoreLoading();
       transactions.fetchRecent(keyPair.bitcoinAddress, transactionsView.visibleTransactionCount(), function(newTxs) {
         transactionsView.loadMoreDoneLoading();
-        updateTransactions(newTxs);
       });
     });
 
     blockHeight.bind('blockHeight.updated', function(height) {
       transactionsView.updateBlockHeight(height);
-      transactions.fetchRecent(keyPair.bitcoinAddress, 0, updateTransactions);
+      transactions.fetchRecent(keyPair.bitcoinAddress, 0);
     });
 
     if (keyPair.isGenerated) {
       transactions.onNewTransaction(keyPair.bitcoinAddress, function() {
-        transactions.fetchRecent(keyPair.bitcoinAddress, 0, updateTransactions);
+        transactions.fetchRecent(keyPair.bitcoinAddress, 0);
       });
     } else {
       keyPair.bind('keyPair.generate', function() {
         transactions.onNewTransaction(keyPair.bitcoinAddress, function() {
-          transactions.fetchRecent(keyPair.bitcoinAddress, 0, updateTransactions);
+          transactions.fetchRecent(keyPair.bitcoinAddress, 0);
         });
       });
     }
