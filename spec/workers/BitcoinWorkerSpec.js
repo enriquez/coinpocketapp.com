@@ -8,7 +8,7 @@ describe("Bitcoin Worker", function() {
       data: {
         id: 1,
         functionName: "myFunction",
-        params: ["myParam"]
+        params: JSON.stringify(["myParam"])
       }
     };
 
