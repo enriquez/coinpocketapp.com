@@ -2,7 +2,7 @@
 
 Bitcoin wallet that stores Bitcoin in your browser. Perfect for taking some "spending Bitcoin" with you on your mobile phone.
 
-Coin Pocket only needs a static web server for hosting. It currently relies on [Blockchain.info's API](https://blockchain.info/api) for interacting with the blockchain (this may change in the future). An official version of Coin Pocket is hosted and maintained at:
+Coin Pocket only needs a static web server for hosting. It currently relies on [Blockchain.info](https://blockchain.info/api) and [helloblock.io](https://helloblock.io) for interacting with the blockchain (this may change in the future). An official version of Coin Pocket is hosted and maintained at:
 
 [https://btc.coinpocketapp.com](https://btc.coinpocketapp.com)
 
