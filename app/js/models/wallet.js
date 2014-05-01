@@ -184,7 +184,7 @@
 
           if (sizeEstimate > 1000) {
             calculatedFee = Math.ceil(sizeEstimate / 1000) * 0.0001;
-            buildInputsAndOuptuts(amount, calculatedFee);
+            self._buildInputsAndOuptuts(result, toAddress, fromAddress, amount, calculatedFee);
           }
 
           if (result.inputs.length === 0) {
