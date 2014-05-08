@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" manifest="coinpocketapp.manifest">
   <head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -31,13 +33,16 @@
             </div>
 
             <div id="button-container" class="row">
-              <div id="send-button" class="col-xs-4">
+              <div id="send-button" class="col-xs-3">
                 <a href="#/send">Send</a>
               </div>
-              <div id="settings-button" class="col-xs-4 text-center">
+              <div id="settings-button" class="col-xs-3 text-center">
                 <a href="#/settings">Settings</a>
               </div>
-              <div id="receive-button" class="col-xs-4 text-right">
+              <div id="tools-button" class="col-xs-3 text-center">
+                <a href="#/tools">Tools</a>
+              </div>              
+              <div id="receive-button" class="col-xs-3 text-right">
                 <a href="#/receive">Receive</a>
               </div>
             </div>
@@ -247,6 +252,41 @@
               <a id="email-button" href="" class="btn btn-primary btn-block">Compose Email</a>
               <a href="#/" class="btn btn-default btn-block">Done</a>
             </div>
+          </div>
+
+          <div id="tools" class="content row">
+            <div class="col-xs-12">
+              <h4>Check Address Balance</h4>
+              <div class="row">
+                <div class="col-xs-12">
+                  <a id="scancode-button-check" href="scancode://scan" data-scancode-callback-path="/#/tools" class="btn btn-default btn-block">Scan Code</a>
+                  <hr>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div id="address-group-check" class="form-group">
+                    <label class="control-label" for="address-check">Address</label>
+                    <input type="text" class="form-control" id="address-check" name="address" autocomplete="off">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6">
+                  <div id="amount-group-check" class="form-group">
+                    <label class="control-label" for="amount-check">Amount</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control text-right" id="amount-check" name="amount" autocomplete="off">
+                      <span class="input-group-addon">BTC</span>
+                    </div>
+                  </div>
+                </div>
+              </div>              
+            </div>
+            <div class="col-xs-12">
+              <a href="#/" class="btn btn-default btn-block">Done</a>
+            </div>            
           </div>
 
           <div id="connection-status" class="row content" style="display:none">
@@ -491,6 +531,7 @@
     <script src="/js/views/balance_view.js"></script>
     <script src="/js/views/transactions_view.js"></script>
     <script src="/js/views/connection_status_view.js"></script>
+    <script src="/js/views/tools_view.js"></script>
     <script src="/js/controllers/welcome_modal_controller.js"></script>
     <script src="/js/controllers/browser_controller.js"></script>
     <script src="/js/controllers/empty_state_controller.js"></script>
@@ -502,6 +543,7 @@
     <script src="/js/controllers/connection_status_controller.js"></script>
     <script src="/js/controllers/balance_controller.js"></script>
     <script src="/js/controllers/main_controller.js"></script>
+    <script src="/js/controllers/tools_controller.js"></script>
     <!-- /build -->
 
   </body>
