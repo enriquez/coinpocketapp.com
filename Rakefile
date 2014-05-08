@@ -1,5 +1,4 @@
 require 'digest'
-require 'webrick'
 require 'front_end_tasks'
 require 'front_end_tasks/cli'
 require 'front_end_tasks/documents'
@@ -196,7 +195,6 @@ namespace :server do
   end
 
   task :prod => :build_prod do
-    WEBrick::HTTPUtils::DefaultMimeTypes.store('manifest', 'text/cache-manifest')
     FrontEndTasks.server(:public_dir => './build', :port => 8000)
   end
 end
