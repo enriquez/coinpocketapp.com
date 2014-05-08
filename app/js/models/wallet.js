@@ -39,8 +39,12 @@
     }
   };
 
-  Wallet.prototype.fetchUnspentOutputs = function(address, hollaback) {
+  Wallet.prototype.fetchUnspentOutputs = function(address, hollaback, trigger) {
     var self = this;
+
+    if(typeof trigger == 'undefined')
+      trigger = 'unspentOutputs.updated';
+    
     BitcoinNetwork.unspentOutputs(address, function(data) {
       var result = [];
       if (data.unspent_outputs) {
@@ -52,7 +56,7 @@
       if (typeof hollaback === 'function') {
         hollaback(result);
       }
-      self.trigger('unspentOutputs.updated', self.unspentOutputs);
+      self.trigger(trigger, self.unspentOutputs);
     });
   };
 

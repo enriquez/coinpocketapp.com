@@ -25,7 +25,8 @@
     "#/send",
     "#/settings",
     "#/receive",
-    "#/confirmation"
+    "#/confirmation",
+    "#/tools"
   ];
 
   // Warning: params are not sanitized.
