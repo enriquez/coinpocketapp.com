@@ -80,7 +80,7 @@ var BitcoinNetwork = (function(self, BlockChainInfo, HelloBlock) {
     }
 
     var helloBlockFallback = function() {
-      HelloBlock.Addresses.unspents(address, {}, _handleCallback(hollaback, null, function(data) {
+      HelloBlock.Addresses.unspents(address, { limit: 100 }, _handleCallback(hollaback, null, function(data) {
         var unspent_outputs = [];
 
         for (var i=0; i<data.unspents.length; i++) {
