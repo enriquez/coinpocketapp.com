@@ -112,7 +112,7 @@ end
 task :build_prod => [:build_gzip, :manifest, :release_notes]
 
 task :clean do
-  `rm -r build`
+  rm_r FileList::BUILD_ROOT if File.directory?(FileList::BUILD_ROOT)
 end
 
 namespace :lint do

@@ -46,6 +46,74 @@ Everything you should need is available as a Rake task including:
 
 See the `Rakefile` for more.
 
+## Deploy Notes
+
+You can run your own version of Coin Pocket on any static web server. It is possible to serve this project's `app/` directory, but you'll want to follow the instructions below to optimize Coin Pocket for production.
+
+### Install Tools
+
+This project uses Ruby and Rake with some gems for the build process. Assuming you have Ruby installed already, you'll need to get Bundler and install the build tools and their dependencies.
+
+```bash
+$ gem install bundler
+$ bundle
+```
+
+### Build for Production
+
+With the build tools installed, you can run the following command.
+
+```bash
+$ bin/rake build_prod
+```
+
+This will create a `build` directory containing the public root of the app. The javascripts and stylesheets are combined and minified. Everything is gzipped in here as well.
+
+### Server Configuration
+
+Below are some things to keep in mind when running your version of Coin Pocket.
+
+#### Best Practices
+
+You should lock down access to your server. There is no data on the server to steal, but malicious code updates may be able to steal data. Monitor your server regularly.
+
+#### SSL
+
+Please use Coin Pocket over SSL only. Test your configuration with [https://www.ssllabs.com/ssltest/](https://www.ssllabs.com/ssltest/).
+
+#### Domains
+
+Coin Pocket data is tied to a domain. You'll want to setup proper redirects to the right domain or else you'll end up with multiple wallets at different domains which may be confusing.
+
+Also, be careful running Coin Pocket on services where you share a domain with other people. It may be tempting to use GitHub pages, Dropbox, or Heroku since it is easy to setup. The problem is that an attacker can setup a page on the same domain and get access to Coin Pocket data. Hosting Coin Pocket on these services is Ok as long as you can do so on a domain that you control (subdomains should be Ok too). Make sure you redirect to your domain as well.
+
+#### X-Frame-Options Header
+
+This is a header that should be sent with every request. It prevents Coin Pocket from running in an iframe on modern browsers.
+
+Nginx config example
+
+```
+add_header X-Frame-Options DENY;
+```
+
+#### Content Security Policy Header
+
+Send this header to whitelist external sources.
+
+Nginx config example
+
+```
+```
+
+#### GZip
+
+The build process for Coin Pocket generates gzip versions of all the assets ahead of time. Configure your server to take advantage of this.
+
+#### Cache Manifest
+
+Coin Pocket is still available to users even if the server goes down by using a Cache Manifest file. Make sure your server has the correct mime type of `text/cache-manifest` for `.manifest` files to take advantage of this.
+
 ## MIT License
 
 Copyright (c) 2014 Enriquez Software LLC (http://enriquez.me)
