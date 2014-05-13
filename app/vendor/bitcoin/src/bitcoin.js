@@ -25,13 +25,7 @@ Bitcoin.Address.generate = function(hollaback) {
   var curve = sjcl.ecc.curves.k256;
   var keys  = sjcl.ecc.ecdsa.generateKeys(curve, Bitcoin.paranoia);
 
-  var publicKey = sjcl.bitArray.concat(sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x04"), keys.pub.get().x), keys.pub.get().y); 
-  var hashed = sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x00"),
-                                    sjcl.hash.ripemd160.hash(sjcl.hash.sha256.hash(publicKey)));
-
-  var checkSum = sjcl.bitArray.clamp(sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(hashed)), 32);
-
-  var bitcoinAddress = sjcl.codec.base58.fromBits(sjcl.bitArray.concat(hashed, checkSum));
+  var bitcoinAddress = Bitcoin.PrivateKey.address(sjcl.codec.hex.fromBits(keys.sec.get()));
 
   hollaback({
     curve: curve,
@@ -74,6 +68,64 @@ Bitcoin.parseCode = function(code) {
   }
 
   return out;
+};
+
+Bitcoin.PrivateKey = function() { };
+
+Bitcoin.PrivateKey.validate = function(privateKey) {
+  return Bitcoin.PrivateKey.isHexFormat(privateKey) || Bitcoin.PrivateKey.isUncompressedWIF(privateKey);
+};
+
+Bitcoin.PrivateKey.toHex = function(privateKey) {
+  if (Bitcoin.PrivateKey.isHexFormat(privateKey)) {
+    return privateKey;
+  } else if (Bitcoin.PrivateKey.isUncompressedWIF(privateKey)) {
+    var bits = sjcl.codec.base58.toBits(privateKey);
+    return sjcl.codec.hex.fromBits(sjcl.bitArray.bitSlice(bits, 8, 264));
+  }
+};
+
+Bitcoin.PrivateKey.isHexFormat = function(privateKey) {
+  return (new RegExp('^[0-9a-f]{64}$', 'i')).test(privateKey);
+};
+
+Bitcoin.PrivateKey.isUncompressedWIF = function(privateKey) {
+  var isValidFormat = (new RegExp('^5[1-9A-HJ-NP-Za-km-z]{50}$')).test(privateKey);
+
+  if (isValidFormat) {
+    var bits = sjcl.codec.base58.toBits(privateKey),
+        length = sjcl.bitArray.bitLength(bits),
+        withVersion = sjcl.bitArray.clamp(bits, length - 32),
+        doubleHashed = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(withVersion)),
+        checksum = sjcl.bitArray.clamp(doubleHashed, 32);
+
+    return sjcl.bitArray.equal(sjcl.bitArray.bitSlice(bits, length - 32), checksum);
+  } else {
+    return false;
+  }
+};
+
+Bitcoin.PrivateKey.address = function(privateKey) {
+  var curve = sjcl.ecc.curves.k256;
+  var exponent = sjcl.bn.fromBits(sjcl.codec.hex.toBits(privateKey));
+  var secretKey = new sjcl.ecc.ecdsa.secretKey(curve, exponent);
+  var publicKey = new sjcl.ecc.ecdsa.publicKey(curve, sjcl.ecc.curves.k256.G.mult(exponent));
+
+  var publicKeyHex = sjcl.bitArray.concat(sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x04"), publicKey.get().x), publicKey.get().y); 
+  var hashed = sjcl.bitArray.concat(sjcl.codec.hex.toBits("0x00"),
+                                    sjcl.hash.ripemd160.hash(sjcl.hash.sha256.hash(publicKeyHex)));
+  var checkSum = sjcl.bitArray.clamp(sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(hashed)), 32);
+
+  return sjcl.codec.base58.fromBits(sjcl.bitArray.concat(hashed, checkSum));
+};
+
+Bitcoin.PrivateKey.wif = function(privateKey) {
+  var withVersion = sjcl.codec.hex.toBits('80' + privateKey);
+  var hashed = sjcl.hash.sha256.hash(withVersion);
+  var doubleHashed = sjcl.hash.sha256.hash(hashed);
+  var checkSum = sjcl.bitArray.clamp(doubleHashed, 32);
+
+  return sjcl.codec.base58.fromBits(sjcl.bitArray.concat(withVersion, checkSum));
 };
 
 Bitcoin.Transaction = function() {

@@ -42,17 +42,23 @@
   Wallet.prototype.fetchUnspentOutputs = function(address, hollaback) {
     var self = this;
     BitcoinNetwork.unspentOutputs(address, function(data) {
-      var result = [];
-      if (data.unspent_outputs) {
-        result = data.unspent_outputs;
-        self.unspentOutputs = {};
-        self.updateUnspentOutputs(result);
-      }
+      if (data.error) {
+        if (typeof hollaback === 'function') {
+          hollaback(data);
+        }
+      } else {
+        var result = [];
+        if (data.unspent_outputs) {
+          result = data.unspent_outputs;
+          self.unspentOutputs = {};
+          self.updateUnspentOutputs(result);
+        }
 
-      if (typeof hollaback === 'function') {
-        hollaback(result);
+        if (typeof hollaback === 'function') {
+          hollaback(result);
+        }
+        self.trigger('unspentOutputs.updated', self.unspentOutputs);
       }
-      self.trigger('unspentOutputs.updated', self.unspentOutputs);
     });
   };
 
@@ -140,6 +146,43 @@
     }
   };
 
+  Wallet.prototype.sweepTransaction = function(toAddress, hollaback) {
+    var obj = {};
+
+    obj.inputs  = [];
+    obj.outputs = [];
+
+    // select all unspents
+    this._eachUnspentOutput(function(unspentOutput) {
+      obj.inputs.push(unspentOutput);
+    });
+
+    // calculate fee based on number of inputs and a single output
+    var sizeEstimate = 148 * obj.inputs.length + 44;
+    var calculatedFee = 0.0001;
+
+    if (sizeEstimate > 1000) {
+      calculatedFee = Math.ceil(sizeEstimate / 1000) * 0.0001;
+    }
+
+    // determine amount minus miner fee
+    var amount = this.balanceBTC() - calculatedFee;
+
+    if (amount > 0) {
+      obj.isValid = true;
+
+      // create output to sweep to
+      obj.outputs = [
+        { address: toAddress, amount: parseFloat(amount) }
+      ];
+    } else {
+      obj.isValid = false;
+      obj.errorMessage = 'Unable to sweep address with sufficient fees';
+    }
+
+    hollaback(obj);
+  };
+
   Wallet.prototype.buildTransaction = function(fromAddress, opts, hollaback) {
     var toAddress = opts.address,
         amount = opts.amount,
@@ -200,6 +243,20 @@
 
   Wallet.prototype.sendTransaction = function(password, transaction, hollaback) {
     bitcoinWorker.async('buildAndSignRawTransaction', [entropy.randomWords(32), password, keyPair, transaction.inputs, transaction.outputs], function(result) {
+      if (result.error) {
+        hollaback(false, result.error);
+      } else {
+        var signedRawTransaction = result;
+        console.log(signedRawTransaction);
+        BitcoinNetwork.pushTransaction(signedRawTransaction, function(success) {
+          hollaback(success);
+        });
+      }
+    });
+  };
+
+  Wallet.prototype.sendTransactionWithPrivateKey = function(privateKey, transaction, hollaback) {
+    bitcoinWorker.async('buildAndSignRawTransactionWithPrivateKey', [entropy.randomWords(32), privateKey, transaction.inputs, transaction.outputs], function(result) {
       if (result.error) {
         hollaback(false, result.error);
       } else {

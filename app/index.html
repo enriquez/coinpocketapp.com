@@ -48,7 +48,7 @@
             <div id="scancode" class="col-xs-12">
               <div class="row">
                 <div class="col-xs-10">
-                  <a id="scancode-button" href="scancode://scan" data-scancode-callback-path="/#/send" class="btn btn-default btn-block">Scan Code</a>
+                  <a href="scancode://scan" data-scancode-callback-path="/#/send" class="btn btn-default btn-block">Scan Code</a>
                 </div>
                 <div class="col-xs-2">
                   <a href="https://itunes.apple.com/us/app/scan-code-qr-code-reader/id828167977?ls=1&mt=8" class="btn btn-default btn-block" data-confirm="Coin Pocket uses 'Scan Code - QR Code Reader'. Launch App Store now?"><span class="glyphicon glyphicon-info-sign"></span></a>
@@ -241,11 +241,249 @@
 
             <div class="col-xs-12">
               <div id="qrcode"></div><br>
+              <hr>
             </div>
 
             <div class="col-xs-12">
               <a id="email-button" href="" class="btn btn-primary btn-block">Compose Email</a>
+              <a id="sweep-button" href="#/sweep" class="btn btn-primary btn-block">Sweep Private Key</a>
               <a href="#/" class="btn btn-default btn-block">Done</a>
+            </div>
+
+          </div>
+
+          <div id="sweep" class="content row">
+
+            <div id="sweep-scancode" class="col-xs-12">
+              <div class="row">
+                <div class="col-xs-10">
+                  <a href="scancode://scan" data-scancode-callback-path="/#/sweep" class="btn btn-default btn-block">Scan Code</a>
+                </div>
+                <div class="col-xs-2">
+                  <a href="https://itunes.apple.com/us/app/scan-code-qr-code-reader/id828167977?ls=1&mt=8" class="btn btn-default btn-block" data-confirm="Coin Pocket uses 'Scan Code - QR Code Reader'. Launch App Store now?"><span class="glyphicon glyphicon-info-sign"></span></a>
+                </div>
+              </div>
+              <hr>
+            </div>
+
+            <div class="col-xs-12">
+
+              <form role="form" action="#/sweep">
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div id="private-key-group" class="form-group">
+                      <label class="control-label" for="private-key">Private Key</label>
+                      <input type="text" class="form-control" id="private-key" name="private-key" autocomplete="off">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <hr>
+                  <div class="col-xs-6">
+                    <a href="#/" class="btn btn-default btn-block">Cancel</a>
+                  </div>
+                  <div class="col-xs-6">
+                    <button id="sweep-next-button" class="btn btn-primary btn-block">Next</button>
+                  </div>
+                  <div class="col-xs-12 text-right">
+                    <span id="sweep-validation-message" class="text-danger"></span>
+                  </div>
+                </div>
+
+              </form>
+
+            </div>
+
+          </div>
+
+          <div id="sweep-confirm" class="content row">
+
+            <div class="row spinner-container">
+              <div class="col-xs-12 panel-title text-center">
+                <div class="spinner small"><div>Loading...</div></div>
+              </div>
+            </div>
+
+            <div id="sweep-error" class="panel panel-default hidden">
+
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-12 panel-title text-left">
+                    Unable to download balance
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-body">
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Address</p>
+                  </div>
+                  <div class="col-xs-9 text-left">
+                    <p class="overflow-ellipsis sweep-address"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Private Key</p>
+                  </div>
+                  <div class="col-xs-9 text-left">
+                    <p class="overflow-ellipsis sweep-wif"></p>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Balance</p>
+                  </div>
+                  <div class="col-xs-9 text-right overflow-ellipsis">
+                    <p class="sweep-balance"></p>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div id="sweep-empty" class="panel panel-default hidden">
+
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-12 panel-title text-left">
+                    No balance to sweep
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-body">
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Address</p>
+                  </div>
+                  <div class="col-xs-9 text-left">
+                    <p class="overflow-ellipsis sweep-address"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Private Key</p>
+                  </div>
+                  <div class="col-xs-9 text-left">
+                    <p class="overflow-ellipsis sweep-wif"></p>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Balance</p>
+                  </div>
+                  <div class="col-xs-9 text-right overflow-ellipsis">
+                    <p class="sweep-balance"></p>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div id="sweep-success" class="panel panel-default hidden">
+
+              <div class="panel-heading">
+                <div class="row">
+                  <div class="col-xs-12 panel-title text-left">
+                    <span class="nowrap">Receiving <span id="sweep-confirm-summary-btc"></span></span>
+                    <span class="nowrap">~ <span id="sweep-confirm-summary-usd"></span></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-body">
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Address</p>
+                  </div>
+                  <div class="col-xs-9 text-left">
+                    <p class="overflow-ellipsis sweep-address"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Private Key</p>
+                  </div>
+                  <div class="col-xs-9 text-left">
+                    <p class="overflow-ellipsis sweep-wif"></p>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Balance</p>
+                  </div>
+                  <div class="col-xs-9 text-right overflow-ellipsis">
+                    <p class="sweep-balance"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Miner Fee</p>
+                  </div>
+                  <div class="col-xs-9 text-right overflow-ellipsis">
+                    <p class="sweep-miner-fee"></p>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                    <p>Sweep Total</p>
+                  </div>
+                  <div class="col-xs-9 text-right overflow-ellipsis">
+                    <p class="sweep-total-btc"></p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-3 text-left">
+                  </div>
+                  <div class="col-xs-9 text-right overflow-ellipsis">
+                    <p class="sweep-total-usd"></p>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <hr>
+
+            <div class="col-xs-12">
+              <div class="row">
+                <div class="col-xs-6">
+                  <a href="#/sweep" class="btn btn-default btn-block">Back</a>
+                </div>
+                <div class="col-xs-6">
+                  <button id="sweep-confirm-button" class="btn btn-primary btn-block" data-loading-text="Loading...">Sweep</button>
+                </div>
+                <div class="col-xs-12 text-right">
+                  <span id="sweep-validation-message" class="text-danger"></span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -467,6 +705,7 @@
     <script src="/vendor/js/format_btc.js"></script>
     <script src="/vendor/js/format_confirmations.js"></script>
     <script src="/vendor/js/format_date.js"></script>
+    <script src="/vendor/js/panel_toggle.js"></script>
     <script src="/vendor/bitcoin_network/src/blockchaininfo.js"></script>
     <script src="/vendor/bitcoin_network/src/helloblock.js"></script>
     <script src="/vendor/bitcoin_network/src/bitcoin_network.js"></script>
@@ -481,12 +720,15 @@
     <script src="/js/models/conversion_rate.js"></script>
     <script src="/js/models/wallet.js"></script>
     <script src="/js/models/transaction.js"></script>
+    <script src="/js/models/private_key.js"></script>
     <script src="/js/views/welcome_modal_view.js"></script>
     <script src="/js/views/empty_state_view.js"></script>
     <script src="/js/views/main_view.js"></script>
     <script src="/js/views/send_view.js"></script>
     <script src="/js/views/settings_view.js"></script>
     <script src="/js/views/receive_view.js"></script>
+    <script src="/js/views/sweep_confirm_view.js"></script>
+    <script src="/js/views/sweep_view.js"></script>
     <script src="/js/views/confirmation_view.js"></script>
     <script src="/js/views/balance_view.js"></script>
     <script src="/js/views/transactions_view.js"></script>
@@ -498,6 +740,8 @@
     <script src="/js/controllers/send_controller.js"></script>
     <script src="/js/controllers/settings_controller.js"></script>
     <script src="/js/controllers/receive_controller.js"></script>
+    <script src="/js/controllers/sweep_confirm_controller.js"></script>
+    <script src="/js/controllers/sweep_controller.js"></script>
     <script src="/js/controllers/transaction_controller.js"></script>
     <script src="/js/controllers/connection_status_controller.js"></script>
     <script src="/js/controllers/balance_controller.js"></script>

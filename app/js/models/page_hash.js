@@ -25,6 +25,8 @@
     "#/send",
     "#/settings",
     "#/receive",
+    "#/sweep",
+    "#/sweep_confirm",
     "#/confirmation"
   ];
 

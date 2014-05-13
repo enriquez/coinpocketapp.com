@@ -181,6 +181,118 @@ describe("Bitcoin", function() {
 
   });
 
+  describe("PrivateKey", function() {
+
+    describe(".validate", function() {
+
+      describe('given hex', function() {
+
+        it("returns true given 18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725", function() {
+          expect(Bitcoin.PrivateKey.validate("18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725"))
+            .toBe(true);
+        });
+
+        it("returns true given 18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725", function() {
+          expect(Bitcoin.PrivateKey.validate("18E14A7B6A307F426A94F8114701E7C8E774E7F9A47E2C2035DB29A206321725"))
+            .toBe(true);
+        });
+
+        it('returns false given non 64 character hex', function() {
+          // too short
+          expect(Bitcoin.PrivateKey.validate("18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a20632172"))
+            .toBe(false);
+          // too long
+          expect(Bitcoin.PrivateKey.validate("18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a2063217251"))
+            .toBe(false);
+        });
+
+        it('returns false for non hex', function() {
+          expect(Bitcoin.PrivateKey.validate("NOe14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725"))
+            .toBe(false);
+        });
+
+      });
+
+      describe('given uncompressed WIF', function() {
+
+        it("returns true given 5J1F7GHadZG3sCCKHCwg8Jvys9xUbFsjLnGec4H125Ny1V9nR6V", function() {
+          expect(Bitcoin.PrivateKey.validate("5J1F7GHadZG3sCCKHCwg8Jvys9xUbFsjLnGec4H125Ny1V9nR6V"))
+            .toBe(true);
+        });
+
+        it("returns false given a failed checksum", function() {
+          expect(Bitcoin.PrivateKey.validate("5J1F7GHadZG3sCCKHCwg8Jvys9xUbFsjLnGec4H125Ny1V9nR6a"))
+            .toBe(false);
+        });
+
+      });
+
+    });
+
+    describe(".toHex", function() {
+
+      it('returns hex if given hex', function() {
+        expect(Bitcoin.PrivateKey.toHex('18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725'))
+          .toEqual('18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725');
+      });
+
+      it('returns hex if given uncompressed WIF', function() {
+        expect(Bitcoin.PrivateKey.toHex('5J1F7GHadZG3sCCKHCwg8Jvys9xUbFsjLnGec4H125Ny1V9nR6V'))
+          .toEqual('18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725');
+      });
+
+    });
+
+    describe(".address", function() {
+
+      it('returns 16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM', function() {
+        expect(Bitcoin.PrivateKey.address("18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725"))
+          .toEqual('16UwLL9Risc3QfPqBUvKofHmBQ7wMtjvM');
+      });
+
+      it('returns 1GAehh7TsJAHuUAeKZcXf5CnwuGuGgyX2S', function() {
+        expect(Bitcoin.PrivateKey.address("0C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D"))
+          .toEqual('1GAehh7TsJAHuUAeKZcXf5CnwuGuGgyX2S');
+      });
+
+      it('returns 18azdtvrAE9uW7mJCEqeghzrQ2RcKfN9Fa', function() {
+        expect(Bitcoin.PrivateKey.address("5c1e1a87c84fcbb11dc2e2d4bf6d8178c0fe8de9ac0f60123a2baea8318cfada"))
+          .toEqual('18azdtvrAE9uW7mJCEqeghzrQ2RcKfN9Fa');
+      });
+
+      it('returns 1Dnb4zgZzT42RFuYJV6EMMWGmrYcbTmuTe', function() {
+        expect(Bitcoin.PrivateKey.address("7ade4ec03e0b6b227fbf609e151ccb78de3230cefa7c59ad5bbc941b357191cf"))
+          .toEqual('1Dnb4zgZzT42RFuYJV6EMMWGmrYcbTmuTe');
+      });
+
+    });
+
+    describe(".wif", function() {
+
+      it('returns 5J1F7GHadZG3sCCKHCwg8Jvys9xUbFsjLnGec4H125Ny1V9nR6V', function() {
+        expect(Bitcoin.PrivateKey.wif("18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725"))
+          .toEqual('5J1F7GHadZG3sCCKHCwg8Jvys9xUbFsjLnGec4H125Ny1V9nR6V');
+      });
+
+      it('returns 5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ', function() {
+        expect(Bitcoin.PrivateKey.wif("0C28FCA386C7A227600B2FE50B7CAE11EC86D3BF1FBE471BE89827E19D72AA1D"))
+          .toEqual('5HueCGU8rMjxEXxiPuD5BDku4MkFqeZyd4dZ1jvhTVqvbTLvyTJ');
+      });
+
+      it('returns 5JWrbrcFKSMQNhTzyNqc2Eskcwuc2fEh9yNherLWq5bcGUHdmR7', function() {
+        expect(Bitcoin.PrivateKey.wif("5c1e1a87c84fcbb11dc2e2d4bf6d8178c0fe8de9ac0f60123a2baea8318cfada"))
+          .toEqual('5JWrbrcFKSMQNhTzyNqc2Eskcwuc2fEh9yNherLWq5bcGUHdmR7');
+      });
+
+      it('returns 5JkQ69gJHJLzWZugo7NaMvdYCZhoJFXqgmasQnYgrPHuCtaniRg', function() {
+        expect(Bitcoin.PrivateKey.wif("7ade4ec03e0b6b227fbf609e151ccb78de3230cefa7c59ad5bbc941b357191cf"))
+          .toEqual('5JkQ69gJHJLzWZugo7NaMvdYCZhoJFXqgmasQnYgrPHuCtaniRg');
+      });
+
+    });
+
+  });
+
   describe("Transaction", function() {
     var transaction;
 

@@ -28,17 +28,7 @@
       self.trigger('sendButton.click', self.$form);
     });
 
-    $(".toggle-panel").click(function(e) {
-      e.preventDefault();
-      var $panelBody = self.$container.find(".panel-body");
-      if ($panelBody.is(':visible')) {
-        $panelBody.slideUp();
-        $(this).text('show details');
-      } else {
-        $panelBody.slideDown();
-        $(this).text('hide details');
-      }
-    });
+    self.$container.find('.toggle-panel').panelToggle();
   }
 
   ConfirmationView.prototype.show = function() {

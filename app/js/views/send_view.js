@@ -15,7 +15,8 @@
     self.$validationMessage = $("#send-validation-message");
     self.$scancode = $("#scancode");
 
-    $("#scancode-button").scancode();
+    self.$container.find("[data-scancode-callback-path]").scancode();
+
     $("[data-confirm]").click(function(e) {
       e.preventDefault();
       var message = $(this).data('confirm');

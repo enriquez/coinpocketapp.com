@@ -4,6 +4,7 @@
     this.$container = $("#receive");
     this.$receiveAddress = $("#receive-address");
     this.$emailButton = $("#email-button");
+    this.$sweepButton = $("#sweep-button");
   }
 
   ReceiveView.prototype.show = function() {

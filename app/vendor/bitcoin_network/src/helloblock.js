@@ -10,11 +10,19 @@ var HelloBlock = (function(self, $) {
   }
 
   self._getJSONForPath = function(url, params, hollaback) {
-    $.getJSON(url, params, function(data) {
-      if (data.status === 'success') {
-        hollaback(data.data, true);
-      } else {
-        hollaback({}, false);
+    $.ajax({
+      dataType: 'json',
+      url: url,
+      data: params,
+      success: function(data) {
+        if (data.status === 'success') {
+          hollaback(data.data, true);
+        } else {
+          hollaback({}, false);
+        }
+      },
+      error: function(xhr, opt, err) {
+        hollaback({ error: true }, false);
       }
     });
   }

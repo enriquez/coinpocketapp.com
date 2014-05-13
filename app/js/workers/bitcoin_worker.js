@@ -73,6 +73,54 @@ var buildAndSignRawTransaction = function(seed, password, keyPair, inputs, outpu
   }
 };
 
+var buildAndSignRawTransactionWithPrivateKey = function(seed, privateKey, inputs, outputs, hollaback) {
+  if (seed.length < 32) throw "Seed must be 32 words";
+  sjcl.random.addEntropy(seed, 1024, "client");
+
+  var transaction = new Bitcoin.Transaction();
+
+  for (var i=0; i<inputs.length; i++) {
+    var input = inputs[i];
+    transaction.addInput(input);
+  }
+
+  for (var j=0; j<outputs.length; j++) {
+    var output = outputs[j];
+    transaction.addPayToPubKeyHashOutput(output.address, output.amount);
+  }
+
+  try {
+    var curve = sjcl.ecc.curves.k256;
+    var privateKeyExponentHex = Bitcoin.PrivateKey.toHex(privateKey);
+    var privateKeyExponent = sjcl.bn.fromBits(sjcl.codec.hex.toBits(privateKeyExponentHex));
+    var publicKey = new sjcl.ecc.ecdsa.publicKey(curve, curve.G.mult(privateKeyExponent));
+    var publicKeyX = sjcl.codec.hex.fromBits(publicKey.get().x);
+    var publicKeyY = sjcl.codec.hex.fromBits(publicKey.get().y);
+
+    var result = transaction.sign(privateKeyExponentHex, publicKeyX, publicKeyY);
+    hollaback(result);
+  } catch (e) {
+    hollaback({ error: 'Error: ' + e.message });
+  }
+};
+
+var validatePrivateKey = function(data, hollaback) {
+  var result = Bitcoin.PrivateKey.validate(data);
+  hollaback(result);
+};
+
+var addressForPrivateKey = function(data, hollaback) {
+  var hex = Bitcoin.PrivateKey.toHex(data);
+  var result = Bitcoin.PrivateKey.address(hex);
+  hollaback(result);
+};
+
+var wifForPrivateKey = function(data, hollaback) {
+  var hex = Bitcoin.PrivateKey.toHex(data);
+  var result = Bitcoin.PrivateKey.wif(hex);
+  hollaback(result);
+};
+
 var messageListener = function(e) {
   if (e.data.functionName) {
     var id = e.data.id,
