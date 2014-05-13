@@ -91,19 +91,12 @@ Also, be careful running Coin Pocket on services where you share a domain with o
 
 This is a header that should be sent with every request. It prevents Coin Pocket from running in an iframe on modern browsers.
 
-Nginx config example
-
-```
-add_header X-Frame-Options DENY;
-```
-
 #### Content Security Policy Header
 
 Send this header to whitelist external sources.
 
-Nginx config example
-
 ```
+Content-Security-Policy: default-src 'self'; script-src 'self' https://coinbase.com; connect-src wss://ws.blockchain.info https://blockchain.info https://mainnet.helloblock.io https://bitpay.com https://api.coindesk.com; img-src data:;
 ```
 
 #### GZip

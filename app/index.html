@@ -21,7 +21,7 @@
 
     <div class="container">
       <div class="row">
-        <div id="main" class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3" style="display:none">
+        <div id="main" class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 hidden">
 
           <div class="bg-primary">
             <div id="balance-container" class="row">
@@ -136,7 +136,7 @@
                   </div>
                 </div>
 
-                <div class="panel-body" style="display:none">
+                <div class="panel-body hidden">
                   <div class="row">
                     <div class="col-xs-6 text-left">
                       <p>Total Inputs</p>
@@ -148,7 +148,7 @@
                   <hr>
 
                   <div id="confirmation-outputs">
-                    <div id="confirmation-output-template" class="row" style="display:none">
+                    <div id="confirmation-output-template" class="row hidden">
                       <div class="col-xs-6 text-left">
                         <p class="confirmation-output-label overflow-ellipsis"></p>
                       </div>
@@ -249,7 +249,7 @@
             </div>
           </div>
 
-          <div id="connection-status" class="row content" style="display:none">
+          <div id="connection-status" class="row content hidden">
             <div class="col-xs-12">
               <p>
                 <strong>Connection Unavailable</strong>
@@ -284,7 +284,7 @@
 
           <div id="transactions" data-current-block-height="">
 
-            <div id="transaction-template" class="content transaction row" data-tx-id='0' style="display:none">
+            <div id="transaction-template" class="content transaction row hidden" data-tx-id='0'>
               <div class="col-xs-4 transaction-preview" data-time="">
                 <span class="date"></span><br>
                 <span class="time"></span>
@@ -294,7 +294,7 @@
                 <span class="confirmations" data-block-height=""></span>
               </div>
 
-              <table class="table table-condensed transaction-details" style="display:none">
+              <table class="table table-condensed transaction-details hidden">
                 <tbody>
                   <tr>
                     <td><strong>Confirmations</strong></td>
@@ -309,10 +309,10 @@
                     <td class="text-right"><a class="toggle-input-row" href="#">show</a></td>
                   </tr>
 
-                  <tr class="inputs-row" style="display:none">
+                  <tr class="inputs-row hidden">
                     <td colspan="2" class="transaction-inputs">
 
-                      <div class="inputs-row-template" style="display:none">
+                      <div class="inputs-row-template hidden">
                         <div class="text-left col-xs-7 col-sm-8 overflow-ellipsis inputs-address"></div>
                         <div class="text-right col-xs-5 col-sm-4 inputs-btc"></div>
                       </div>
@@ -330,10 +330,10 @@
                     <td class="text-right"><a class="toggle-output-row" href="#">show</a></td>
                   </tr>
 
-                  <tr class="outputs-row" style="display:none">
+                  <tr class="outputs-row hidden">
                     <td colspan="2" class="transaction-outputs">
 
-                      <div class="outputs-row-template" style="display:none">
+                      <div class="outputs-row-template hidden">
                         <div class="text-left col-xs-7 col-sm-8 overflow-ellipsis outputs-address"></div>
                         <div class="text-right col-xs-5 col-sm-4 outputs-btc"></div>
                       </div>
@@ -353,7 +353,7 @@
 
           </div>
 
-          <div id="load-more" class="content row" style="display:none">
+          <div id="load-more" class="content row hidden">
             <a href="#" id="load-more-button" class="btn btn-link btn-lg col-xs-12" data-loading-text="loading...">Load More Transactions</a>
           </div>
 
@@ -414,7 +414,7 @@
             <h4 class="modal-title" id="myModalLabel">Welcome to Coin Pocket <small class="nowrap">Bitcoin in your browser</small></h4>
           </div>
           <form id="welcome-modal-form" role="form" action="#">
-            <div id="welcome-modal-unsupported" class="modal-body" style="display:none">
+            <div id="welcome-modal-unsupported" class="modal-body hidden">
               <p><strong>Failed Browser Check :(</strong></p>
               <p class="reason"></p>
             </div>

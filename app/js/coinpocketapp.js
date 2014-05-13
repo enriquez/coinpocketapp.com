@@ -7,6 +7,7 @@ var CoinPocketApp = (function($, self) {
   self.Controllers = {};
 
   $(document).off('.data-api'); // disable bootstrap data api
+  $('.hidden').hide().removeClass('hidden'); // initialize hidden elements
 
   return self;
 })(jQuery, {});
