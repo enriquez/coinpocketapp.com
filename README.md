@@ -1,3 +1,5 @@
+<img src="https://coinpocketapp.com/icon.png" style="width: 150px; height: 150px">
+
 # Coin Pocket
 
 Bitcoin wallet that stores Bitcoin in your browser. Perfect for taking some "spending Bitcoin" with you on your mobile phone.
