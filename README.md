@@ -1,4 +1,4 @@
-<img src="https://coinpocketapp.com/icon.png" style="width: 150px; height: 150px">
+![Coin Pocket icon](https://coinpocketapp.com/icon-small.png)
 
 # Coin Pocket
 
