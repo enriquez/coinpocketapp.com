@@ -72,16 +72,54 @@ Bitcoin.parseCode = function(code) {
 
 Bitcoin.PrivateKey = function() { };
 
-Bitcoin.PrivateKey.validate = function(privateKey) {
-  return Bitcoin.PrivateKey.isHexFormat(privateKey) || Bitcoin.PrivateKey.isUncompressedWIF(privateKey);
+Bitcoin.PrivateKey._hexToBitsHalfs = function(hex) {
+  var bits       = sjcl.codec.hex.toBits(hex);
+  var halfLength = sjcl.bitArray.bitLength(bits) / 2;
+
+  return [
+    sjcl.bitArray.clamp(bits, halfLength),
+    sjcl.bitArray.bitSlice(bits, halfLength)
+  ];
 };
 
-Bitcoin.PrivateKey.toHex = function(privateKey) {
+Bitcoin.PrivateKey.validate = function(privateKey) {
+  return Bitcoin.PrivateKey.isHexFormat(privateKey) ||
+         Bitcoin.PrivateKey.isUncompressedWIF(privateKey) ||
+         Bitcoin.PrivateKey.isBIP38Format(privateKey);
+};
+
+Bitcoin.PrivateKey.toHex = function(privateKey, passphrase, address) {
   if (Bitcoin.PrivateKey.isHexFormat(privateKey)) {
     return privateKey;
   } else if (Bitcoin.PrivateKey.isUncompressedWIF(privateKey)) {
     var bits = sjcl.codec.base58.toBits(privateKey);
     return sjcl.codec.hex.fromBits(sjcl.bitArray.bitSlice(bits, 8, 264));
+  } else if (Bitcoin.PrivateKey.isBIP38Format(privateKey)) {
+    var addressHash = sjcl.bitArray.bitSlice((sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(address))), 0, 32);
+    var derivedKey  = sjcl.misc.scrypt(passphrase, addressHash, 16384, 8, 8, 64);
+
+    var derivedKeyHalfs = Bitcoin.PrivateKey._hexToBitsHalfs(sjcl.codec.hex.fromBits(derivedKey));
+
+    var bits     = sjcl.codec.base58.toBits(privateKey);
+    var flagByte = sjcl.bitArray.bitSlice(bits, 16, 24);
+    if (!sjcl.bitArray.equal(flagByte, sjcl.codec.hex.toBits('0xc0'))) {
+      throw 'Unsupported format';
+    }
+
+    var encryptedFirstHalf  = sjcl.bitArray.bitSlice(bits, 56, 184);
+    var encryptedSecondHalf = sjcl.bitArray.bitSlice(bits, 184, 312);
+
+    var aes = new sjcl.cipher.aes(derivedKeyHalfs[1]);
+
+    var privateKeyFirstHalf  = sjcl.bitArray._xor4(aes.decrypt(encryptedFirstHalf),  sjcl.bitArray.bitSlice(derivedKeyHalfs[0], 0, 128));
+    var privateKeySecondHalf = sjcl.bitArray._xor4(aes.decrypt(encryptedSecondHalf), sjcl.bitArray.bitSlice(derivedKeyHalfs[0], 128));
+
+    var privateKeyHex = sjcl.codec.hex.fromBits(sjcl.bitArray.concat(privateKeyFirstHalf, privateKeySecondHalf));
+    if (Bitcoin.PrivateKey.address(privateKeyHex) !== address) {
+      throw 'Incorrect passphrase';
+    }
+
+    return privateKeyHex;
   }
 };
 
@@ -105,6 +143,12 @@ Bitcoin.PrivateKey.isUncompressedWIF = function(privateKey) {
   }
 };
 
+Bitcoin.PrivateKey.isBIP38Format = function(privateKey) {
+  var isValidFormat = (new RegExp('^6P[1-9A-HJ-NP-Za-km-z]{56}$')).test(privateKey);
+
+  return isValidFormat;
+};
+
 Bitcoin.PrivateKey.address = function(privateKey) {
   var curve = sjcl.ecc.curves.k256;
   var exponent = sjcl.bn.fromBits(sjcl.codec.hex.toBits(privateKey));
@@ -126,6 +170,26 @@ Bitcoin.PrivateKey.wif = function(privateKey) {
   var checkSum = sjcl.bitArray.clamp(doubleHashed, 32);
 
   return sjcl.codec.base58.fromBits(sjcl.bitArray.concat(withVersion, checkSum));
+};
+
+Bitcoin.PrivateKey.bip38 = function(passphrase, privateKey) {
+  var addressHash = sjcl.bitArray.bitSlice((sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(Bitcoin.PrivateKey.address(privateKey)))), 0, 32);
+  var derivedKey  = sjcl.misc.scrypt(passphrase, addressHash, 16384, 8, 8, 64);
+
+  var derivedKeyHalfs = Bitcoin.PrivateKey._hexToBitsHalfs(sjcl.codec.hex.fromBits(derivedKey));
+  var privateKeyHalfs = Bitcoin.PrivateKey._hexToBitsHalfs(privateKey);
+
+  var aes = new sjcl.cipher.aes(derivedKeyHalfs[1]);
+
+  var encryptedFirstHalf  = aes.encrypt(sjcl.bitArray._xor4(privateKeyHalfs[0], sjcl.bitArray.bitSlice(derivedKeyHalfs[0], 0, 128)));
+  var encryptedSecondHalf = aes.encrypt(sjcl.bitArray._xor4(privateKeyHalfs[1], sjcl.bitArray.bitSlice(derivedKeyHalfs[0], 128)));
+
+  var encryptedPrivateKey = sjcl.bitArray.concat(sjcl.codec.hex.toBits('0x0142c0'), sjcl.bitArray.concat(addressHash, sjcl.bitArray.concat(encryptedFirstHalf, encryptedSecondHalf)));
+  var checkSum = sjcl.bitArray.clamp(sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(encryptedPrivateKey)), 32);
+
+  var result = sjcl.bitArray.concat(encryptedPrivateKey, checkSum);
+
+  return sjcl.codec.base58.fromBits(result);
 };
 
 Bitcoin.Transaction = function() {

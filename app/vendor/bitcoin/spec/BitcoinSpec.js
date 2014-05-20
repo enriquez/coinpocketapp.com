@@ -227,6 +227,15 @@ describe("Bitcoin", function() {
 
       });
 
+      describe('given BIP38 format', function() {
+
+        it("returns true given 6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg", function() {
+          expect(Bitcoin.PrivateKey.validate('6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg'))
+            .toBe(true);
+        });
+
+      });
+
     });
 
     describe(".toHex", function() {
@@ -239,6 +248,16 @@ describe("Bitcoin", function() {
       it('returns hex if given uncompressed WIF', function() {
         expect(Bitcoin.PrivateKey.toHex('5J1F7GHadZG3sCCKHCwg8Jvys9xUbFsjLnGec4H125Ny1V9nR6V'))
           .toEqual('18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725');
+      });
+
+      it('returns hex if given BIP38 format', function() {
+        expect(Bitcoin.PrivateKey.toHex('6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg', 'TestingOneTwoThree', '1Jq6MksXQVWzrznvZzxkV6oY57oWXD9TXB'))
+          .toEqual('cbf4b9f70470856bb4f40f80b87edb90865997ffee6df315ab166d713af433a5');
+      });
+
+      it('returns hex if given BIP38 format', function() {
+        expect(Bitcoin.PrivateKey.toHex('6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq', 'Satoshi', '1AvKt49sui9zfzGeo8EyL8ypvAhtR2KwbL'))
+          .toEqual('09c2686880095b1a4c249ee3ac4eea8a014f11e6f986d0b5025ac1f39afbd9ae');
       });
 
     });
@@ -287,6 +306,20 @@ describe("Bitcoin", function() {
       it('returns 5JkQ69gJHJLzWZugo7NaMvdYCZhoJFXqgmasQnYgrPHuCtaniRg', function() {
         expect(Bitcoin.PrivateKey.wif("7ade4ec03e0b6b227fbf609e151ccb78de3230cefa7c59ad5bbc941b357191cf"))
           .toEqual('5JkQ69gJHJLzWZugo7NaMvdYCZhoJFXqgmasQnYgrPHuCtaniRg');
+      });
+
+    });
+
+    describe('.bip38', function() {
+
+      it('returns 6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg', function() {
+        expect(Bitcoin.PrivateKey.bip38('TestingOneTwoThree', 'CBF4B9F70470856BB4F40F80B87EDB90865997FFEE6DF315AB166D713AF433A5'))
+          .toEqual('6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg');
+      });
+
+      it('returns 6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq', function() {
+        expect(Bitcoin.PrivateKey.bip38('Satoshi', '09C2686880095B1A4C249EE3AC4EEA8A014F11E6F986D0B5025AC1F39AFBD9AE'))
+          .toEqual('6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq');
       });
 
     });
