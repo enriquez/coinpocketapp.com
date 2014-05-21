@@ -1,3 +1,9 @@
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}
+
 body {
   background-color: #5b6366;
 }
@@ -38,8 +44,11 @@ input[type="password"] {
 #send,
 #confirmation,
 #settings,
+#private-key-password,
+#view-private-key,
 #receive,
 #sweep,
+#sweep-password,
 #sweep-confirm {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -48,17 +57,23 @@ input[type="password"] {
 #send hr,
 #confirmation hr,
 #settings hr,
+#private-key-password hr,
+#view-private-key hr,
 #receive hr,
 #sweep hr,
+#sweep-password hr,
 #sweep-confirm hr {
   margin: 10px auto;
 }
 
-#sweep-confirm .spinner {
+#sweep-confirm .spinner,
+#view-private-key .spinner,
+#sweep-password .spinner {
   margin: 15px;
 }
 
-#qrcode img {
+#qrcode img,
+#bip38-qrcode img {
   margin: 0 auto;
 }
 

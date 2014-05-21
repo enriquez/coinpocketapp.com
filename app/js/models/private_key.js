@@ -1,4 +1,4 @@
-(function(bitcoinWorker, Models) {
+(function(bitcoinWorker, keyPair, Models) {
 
   function PrivateKey(data) {
     var self = this;
@@ -37,9 +37,53 @@
         });
       }
     };
+
+    self.bip38 = function(passphrase, hollaback) {
+      if (self.bip38Cache) {
+        if (typeof hollaback === 'function') {
+          hollaback(self.bip38Cache);
+        }
+      } else {
+        var params = [passphrase, self._data];
+        bitcoinWorker.async('bip38ForPrivateKey', params, function(bip38) {
+          self.bip38Cache = bip38;
+          if (typeof hollaback === 'function') {
+            hollaback(self.bip38Cache);
+          }
+        });
+      }
+    };
+
+    self.bip38decrypt = function(password, hollaback) {
+      var params = [password, self._data];
+      bitcoinWorker.async('bip38DecryptPrivateKey', params, function(result) {
+        if (result.error) {
+          hollaback(result);
+        } else {
+          self._data = result;
+          if (typeof hollaback === 'function') {
+            hollaback(result);
+          }
+        }
+      });
+    };
   }
+
+  PrivateKey.fromWallet = function(password, hollaback) {
+    var params = [password, keyPair.encryptedPrivateKeyExponent];
+    bitcoinWorker.async('decryptPrivateKey', params, function(result) {
+      if (typeof hollaback === 'function') {
+        if (result.error) {
+          hollaback(result);
+        } else {
+          var privateKey = new PrivateKey(result);
+          hollaback(privateKey);
+        }
+      }
+    });
+  };
 
   MicroEvent.mixin(PrivateKey);
   Models.PrivateKey = PrivateKey;
 
-})(CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);
+})(CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models.keyPair, CoinPocketApp.Models);

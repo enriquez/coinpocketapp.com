@@ -88,23 +88,22 @@ Bitcoin.PrivateKey.validate = function(privateKey) {
          Bitcoin.PrivateKey.isBIP38Format(privateKey);
 };
 
-Bitcoin.PrivateKey.toHex = function(privateKey, passphrase, address) {
+Bitcoin.PrivateKey.toHex = function(privateKey, passphrase) {
   if (Bitcoin.PrivateKey.isHexFormat(privateKey)) {
     return privateKey;
   } else if (Bitcoin.PrivateKey.isUncompressedWIF(privateKey)) {
     var bits = sjcl.codec.base58.toBits(privateKey);
     return sjcl.codec.hex.fromBits(sjcl.bitArray.bitSlice(bits, 8, 264));
   } else if (Bitcoin.PrivateKey.isBIP38Format(privateKey)) {
-    var addressHash = sjcl.bitArray.bitSlice((sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(address))), 0, 32);
-    var derivedKey  = sjcl.misc.scrypt(passphrase, addressHash, 16384, 8, 8, 64);
-
-    var derivedKeyHalfs = Bitcoin.PrivateKey._hexToBitsHalfs(sjcl.codec.hex.fromBits(derivedKey));
-
     var bits     = sjcl.codec.base58.toBits(privateKey);
     var flagByte = sjcl.bitArray.bitSlice(bits, 16, 24);
     if (!sjcl.bitArray.equal(flagByte, sjcl.codec.hex.toBits('0xc0'))) {
       throw 'Unsupported format';
     }
+
+    var addressHash = sjcl.bitArray.bitSlice(bits, 24, 56);
+    var derivedKey  = sjcl.misc.scrypt(passphrase, addressHash, 16384, 8, 8, 64);
+    var derivedKeyHalfs = Bitcoin.PrivateKey._hexToBitsHalfs(sjcl.codec.hex.fromBits(derivedKey));
 
     var encryptedFirstHalf  = sjcl.bitArray.bitSlice(bits, 56, 184);
     var encryptedSecondHalf = sjcl.bitArray.bitSlice(bits, 184, 312);
@@ -115,7 +114,9 @@ Bitcoin.PrivateKey.toHex = function(privateKey, passphrase, address) {
     var privateKeySecondHalf = sjcl.bitArray._xor4(aes.decrypt(encryptedSecondHalf), sjcl.bitArray.bitSlice(derivedKeyHalfs[0], 128));
 
     var privateKeyHex = sjcl.codec.hex.fromBits(sjcl.bitArray.concat(privateKeyFirstHalf, privateKeySecondHalf));
-    if (Bitcoin.PrivateKey.address(privateKeyHex) !== address) {
+
+    var addressHashCheck = sjcl.bitArray.bitSlice((sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(Bitcoin.PrivateKey.address(privateKeyHex)))), 0, 32);
+    if (!sjcl.bitArray.equal(addressHashCheck, addressHash)) {
       throw 'Incorrect passphrase';
     }
 

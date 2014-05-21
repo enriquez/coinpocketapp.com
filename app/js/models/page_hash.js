@@ -24,8 +24,11 @@
     "#/",
     "#/send",
     "#/settings",
+    "#/private_key_password",
+    "#/view_private_key",
     "#/receive",
     "#/sweep",
+    "#/sweep_password",
     "#/sweep_confirm",
     "#/confirmation"
   ];

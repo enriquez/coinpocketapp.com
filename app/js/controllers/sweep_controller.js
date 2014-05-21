@@ -1,4 +1,4 @@
-(function(pageHash, browser, sweepView, sweepConfirmController, Controllers) {
+(function(pageHash, browser, sweepView, sweepConfirmController, sweepPasswordController, Controllers) {
 
   function SweepController() {
     var self = this;
@@ -40,8 +40,10 @@
     sweepView.clearValidations();
 
     privateKey.isValid(function(result) {
-      if (result) {
+      if (result === 'HEX' || result === 'WIF') {
         sweepConfirmController.confirmSweep(privateKey);
+      } else if (result === 'BIP38') {
+        sweepPasswordController.needsDecryption(privateKey);
       } else {
         sweepView.invalidPrivateKey();
         sweepView.validationMessage('Invalid Private Key');
@@ -51,4 +53,9 @@
 
   Controllers.sweepController = new SweepController();
 
-})(CoinPocketApp.Models.pageHash, CoinPocketApp.Models.browser, CoinPocketApp.Views.sweepView, CoinPocketApp.Controllers.sweepConfirmController, CoinPocketApp.Controllers);
+})(CoinPocketApp.Models.pageHash,
+   CoinPocketApp.Models.browser,
+   CoinPocketApp.Views.sweepView,
+   CoinPocketApp.Controllers.sweepConfirmController,
+   CoinPocketApp.Controllers.sweepPasswordController,
+   CoinPocketApp.Controllers);

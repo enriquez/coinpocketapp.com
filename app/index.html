@@ -228,14 +228,74 @@
               </div>
             </div>
             <div class="col-xs-12">
-              <p>Private Key Email Backup</p>
+              <p>Private Key</p>
               <hr>
-              <a id="email-private-key" href="" class="btn btn-primary btn-block">Compose Email</a>
+              <a id="view-private-key-button" href="#/private_key_password" class="btn btn-primary btn-block">View Encrypted Private Key</a>
               <hr>
             </div>
             <div class="col-xs-12">
               <a href="#/" class="btn btn-default btn-block">Done</a>
             </div>
+          </div>
+
+          <div id="private-key-password" class="content row">
+
+            <form role="form" action="#/view_private_key">
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div id="private-key-password-group" class="form-group">
+                    <label class="control-label" for="private-key-password-input">Password</label>
+                    <input type="password" class="form-control" id="private-key-password-input" name="private-key-password" autocomplete="off">
+                    <span class="help-block">Password is required to view your private key</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <hr>
+                <div class="col-xs-6">
+                  <a href="#/" class="btn btn-default btn-block">Cancel</a>
+                </div>
+                <div class="col-xs-6">
+                  <button id="private-key-password-next-button" class="btn btn-primary btn-block">Next</button>
+                </div>
+                <div class="col-xs-12 text-right">
+                  <span id="private-key-password-validation-message" class="text-danger"></span>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+
+          <div id="view-private-key" class="content row">
+
+            <div class="spinner-container">
+              <div class="col-xs-12 panel-title text-center">
+                <p>Calculating BIP38 encrypted private key. This may take a while...</p>
+                <div class="spinner small"><div>Loading...</div></div>
+              </div>
+            </div>
+
+            <div class="view-private-key-contents">
+              <div class="col-xs-12">
+                <p class="visible-print">Below is your encrypted private key in BIP38 format. Keep this in a safe place. DO NOT FORGET YOUR PASSWORD. You will not be able to access your Bitcoin without it. Write it down if you think you will forget it.</p>
+                <p id="bip38-private-key" class="text-center overflow-ellipsis"></p>
+              </div>
+
+              <div class="col-xs-12">
+                <div id="bip38-qrcode"></div><br>
+                <hr>
+              </div>
+
+              <div class="col-xs-12">
+                <a id="view-private-key-email-button" href="" class="btn btn-primary btn-block">Compose Email</a>
+                <a id="view-private-key-print-button" href="" class="btn btn-primary btn-block">Print</a>
+                <a href="#/" class="btn btn-default btn-block">Done</a>
+              </div>
+            </div>
+
           </div>
 
           <div id="receive" class="content row">
@@ -280,7 +340,7 @@
                     <div id="private-key-group" class="form-group">
                       <label class="control-label" for="private-key">Private Key</label>
                       <input type="text" class="form-control" id="private-key" name="private-key" autocomplete="off">
-                      <span class="help-block">Supported Formats: WIF, HEX</span>
+                      <span class="help-block">Supported Formats: WIF, HEX, BIP38</span>
                     </div>
                   </div>
                 </div>
@@ -304,10 +364,51 @@
 
           </div>
 
+          <div id="sweep-password" class="content row">
+
+            <form role="form" action="#/sweep_password">
+
+              <div class="spinner-container">
+                <div class="col-xs-12 panel-title text-center">
+                  <p>Decrypting private key. This may take a while...</p>
+                  <div class="spinner small"><div>Loading...</div></div>
+                </div>
+              </div>
+
+              <div id="sweep-password-contents" class="row">
+                <div class="col-xs-12">
+                  <div id="sweep-password-group" class="form-group">
+                    <label class="control-label" for="sweep-password-input">Password</label>
+                    <input type="password" class="form-control" id="sweep-password-input" name="sweep-password-input" autocomplete="off">
+                    <span class="help-block">This private key is encrypted. Enter the password to decrypt it.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <hr>
+                </div>
+                <div class="col-xs-6">
+                  <a href="#/" class="btn btn-default btn-block">Cancel</a>
+                </div>
+                <div class="col-xs-6">
+                  <button id="sweep-password-next-button" class="btn btn-primary btn-block" data-loading-text="Decrypting...">Next</button>
+                </div>
+                <div class="col-xs-12 text-right">
+                  <span id="sweep-password-validation-message" class="text-danger"></span>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+
           <div id="sweep-confirm" class="content row">
 
             <div class="row spinner-container">
               <div class="col-xs-12 panel-title text-center">
+                <p>Checking balance and generating sweep transaction. This may take a while...</p>
                 <div class="spinner small"><div>Loading...</div></div>
               </div>
             </div>
@@ -481,7 +582,7 @@
             <div class="col-xs-12">
               <div class="row">
                 <div class="col-xs-6">
-                  <a href="#/sweep" class="btn btn-default btn-block">Back</a>
+                  <a href="#/" class="btn btn-default btn-block">Cancel</a>
                 </div>
                 <div class="col-xs-6">
                   <button id="sweep-confirm-button" class="btn btn-primary btn-block" data-loading-text="Loading...">Sweep</button>
@@ -732,8 +833,11 @@
     <script src="/js/views/main_view.js"></script>
     <script src="/js/views/send_view.js"></script>
     <script src="/js/views/settings_view.js"></script>
+    <script src="/js/views/view_private_key_view.js"></script>
+    <script src="/js/views/private_key_password_view.js"></script>
     <script src="/js/views/receive_view.js"></script>
     <script src="/js/views/sweep_confirm_view.js"></script>
+    <script src="/js/views/sweep_password_view.js"></script>
     <script src="/js/views/sweep_view.js"></script>
     <script src="/js/views/confirmation_view.js"></script>
     <script src="/js/views/balance_view.js"></script>
@@ -745,8 +849,11 @@
     <script src="/js/controllers/confirmation_controller.js"></script>
     <script src="/js/controllers/send_controller.js"></script>
     <script src="/js/controllers/settings_controller.js"></script>
+    <script src="/js/controllers/view_private_key_controller.js"></script>
+    <script src="/js/controllers/private_key_password_controller.js"></script>
     <script src="/js/controllers/receive_controller.js"></script>
     <script src="/js/controllers/sweep_confirm_controller.js"></script>
+    <script src="/js/controllers/sweep_password_controller.js"></script>
     <script src="/js/controllers/sweep_controller.js"></script>
     <script src="/js/controllers/transaction_controller.js"></script>
     <script src="/js/controllers/connection_status_controller.js"></script>

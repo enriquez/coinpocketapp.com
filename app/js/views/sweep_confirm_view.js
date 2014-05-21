@@ -12,6 +12,7 @@
     self.$sweepEmpty = $("#sweep-empty");
     self.$sweepError = $("#sweep-error");
     self.$validation = $("#sweep-validation-message");
+    self.$spinner    = self.$container.find(".spinner-container");
 
     self.$sweepButton.click(function(e) {
       e.preventDefault();
@@ -100,7 +101,7 @@
 
   SweepConfirmView.prototype.loading = function() {
     this.$sweepButton.button('loading');
-    this.$container.find('.spinner').show();
+    this.$spinner.show();
     this.$sweepSuccess.hide();
     this.$sweepEmpty.hide();
     this.$sweepError.hide();
@@ -109,7 +110,7 @@
 
   SweepConfirmView.prototype.doneLoading = function() {
     this.$sweepButton.button('reset');
-    this.$container.find('.spinner').hide();
+    this.$spinner.hide();
   };
 
   SweepConfirmView.prototype.loadingButton = function() {

@@ -251,12 +251,12 @@ describe("Bitcoin", function() {
       });
 
       it('returns hex if given BIP38 format', function() {
-        expect(Bitcoin.PrivateKey.toHex('6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg', 'TestingOneTwoThree', '1Jq6MksXQVWzrznvZzxkV6oY57oWXD9TXB'))
+        expect(Bitcoin.PrivateKey.toHex('6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg', 'TestingOneTwoThree'))
           .toEqual('cbf4b9f70470856bb4f40f80b87edb90865997ffee6df315ab166d713af433a5');
       });
 
       it('returns hex if given BIP38 format', function() {
-        expect(Bitcoin.PrivateKey.toHex('6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq', 'Satoshi', '1AvKt49sui9zfzGeo8EyL8ypvAhtR2KwbL'))
+        expect(Bitcoin.PrivateKey.toHex('6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq', 'Satoshi'))
           .toEqual('09c2686880095b1a4c249ee3ac4eea8a014f11e6f986d0b5025ac1f39afbd9ae');
       });
 

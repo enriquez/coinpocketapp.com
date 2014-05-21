@@ -4,7 +4,6 @@
     var self = this;
     self.$container = $("#settings");
     self.$conversionRates = $("#conversion-rates");
-    self.$emailPrivateKeyButton = $("#email-private-key");
 
     self._linkClicked = function(e) {
       e.preventDefault();
@@ -53,10 +52,6 @@
       self.$conversionRates.append(link);
     }
 
-  };
-
-  SettingsView.prototype.setPrivateKeyEmailBody = function(subject, body) {
-    this.$emailPrivateKeyButton.attr('href', 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body));
   };
 
   MicroEvent.mixin(SettingsView);

@@ -16,6 +16,7 @@ importScripts("/vendor/sjcl/core/sjcl.js",
               "/vendor/bitcoin/src/sjcl_ext/codecBase58.js",
               "/vendor/bitcoin/src/sjcl_ext/ecdsaDER.js",
               "/vendor/bitcoin/src/sjcl_ext/ripemd160.js",
+              "/vendor/bitcoin/src/sjcl_ext/scrypt.js",
               "/vendor/bitcoin/src/bitcoin.js");
 
 var seedGenerateAndEncryptKeys = function(seed, password, hollaback) {
@@ -105,8 +106,15 @@ var buildAndSignRawTransactionWithPrivateKey = function(seed, privateKey, inputs
 };
 
 var validatePrivateKey = function(data, hollaback) {
-  var result = Bitcoin.PrivateKey.validate(data);
-  hollaback(result);
+  if (Bitcoin.PrivateKey.isHexFormat(data)) {
+    hollaback('HEX');
+  } else if (Bitcoin.PrivateKey.isUncompressedWIF(data)) {
+    hollaback('WIF');
+  } else if (Bitcoin.PrivateKey.isBIP38Format(data)) {
+    hollaback('BIP38');
+  } else {
+    hollaback(false);
+  }
 };
 
 var addressForPrivateKey = function(data, hollaback) {
@@ -119,6 +127,34 @@ var wifForPrivateKey = function(data, hollaback) {
   var hex = Bitcoin.PrivateKey.toHex(data);
   var result = Bitcoin.PrivateKey.wif(hex);
   hollaback(result);
+};
+
+var bip38ForPrivateKey = function(passphrase, data, hollaback) {
+  var hex = Bitcoin.PrivateKey.toHex(data);
+  var result = Bitcoin.PrivateKey.bip38(passphrase, hex);
+  hollaback(result);
+};
+
+var bip38DecryptPrivateKey = function(passphrase, data, hollaback) {
+  try {
+    var privateKey = Bitcoin.PrivateKey.toHex(data, passphrase);
+    hollaback(privateKey);
+  } catch (e) {
+    hollaback({ error: 'Invalid Password' });
+  }
+};
+
+var decryptPrivateKey = function(password, encryptedPrivateKey, hollaback) {
+  try {
+    var privateKey = sjcl.json.decrypt(password, encryptedPrivateKey);
+    hollaback(privateKey);
+  } catch (e) {
+    if (e instanceof sjcl.exception.corrupt) {
+      hollaback({ error: 'Invalid Password' });
+    } else {
+      hollaback({ error: 'Error: ' + e.message });
+    }
+  }
 };
 
 var messageListener = function(e) {
