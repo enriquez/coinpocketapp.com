@@ -46,7 +46,7 @@
         sweepPasswordController.needsDecryption(privateKey);
       } else {
         sweepView.invalidPrivateKey();
-        sweepView.validationMessage('Invalid Private Key');
+        sweepView.validationMessage('Unknown Private Key Format');
       }
     });
   };

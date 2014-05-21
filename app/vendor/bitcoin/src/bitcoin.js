@@ -145,7 +145,7 @@ Bitcoin.PrivateKey.isUncompressedWIF = function(privateKey) {
 };
 
 Bitcoin.PrivateKey.isBIP38Format = function(privateKey) {
-  var isValidFormat = (new RegExp('^6P[1-9A-HJ-NP-Za-km-z]{56}$')).test(privateKey);
+  var isValidFormat = (new RegExp('^6PR[1-9A-HJ-NP-Za-km-z]{55}$')).test(privateKey);
 
   return isValidFormat;
 };
