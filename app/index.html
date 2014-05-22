@@ -284,7 +284,8 @@
 
             <div class="view-private-key-contents">
               <div class="col-xs-12">
-                <p class="visible-print">Below is your encrypted private key in BIP38 format. Keep this in a safe place. DO NOT FORGET YOUR PASSWORD. You will not be able to access your Bitcoin without it. Write it down if you think you will forget it.</p>
+                <p>Below is your encrypted private key in BIP38 format. DO NOT FORGET YOUR PASSWORD. You will need both your password and encrypted private key to spend your Bitcoin.</p>
+                <hr>
                 <p id="bip38-private-key" class="text-center overflow-ellipsis"></p>
               </div>
 
@@ -616,8 +617,7 @@
               <h3>Getting Started</h3>
               <p>Before you jump in, please follow the steps below.</p>
               <ol>
-                <li>Backup your device now!</li>
-                <li>Practice restoring from that backup.</li>
+                <li>Backup your private key. See below.</li>
                 <li class="ios-only">Read more detail on backups and general <a href="https://github.com/enriquez/coinpocketapp.com/wiki/iOS-Safety-Tips" target="_blank">safety tips for iOS users on the wiki</a></li>
                 <li class="ios-only">To scan QR Codes, download <a href="https://itunes.apple.com/us/app/scan-code-qr-code-reader/id828167977?ls=1&mt=8">Scan Code from the App Store</a></li>
                 <li>Bookmark this page.</li>
@@ -626,6 +626,17 @@
 
               <h3>About</h3>
               <p>Coin Pocket is an <a href="https://github.com/enriquez/coinpocketapp.com" target="_blank">open source project</a> created by <a href="http://enriquez.me" target="_blank">Mike Enriquez</a>. It is officially hosted and maintained at <a href="https://btc.coinpocketapp.com">https://btc.coinpocketapp.com</a>.</p>
+            </div>
+          </div>
+
+          <div id="backup" class="content row">
+            <div class="col-xs-12">
+              <p><strong>Backup your private key</strong></p>
+
+              <p>Coin Pocket stores your private key in this browser. Keep a copy of your encrypted private key somewhere safe in case something happens to your browser's data.  Coin Pocket is a single address wallet, therefore you only need to make one backup for that address.</p>
+              <p>Press the button below to view your encrypted private key. You can also do this from <a href="#/settings">settings</a>.</p>
+              <hr>
+              <a href="#/private_key_password" id="backup-view-encrypted-private-key" class="btn btn-primary btn-block">View Encrypted Private Key</a>
             </div>
           </div>
 
@@ -831,6 +842,7 @@
     <script src="/js/models/transaction.js"></script>
     <script src="/js/models/private_key.js"></script>
     <script src="/js/views/welcome_modal_view.js"></script>
+    <script src="/js/views/backup_view.js"></script>
     <script src="/js/views/empty_state_view.js"></script>
     <script src="/js/views/main_view.js"></script>
     <script src="/js/views/send_view.js"></script>
@@ -846,6 +858,7 @@
     <script src="/js/views/transactions_view.js"></script>
     <script src="/js/views/connection_status_view.js"></script>
     <script src="/js/controllers/welcome_modal_controller.js"></script>
+    <script src="/js/controllers/backup_controller.js"></script>
     <script src="/js/controllers/browser_controller.js"></script>
     <script src="/js/controllers/empty_state_controller.js"></script>
     <script src="/js/controllers/confirmation_controller.js"></script>

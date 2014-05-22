@@ -33,12 +33,10 @@
     this.$bip38.text(privateKey);
 
     var subject = encodeURIComponent('Coin Pocket Encrypted Private Key');
-    var body    = "Keep this email safe and never share it with anyone you don't want to spend your Bitcoin.\n" +
-                  '\n' +
-                  'Below is your encrypted private key in BIP38 format.\n' +
+    var body    = 'Below is your encrypted private key in BIP38 format.\n' +
                   privateKey + '\n' +
                   '\n' +
-                  'DO NOT FORGET YOUR PASSWORD. You will not be able to access the funds without it. Include it in this email if you think you will forget it.\n' +
+                  'DO NOT FORGET YOUR PASSWORD. You will need both your password and encrypted private key to spend your Bitcoin.\n' +
                   '\n' +
                   'Follow the URL below to sweep the balance into a new Coin Pocket address.\n' + 
                   document.location.protocol + '//' + document.location.host + '/#/sweep?code=' + privateKey;
