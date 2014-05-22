@@ -13,6 +13,7 @@
     self.$sweepError = $("#sweep-error");
     self.$validation = $("#sweep-validation-message");
     self.$spinner    = self.$container.find(".spinner-container");
+    self.$sweepErrorReason = $("#sweep-error-reason");
 
     self.$sweepButton.click(function(e) {
       e.preventDefault();
@@ -92,9 +93,10 @@
     this.$sweepButton.text('Done');
   };
 
-  SweepConfirmView.prototype.showError = function() {
+  SweepConfirmView.prototype.showError = function(reason) {
     this.$sweepSuccess.hide();
     this.$sweepEmpty.hide();
+    this.$sweepErrorReason.text(reason);
     this.$sweepError.show();
     this.$sweepButton.text('Done');
   };

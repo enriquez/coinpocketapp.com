@@ -46,10 +46,14 @@
               sweepConfirmView.setAddress(address);
               sweepConfirmView.setWIF(wif);
 
-              if (unspents.error) {
+              if (keyPair.bitcoinAddress === address) {
+                sweepConfirmView.setBalance(balance);
+                sweepConfirmView.doneLoading();
+                sweepConfirmView.showError("Can't sweep balance from your own private key");
+              } else if (unspents.error) {
                 sweepConfirmView.setBalance();
                 sweepConfirmView.doneLoading();
-                sweepConfirmView.showError();
+                sweepConfirmView.showError('Unable to download balance');
               } else if (balance > 0) {
                 self.wallet.sweepTransaction(keyPair.bitcoinAddress, function(transaction) {
                   self.transaction = transaction;
