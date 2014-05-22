@@ -234,6 +234,11 @@ describe("Bitcoin", function() {
             .toBe(true);
         });
 
+        it("returns true given 6PfQu77ygVyJLZjfvMLyhLMQbYnu5uguoJJ4kMCLqWwPEdfpwANVS76gTX", function() {
+          expect(Bitcoin.PrivateKey.validate('6PfQu77ygVyJLZjfvMLyhLMQbYnu5uguoJJ4kMCLqWwPEdfpwANVS76gTX'))
+            .toBe(true);
+        });
+
       });
 
     });
@@ -258,6 +263,21 @@ describe("Bitcoin", function() {
       it('returns hex if given BIP38 format', function() {
         expect(Bitcoin.PrivateKey.toHex('6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq', 'Satoshi'))
           .toEqual('09c2686880095b1a4c249ee3ac4eea8a014f11e6f986d0b5025ac1f39afbd9ae');
+      });
+
+      it('returns hex if given BIP38 format', function() {
+        expect(Bitcoin.PrivateKey.toHex('6PfQu77ygVyJLZjfvMLyhLMQbYnu5uguoJJ4kMCLqWwPEdfpwANVS76gTX', 'TestingOneTwoThree'))
+          .toEqual('a43a940577f4e97f5c4d39eb14ff083a98187c64ea7c99ef7ce460833959a519');
+      });
+
+      it('returns hex if given BIP38 format', function() {
+        expect(Bitcoin.PrivateKey.toHex('6PfLGnQs6VZnrNpmVKfjotbnQuaJK4KZoPFrAjx1JMJUa1Ft8gnf5WxfKd', 'Satoshi'))
+          .toEqual('c2c8036df268f498099350718c4a3ef3984d2be84618c2650f5171dcc5eb660a');
+      });
+
+      it('returns hex if given BIP38 format', function() {
+        expect(Bitcoin.PrivateKey.toHex('6PfSmTYzfgevaCAEZkaeKx76GXRCva7bNRMxiQ2VwSzQpN7Gjqmd3UCjKc', 'LamePassword'))
+          .toEqual('fe4e300476fcaf485c111c7095612fc4aff25e8998c4786dabfed337649192a3');
       });
 
     });
