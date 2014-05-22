@@ -27,6 +27,15 @@
     this.currentMessageId++;
   };
 
+  BitcoinWorker.prototype.asyncNewThread = function(functionName, params, hollaback) {
+    if (this.currentWorker) {
+      this.currentWorker.worker.terminate();
+    }
+
+    this.currentWorker = new BitcoinWorker();
+    this.currentWorker.async(functionName, params, hollaback);
+  };
+
   Models.bitcoinWorker = new BitcoinWorker();
 
 })(CoinPocketApp.Models);

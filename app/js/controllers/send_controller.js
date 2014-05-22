@@ -75,7 +75,7 @@
       sendView.show();
 
       if (pageParams.params.code) {
-        bitcoinWorker.async("parseCode", [pageParams.params.code], function(result) {
+        bitcoinWorker.asyncNewThread("parseCode", [pageParams.params.code], function(result) {
           if (result.address) {
             sendView.setAddress(result.address);
           }

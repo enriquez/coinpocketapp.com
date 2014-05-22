@@ -46,7 +46,7 @@
       password
     ];
 
-    bitcoinWorker.async("seedGenerateAndEncryptKeys", params, function(keyPair) {
+    bitcoinWorker.asyncNewThread("seedGenerateAndEncryptKeys", params, function(keyPair) {
       self.isGenerated = true;
 
       self.encryptedPrivateKeyExponent = keyPair.encryptedPrivateKeyExponent;

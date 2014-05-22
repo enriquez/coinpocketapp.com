@@ -190,7 +190,7 @@
         result = {},
         self = this;
 
-    bitcoinWorker.async('validateAddress', [toAddress], function(isAddressValid) {
+    bitcoinWorker.asyncNewThread('validateAddress', [toAddress], function(isAddressValid) {
       result.isValid = false;
 
       if (!toAddress) {
@@ -242,7 +242,7 @@
   };
 
   Wallet.prototype.sendTransaction = function(password, transaction, hollaback) {
-    bitcoinWorker.async('buildAndSignRawTransaction', [entropy.randomWords(32), password, keyPair, transaction.inputs, transaction.outputs], function(result) {
+    bitcoinWorker.asyncNewThread('buildAndSignRawTransaction', [entropy.randomWords(32), password, keyPair, transaction.inputs, transaction.outputs], function(result) {
       if (result.error) {
         hollaback(false, result.error);
       } else {
@@ -256,7 +256,7 @@
   };
 
   Wallet.prototype.sendTransactionWithPrivateKey = function(privateKey, transaction, hollaback) {
-    bitcoinWorker.async('buildAndSignRawTransactionWithPrivateKey', [entropy.randomWords(32), privateKey, transaction.inputs, transaction.outputs], function(result) {
+    bitcoinWorker.asyncNewThread('buildAndSignRawTransactionWithPrivateKey', [entropy.randomWords(32), privateKey, transaction.inputs, transaction.outputs], function(result) {
       if (result.error) {
         hollaback(false, result.error);
       } else {

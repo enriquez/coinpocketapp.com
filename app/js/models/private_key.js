@@ -6,7 +6,7 @@
 
     self.isValid = function(hollaback) {
       var params = [self._data];
-      bitcoinWorker.async('validatePrivateKey', params, function(result) {
+      bitcoinWorker.asyncNewThread('validatePrivateKey', params, function(result) {
         if (typeof hollaback === 'function') {
           hollaback(result);
         }
@@ -15,7 +15,7 @@
 
     self.address = function(hollaback) {
       var params = [self._data];
-      bitcoinWorker.async('addressForPrivateKey', params, function(address) {
+      bitcoinWorker.asyncNewThread('addressForPrivateKey', params, function(address) {
         if (typeof hollaback === 'function') {
           hollaback(address);
         }
@@ -29,7 +29,7 @@
         }
       } else {
         var params = [self._data];
-        bitcoinWorker.async('wifForPrivateKey', params, function(wif) {
+        bitcoinWorker.asyncNewThread('wifForPrivateKey', params, function(wif) {
           self.wifCache = wif;
           if (typeof hollaback === 'function') {
             hollaback(self.wifCache);
@@ -45,7 +45,7 @@
         }
       } else {
         var params = [passphrase, self._data];
-        bitcoinWorker.async('bip38ForPrivateKey', params, function(bip38) {
+        bitcoinWorker.asyncNewThread('bip38ForPrivateKey', params, function(bip38) {
           self.bip38Cache = bip38;
           if (typeof hollaback === 'function') {
             hollaback(self.bip38Cache);
@@ -56,7 +56,7 @@
 
     self.bip38decrypt = function(password, hollaback) {
       var params = [password, self._data];
-      bitcoinWorker.async('bip38DecryptPrivateKey', params, function(result) {
+      bitcoinWorker.asyncNewThread('bip38DecryptPrivateKey', params, function(result) {
         if (result.error) {
           hollaback(result);
         } else {
@@ -71,7 +71,7 @@
 
   PrivateKey.fromWallet = function(password, hollaback) {
     var params = [password, keyPair.encryptedPrivateKeyExponent];
-    bitcoinWorker.async('decryptPrivateKey', params, function(result) {
+    bitcoinWorker.asyncNewThread('decryptPrivateKey', params, function(result) {
       if (typeof hollaback === 'function') {
         if (result.error) {
           hollaback(result);
