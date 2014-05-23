@@ -159,11 +159,7 @@ namespace :spec do
   end
 
   task :bitcoin do
-    FrontEndTasks.spec({
-      :source_files => file_list.bitcoin_scripts,
-      :spec_files   => file_list.bitcoin_specs,
-      :port         => 8003
-    })
+    sh 'testem ci -f bitcoin_testem.json'
   end
 
   task :app_build => 'rake:build' do

@@ -1,0 +1,23 @@
+{
+  "framework": "jasmine2",
+  "src_files": [
+    "app/vendor/sjcl/core/sjcl.js",
+    "app/vendor/sjcl/core/bitArray.js",
+    "app/vendor/sjcl/core/codecString.js",
+    "app/vendor/sjcl/core/aes.js",
+    "app/vendor/sjcl/core/sha256.js",
+    "app/vendor/sjcl/core/random.js",
+    "app/vendor/sjcl/core/bn.js",
+    "app/vendor/sjcl/core/ecc.js",
+    "app/vendor/sjcl/core/codecBase64.js",
+    "app/vendor/sjcl/core/codecHex.js",
+    "app/vendor/sjcl/core/codecBytes.js",
+    "app/vendor/sjcl/core/hmac.js",
+    "app/vendor/sjcl/core/pbkdf2.js",
+    "app/vendor/sjcl/core/ccm.js",
+    "app/vendor/sjcl/core/convenience.js",
+    "app/vendor/bitcoin/src/**/*.js",
+    "app/vendor/bitcoin/spec/**/*.js"
+  ],
+  "launch_in_ci": ["Safari"]
+}
