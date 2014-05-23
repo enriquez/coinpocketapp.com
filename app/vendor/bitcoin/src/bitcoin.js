@@ -89,40 +89,42 @@ Bitcoin.PrivateKey.validate = function(privateKey) {
 };
 
 Bitcoin.PrivateKey.toHex = function(privateKey, passphrase) {
+  var bits, addressHash, aes, privateKeyHex, addressHashCheck;
+
   if (Bitcoin.PrivateKey.isHexFormat(privateKey)) {
     return privateKey;
   } else if (Bitcoin.PrivateKey.isUncompressedWIF(privateKey)) {
-    var bits = sjcl.codec.base58.toBits(privateKey);
+    bits = sjcl.codec.base58.toBits(privateKey);
     return sjcl.codec.hex.fromBits(sjcl.bitArray.bitSlice(bits, 8, 264));
   } else if (Bitcoin.PrivateKey.isBIP38Format(privateKey)) {
-    var bits       = sjcl.codec.base58.toBits(privateKey);
+    bits           = sjcl.codec.base58.toBits(privateKey);
     var identifier = sjcl.bitArray.bitSlice(bits, 0, 16);
 
     // uncompressed only
 
     if (sjcl.bitArray.equal(identifier, sjcl.codec.hex.toBits('0x0142'))) { // no ec multiply
-      var addressHash = sjcl.bitArray.bitSlice(bits, 24, 56);
+      addressHash = sjcl.bitArray.bitSlice(bits, 24, 56);
       var derivedKey  = sjcl.misc.scrypt(passphrase, addressHash, 16384, 8, 8, 64);
       var derivedKeyHalfs = Bitcoin.PrivateKey._hexToBitsHalfs(sjcl.codec.hex.fromBits(derivedKey));
 
       var encryptedFirstHalf  = sjcl.bitArray.bitSlice(bits, 56, 184);
       var encryptedSecondHalf = sjcl.bitArray.bitSlice(bits, 184, 312);
 
-      var aes = new sjcl.cipher.aes(derivedKeyHalfs[1]);
+      aes = new sjcl.cipher.aes(derivedKeyHalfs[1]);
 
       var privateKeyFirstHalf  = sjcl.bitArray._xor4(aes.decrypt(encryptedFirstHalf),  sjcl.bitArray.bitSlice(derivedKeyHalfs[0], 0, 128));
       var privateKeySecondHalf = sjcl.bitArray._xor4(aes.decrypt(encryptedSecondHalf), sjcl.bitArray.bitSlice(derivedKeyHalfs[0], 128));
 
-      var privateKeyHex = sjcl.codec.hex.fromBits(sjcl.bitArray.concat(privateKeyFirstHalf, privateKeySecondHalf));
+      privateKeyHex = sjcl.codec.hex.fromBits(sjcl.bitArray.concat(privateKeyFirstHalf, privateKeySecondHalf));
 
-      var addressHashCheck = sjcl.bitArray.bitSlice((sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(Bitcoin.PrivateKey.address(privateKeyHex)))), 0, 32);
+      addressHashCheck = sjcl.bitArray.bitSlice((sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(Bitcoin.PrivateKey.address(privateKeyHex)))), 0, 32);
       if (!sjcl.bitArray.equal(addressHashCheck, addressHash)) {
         throw 'Incorrect passphrase';
       }
 
       return privateKeyHex;
     } else if (sjcl.bitArray.equal(identifier, sjcl.codec.hex.toBits('0x0143'))) { // ec multiply
-      var addressHash  = sjcl.bitArray.bitSlice(bits, 24, 56);
+      addressHash   = sjcl.bitArray.bitSlice(bits, 24, 56);
       var ownerSalt = sjcl.bitArray.bitSlice(bits, 56, 120);
       var encryptedPart1FirstHalf = sjcl.bitArray.bitSlice(bits, 120, 184);
       var encryptedPart2 = sjcl.bitArray.bitSlice(bits, 184, 312);
@@ -136,7 +138,7 @@ Bitcoin.PrivateKey.toHex = function(privateKey, passphrase) {
       var derivedHalf1 = sjcl.bitArray.bitSlice(derived, 0, 256);
       var derivedHalf2 = sjcl.bitArray.bitSlice(derived, 256);
 
-      var aes = new sjcl.cipher.aes(derivedHalf2);
+      aes = new sjcl.cipher.aes(derivedHalf2);
 
       var decryptedPart2 = sjcl.bitArray._xor4(aes.decrypt(encryptedPart2), sjcl.bitArray.bitSlice(derivedHalf1, 128));
       var encryptedPart1SecondHalf = sjcl.bitArray.bitSlice(decryptedPart2, 0, 64);
@@ -145,10 +147,10 @@ Bitcoin.PrivateKey.toHex = function(privateKey, passphrase) {
       var seedb = sjcl.bitArray.concat(seedbFirstHalf, seedbSecondHalf);
       var factorb = sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(seedb));
 
-      var privateKey    = sjcl.bn.fromBits(passfactor).mulmod(sjcl.bn.fromBits(factorb), sjcl.ecc.curves.k256.r);
-      var privateKeyHex = sjcl.codec.hex.fromBits(privateKey.toBits());
+      privateKey    = sjcl.bn.fromBits(passfactor).mulmod(sjcl.bn.fromBits(factorb), sjcl.ecc.curves.k256.r);
+      privateKeyHex = sjcl.codec.hex.fromBits(privateKey.toBits());
 
-      var addressHashCheck = sjcl.bitArray.bitSlice((sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(Bitcoin.PrivateKey.address(privateKeyHex)))), 0, 32);
+      addressHashCheck = sjcl.bitArray.bitSlice((sjcl.hash.sha256.hash(sjcl.hash.sha256.hash(Bitcoin.PrivateKey.address(privateKeyHex)))), 0, 32);
       if (!sjcl.bitArray.equal(addressHashCheck, addressHash)) {
         throw 'Incorrect passphrase';
       }

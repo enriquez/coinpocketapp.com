@@ -13,10 +13,10 @@
     if (r * p >= Math.pow(2, 30)) {
       throw "The parameters r, p must satisfy r * p < 2^30";
     }
-    if ((N < 2) || (N & (N - 1) != 0)) {
+    if ((N < 2) || (N & (N - 1) !== 0)) {
       throw "The parameter N must be a power of 2.";
     }
-    SIZE_MAX = Math.pow(2, 32) - 1;
+    var SIZE_MAX = Math.pow(2, 32) - 1;
     if (N > SIZE_MAX / 128 / r) {
     throw "N too big.";
     }
@@ -26,14 +26,14 @@
   }
 
   function scrypt(passwd, salt, N, r, p, dkLen) {
-    B = sjcl.misc.pbkdf2(passwd, salt, 1, p * 128 * r * 8);
+    var B = sjcl.misc.pbkdf2(passwd, salt, 1, p * 128 * r * 8);
     var V = []; 
     var XY = [];
     for (var i = 0; i < p; i++) {
       smix(B, i * 128 * r, r, N, V, XY);
     }
     return sjcl.misc.pbkdf2(passwd, B, 1, dkLen * 8);
-  };
+  }
 
   function salsa20_8(B) {
 
@@ -47,11 +47,11 @@
     }
   
     var x = [];
-    for (var i = 0; i < 16; i++) {
-      x[i] = B32[i] | 0;
+    for (var j = 0; j < 16; j++) {
+      x[j] = B32[j] | 0;
     }
   
-    for (i = 8; i > 0; i -= 2) {
+    for (var k = 8; k > 0; k -= 2) {
       x[4] ^= R(x[0] + x[12], 7);
       x[8] ^= R(x[4] + x[0], 9);
       x[12] ^= R(x[8] + x[4], 13);
@@ -86,12 +86,12 @@
       x[15] ^= R(x[14] + x[13], 18);
     }
   
-    for (var i = 0; i < 16; i++) {
-      B32[i] = (B32[i] + x[i]) | 0;
+    for (var l = 0; l < 16; l++) {
+      B32[l] = (B32[l] + x[l]) | 0;
     }
     
-    for (var i = 0; i < 16; i++) {
-      B[i] = flipEndian(B32[i]);  
+    for (var m = 0; m < 16; m++) {
+      B[m] = flipEndian(B32[m]);  
     }
   
     return B;
@@ -116,7 +116,7 @@
   }
   
   function blockmix_salsa8(BY, Bi, Yi, r) {
-    X = [];
+    var X = [];
     var i;
   
     blockcopy(BY, Bi + (2 * r - 1) * 64, X, 0, 64);
@@ -163,9 +163,6 @@
   }
 
   sjcl.misc.scrypt = function(passwd, salt, N, r, p, dkLen) {
-    var passwd;
-    var salt;
-
     if (typeof passwd === 'string') {
       passwd = sjcl.codec.utf8String.toBits(passwd);
     }
@@ -177,4 +174,4 @@
     return scrypt(passwd, salt, N, r, p, dkLen);
   };
 
-})(sjcl)
+})(sjcl);
