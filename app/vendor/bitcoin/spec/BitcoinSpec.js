@@ -255,29 +255,35 @@ describe("Bitcoin", function() {
           .toEqual('18e14a7b6a307f426a94f8114701e7c8e774e7f9a47e2c2035db29a206321725');
       });
 
-      it('returns hex if given BIP38 format', function() {
+      it('returns hex if given BIP38 format uncompressed, no ec multiply test vector 1', function() {
         expect(Bitcoin.PrivateKey.toHex('6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg', 'TestingOneTwoThree'))
           .toEqual('cbf4b9f70470856bb4f40f80b87edb90865997ffee6df315ab166d713af433a5');
       });
 
-      it('returns hex if given BIP38 format', function() {
+      it('returns hex if given BIP38 format uncompressed, no ec multiply test vector 2', function() {
         expect(Bitcoin.PrivateKey.toHex('6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq', 'Satoshi'))
           .toEqual('09c2686880095b1a4c249ee3ac4eea8a014f11e6f986d0b5025ac1f39afbd9ae');
       });
 
-      it('returns hex if given BIP38 format', function() {
+      it('returns hex if given BIP38 format uncompressed, ec multiply test vector 1', function() {
+        console.log('go');
         expect(Bitcoin.PrivateKey.toHex('6PfQu77ygVyJLZjfvMLyhLMQbYnu5uguoJJ4kMCLqWwPEdfpwANVS76gTX', 'TestingOneTwoThree'))
           .toEqual('a43a940577f4e97f5c4d39eb14ff083a98187c64ea7c99ef7ce460833959a519');
       });
 
-      it('returns hex if given BIP38 format', function() {
+      it('returns hex if given BIP38 format uncompressed, ec multiply test vector 2', function() {
         expect(Bitcoin.PrivateKey.toHex('6PfLGnQs6VZnrNpmVKfjotbnQuaJK4KZoPFrAjx1JMJUa1Ft8gnf5WxfKd', 'Satoshi'))
           .toEqual('c2c8036df268f498099350718c4a3ef3984d2be84618c2650f5171dcc5eb660a');
       });
 
-      it('returns hex if given BIP38 format', function() {
+      it('returns hex if given BIP38 format with odd passpoint y coordinate', function() {
         expect(Bitcoin.PrivateKey.toHex('6PfSmTYzfgevaCAEZkaeKx76GXRCva7bNRMxiQ2VwSzQpN7Gjqmd3UCjKc', 'LamePassword'))
           .toEqual('fe4e300476fcaf485c111c7095612fc4aff25e8998c4786dabfed337649192a3');
+      });
+
+      it('returns hex if given BIP38 format with even passpoint y coordinate', function() {
+        expect(Bitcoin.PrivateKey.toHex('6PfYRzAqHbq2KNbMHEeVFhEZyWJevxFZEEg1HxfEW85PL3gc3mfMwNP4Q4', 'asdfasdf'))
+          .toEqual('c8f0998b7e499268df9e1d108addcf49bc4a85a53bbf4c890ca3c677bc7c5e32');
       });
 
     });

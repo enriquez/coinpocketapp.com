@@ -132,7 +132,10 @@ Bitcoin.PrivateKey.toHex = function(privateKey, passphrase) {
       var passfactor = sjcl.misc.scrypt(passphrase, ownerSalt, 16384, 8, 8, 32);
       var passpointUncompressed    = sjcl.ecc.curves.k256.G.mult(sjcl.bn.fromBits(passfactor)).toBits();
       var passpointUncompressedLen = sjcl.bitArray.bitLength(passpointUncompressed);
-      var passpoint = sjcl.bitArray.concat(sjcl.codec.hex.toBits('0x02'), sjcl.bitArray.bitSlice(passpointUncompressed, 0, passpointUncompressedLen/2));
+      var passpointX = sjcl.bitArray.bitSlice(passpointUncompressed, 0, passpointUncompressedLen/2);
+      var passpointY = sjcl.bitArray.bitSlice(passpointUncompressed, passpointUncompressedLen/2);
+      var prefix    = sjcl.bn.fromBits(passpointY).limbs[0] & 1 ? sjcl.codec.hex.toBits('0x03') : sjcl.codec.hex.toBits('0x02');
+      var passpoint = sjcl.bitArray.concat(prefix, passpointX);
 
       var derived = sjcl.misc.scrypt(passpoint, sjcl.bitArray.concat(addressHash, ownerSalt), 1024, 1, 1, 64);
       var derivedHalf1 = sjcl.bitArray.bitSlice(derived, 0, 256);
