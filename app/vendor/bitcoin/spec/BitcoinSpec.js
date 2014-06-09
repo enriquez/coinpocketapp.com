@@ -23,6 +23,11 @@ describe("Bitcoin", function() {
           toBe(true);
       });
 
+      it("returns true given 3FbU6yRKMdRufy25jKVaMCvEm6RCh99vBH", function() {
+        expect(Bitcoin.Address.validate("3FbU6yRKMdRufy25jKVaMCvEm6RCh99vBH")).
+          toBe(true);
+      });
+
       it("returns false with an invalid checksum", function() {
         expect(Bitcoin.Address.validate("1Ert3c8pSdrkyjuBiwVcSSixZwQtMZ3Tew")).
           toBe(false);
@@ -107,11 +112,27 @@ describe("Bitcoin", function() {
       });
     });
 
+    it("parses a multisig address", function() {
+      var actual = Bitcoin.parseCode('3FbU6yRKMdRufy25jKVaMCvEm6RCh99vBH');
+
+      expect(actual).toEqual({
+        address : '3FbU6yRKMdRufy25jKVaMCvEm6RCh99vBH'
+      });
+    });
+
     it("parses a bitcoin address with the bitcoin: prefix", function() {
       var actual = Bitcoin.parseCode('bitcoin:1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T');
 
       expect(actual).toEqual({
         address : '1JwSSubhmg6iPtRjtyqhUYYH7bZg3Lfy1T'
+      });
+    });
+
+    it("parses a bitcoin multisig address with the bitcoin: prefix", function() {
+      var actual = Bitcoin.parseCode('bitcoin:3FbU6yRKMdRufy25jKVaMCvEm6RCh99vBH');
+
+      expect(actual).toEqual({
+        address : '3FbU6yRKMdRufy25jKVaMCvEm6RCh99vBH'
       });
     });
 
@@ -266,7 +287,6 @@ describe("Bitcoin", function() {
       });
 
       it('returns hex if given BIP38 format uncompressed, ec multiply test vector 1', function() {
-        console.log('go');
         expect(Bitcoin.PrivateKey.toHex('6PfQu77ygVyJLZjfvMLyhLMQbYnu5uguoJJ4kMCLqWwPEdfpwANVS76gTX', 'TestingOneTwoThree'))
           .toEqual('a43a940577f4e97f5c4d39eb14ff083a98187c64ea7c99ef7ce460833959a519');
       });
@@ -467,6 +487,24 @@ describe("Bitcoin", function() {
             .toEqual('fd0001');
         });
 
+      });
+
+    });
+
+    describe("#addPayToScriptHashOutput", function() {
+
+      it("adds a pay to script hash output with value 33.54 BTC", function() {
+        transaction.addPayToScriptHashOutput('3FbU6yRKMdRufy25jKVaMCvEm6RCh99vBH', 33.54);
+
+        var expected = '';
+        expected += '80fae9c700000000'; // value in satoshis. 8 byte little endian.
+        expected += '17'; // length of following script
+        expected += 'a9'; // OP_HASH160
+        expected += '14'; // length of following pubKeyHash
+        expected += '98851e780607057aec2a055d8a38e83b20c0d737'; // pubKeyHash (bitcoin address in hex with network and checksum bytes removed)
+        expected += '87'; // OP_EQUAL
+
+        expect(transaction.outputs[0]).toEqual(expected);
       });
 
     });

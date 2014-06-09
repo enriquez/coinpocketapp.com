@@ -58,7 +58,11 @@ var buildAndSignRawTransaction = function(seed, password, keyPair, inputs, outpu
 
   for (var j=0; j<outputs.length; j++) {
     var output = outputs[j];
-    transaction.addPayToPubKeyHashOutput(output.address, output.amount);
+    if (output.address.indexOf("1") === 0) {
+      transaction.addPayToPubKeyHashOutput(output.address, output.amount);
+    } else if (output.address.indexOf("3") === 0) {
+      transaction.addPayToScriptHashOutput(output.address, output.amount);
+    }
   }
 
   try {
@@ -87,7 +91,11 @@ var buildAndSignRawTransactionWithPrivateKey = function(seed, privateKey, inputs
 
   for (var j=0; j<outputs.length; j++) {
     var output = outputs[j];
-    transaction.addPayToPubKeyHashOutput(output.address, output.amount);
+    if (output.address.indexOf("1") === 0) {
+      transaction.addPayToPubKeyHashOutput(output.address, output.amount);
+    } else if (output.address.indexOf("3") === 0) {
+      transaction.addPayToScriptHashOutput(output.address, output.amount);
+    }
   }
 
   try {

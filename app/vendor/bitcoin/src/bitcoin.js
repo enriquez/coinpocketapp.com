@@ -5,7 +5,7 @@ Bitcoin.paranoia = 10;
 Bitcoin.Address = function () { };
 
 Bitcoin.Address.validate = function(address) {
-  var isValidFormat = /^1[1-9A-HJ-NP-Za-km-z]{27,33}/.test(address);
+  var isValidFormat = /^[13][1-9A-HJ-NP-Za-km-z]{27,33}/.test(address);
 
   if (isValidFormat) {
     var bits         = sjcl.codec.base58.toBits(address),
@@ -41,7 +41,7 @@ Bitcoin.parseCode = function(code) {
     return { address: code };
   }
 
-  var matches = /^(?:bitcoin:)(?:\/\/)?(1[1-9A-HJ-NP-Za-km-z]{27,33})\??(.*)/.exec(code),
+  var matches = /^(?:bitcoin:)(?:\/\/)?([13][1-9A-HJ-NP-Za-km-z]{27,33})\??(.*)/.exec(code),
       out = {};
 
   if (matches && matches.length === 3) {
@@ -299,8 +299,34 @@ Bitcoin.Transaction = function() {
 
 };
 
+Bitcoin.Transaction.prototype.addPayToScriptHashOutput = function(address, amount) {
+  if (!Bitcoin.Address.validate(address) || address.indexOf("3") !== 0) {
+    throw "Invalid Bitcoin address";
+  }
+  if (amount < 0.00000001) {
+    throw "Invalid amount. Must be more than 0.00000001 BTC";
+  }
+
+  var output = '';
+
+  var value = this._btcTo8ByteLittleEndianHex(amount);
+
+  var script = 'a9'; // OP_HASH160
+  var pubKeyHash = this._bitcoinAddressToPubKeyHash(address);
+  script += this._byteLength(pubKeyHash);
+  script += pubKeyHash;
+  script += '87'; // OP_EQUAL
+
+  var scriptLength = this._byteLength(script);
+
+  output += value;
+  output += scriptLength;
+  output += script;
+  this.outputs.push(output);
+}
+
 Bitcoin.Transaction.prototype.addPayToPubKeyHashOutput = function(address, amount) {
-  if (!Bitcoin.Address.validate(address)) {
+  if (!Bitcoin.Address.validate(address) || address.indexOf("1") !== 0) {
     throw "Invalid Bitcoin address";
   }
   if (amount < 0.00000001) {
