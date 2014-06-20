@@ -37,7 +37,7 @@
         sweepConfirmView.loading();
         sweepConfirmView.show();
 
-        self.wallet = new CoinPocketApp.Models.Wallet();
+        self.wallet = new CoinPocketApp.Models.Wallet({ allowUnconfirmed: true });
 
         self.privateKey.address(function(address) {
           self.wallet.fetchUnspentOutputs(address, function(unspents) {

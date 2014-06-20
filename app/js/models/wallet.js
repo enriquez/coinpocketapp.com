@@ -1,7 +1,13 @@
 (function(BitcoinNetwork, keyPair, entropy, bitcoinWorker, Models) {
 
-  function Wallet() {
+  function Wallet(opts) {
     this.unspentOutputs = {};
+
+    if (opts.allowUnconfirmed) {
+      this.allowUnconfirmed = true;
+    } else {
+      this.allowUnconfirmed = false;
+    }
 
     this._btcToSatoshis = function(btc) {
       return parseInt((btc * 100000000).toFixed(0), 10);
@@ -27,7 +33,7 @@
       var unspentOutput = unspentOutputs[i];
       var id = unspentOutput.tx_hash + '-' + unspentOutput.tx_output_n;
 
-      if (unspentOutput.confirmations > 0) {
+      if (this.allowUnconfirmed || unspentOutput.confirmations > 0) {
         this.unspentOutputs[id] = {
           tx_hash: unspentOutput.tx_hash,
           tx_output_n: unspentOutput.tx_output_n,
@@ -271,5 +277,5 @@
 
   MicroEvent.mixin(Wallet);
   Models.Wallet = Wallet;
-  Models.wallet = new Wallet();
+  Models.wallet = new Wallet({ allowUnconfirmed: false });
 })(BitcoinNetwork, CoinPocketApp.Models.keyPair, CoinPocketApp.Models.entropy, CoinPocketApp.Models.bitcoinWorker, CoinPocketApp.Models);
