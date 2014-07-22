@@ -2,7 +2,7 @@ describe("Wallet", function() {
 
   var wallet;
   beforeEach(function() {
-    wallet = new CoinPocketApp.Models.Wallet();
+    wallet = new CoinPocketApp.Models.Wallet({ allowUnconfirmed: false });
   });
 
   describe("#balanceBTC", function() {
