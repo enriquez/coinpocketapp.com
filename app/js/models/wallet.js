@@ -205,8 +205,8 @@
         result.errorForAddress = "Address is invalid";
       } else if (!amount) {
         result.errorForAmount = "Amount is not valid";
-      } else if (/\D$/.test(amount)) {
-        result.errorForAmount = "Amount must be a number";
+      } else if (!/^\d*\.?\d*$/.test(amount)) {
+        result.errorForAmount = "Amount must be a number containing only digits and decimal mark";
       } else if (parseFloat(amount) < 0.00000001) {
         result.errorForAmount = "Amount must be greater than 0.00000001 BTC";
       } else if (transactionFee && /\D$/.test(transactionFee)) {
