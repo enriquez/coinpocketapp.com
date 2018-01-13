@@ -1,4 +1,4 @@
-![Coin Pocket icon](https://coinpocketapp.com/icon-small.png)
+Note: This project is no longer maintained and I do not control the domain coinpocketapp.com anymore.  Also, the iOS app has been removed from the App Store.
 
 # Coin Pocket
 
